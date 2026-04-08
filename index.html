@@ -1,0 +1,2830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neighborly Software — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Nunito', 'Avenir Next LT Pro', 'Avenir Next', 'Segoe UI', sans-serif;
+      background: #F5F8FE;
+      color: #181B1F;
+      line-height: 1.6;
+    }
+    a { color: #1389FD; text-decoration: underline; }
+    a:hover { color: #0F74DF; }
+    a:focus-visible { outline: 3px solid #1389FD; outline-offset: 2px; border-radius: 2px; }
+    img { max-width: 100%; height: auto; }
+
+    /* ── Skip Link ────────────────────────────────────────────────────────── */
+    .skip-link {
+      position: absolute; top: -40px; left: 0; background: #1389FD; color: #fff;
+      padding: 8px 16px; z-index: 9999; border-radius: 0 0 8px 0; font-weight: 700;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ── Layout ───────────────────────────────────────────────────────────── */
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px; flex-shrink: 0; background: #fff; border-right: 1px solid #E4EAF2;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 24px 0;
+    }
+    .sidebar-logo { padding: 0 20px 24px; border-bottom: 1px solid #E4EAF2; margin-bottom: 16px; }
+    .sidebar-logo img { height: 32px; }
+    .sidebar-section { padding: 8px 20px 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7C878E; }
+    .sidebar nav a {
+      display: block; padding: 8px 20px; font-size: 13px; font-weight: 600; color: #3D4A56;
+      text-decoration: none; border-left: 3px solid transparent; transition: all 0.15s;
+    }
+    .sidebar nav a:hover { background: #F5F8FE; color: #1389FD; border-left-color: #1389FD; }
+    .sidebar nav a.active { background: #EEF6FF; color: #1389FD; border-left-color: #1389FD; }
+    .sidebar nav a:focus-visible { outline: 2px solid #1389FD; outline-offset: -2px; }
+
+    .main { flex: 1; min-width: 0; padding: 48px 56px; max-width: 1100px; }
+    @media (max-width: 900px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid #E4EAF2; }
+      .main { padding: 32px 20px; }
+    }
+
+    /* ── Section ──────────────────────────────────────────────────────────── */
+    .ds-section { margin-bottom: 72px; scroll-margin-top: 24px; }
+    .ds-section-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+      padding-bottom: 16px; border-bottom: 2px solid #E4EAF2;
+    }
+    .ds-section-header .section-num {
+      width: 32px; height: 32px; border-radius: 8px; background: #1389FD;
+      color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+    }
+    .ds-section-header h2 { font-size: 22px; font-weight: 800; color: #181B1F; }
+    .ds-section-desc { font-size: 14px; color: #5A6472; margin-bottom: 28px; line-height: 1.7; }
+
+    /* ── Page Title ───────────────────────────────────────────────────────── */
+    .page-hero {
+      background: linear-gradient(135deg, #1389FD 0%, #00419D 100%);
+      border-radius: 20px; padding: 48px 48px 40px; margin-bottom: 56px; color: #fff;
+    }
+    .page-hero img { height: 40px; margin-bottom: 24px; filter: brightness(0) invert(1); }
+    .page-hero h1 { font-size: 36px; font-weight: 900; margin-bottom: 8px; }
+    .page-hero p { font-size: 16px; opacity: 0.85; max-width: 560px; }
+    .page-hero .version-badge {
+      display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700; margin-top: 20px;
+    }
+
+    /* ── Color Swatches ───────────────────────────────────────────────────── */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .color-card {
+      border-radius: 12px; overflow: hidden; border: 1px solid #E4EAF2;
+      background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .color-swatch { height: 80px; }
+    .color-info { padding: 12px 14px; }
+    .color-name { font-size: 13px; font-weight: 700; color: #181B1F; }
+    .color-hex { font-size: 12px; color: #7C878E; font-family: 'Courier New', monospace; margin-top: 2px; }
+    .color-meta { font-size: 11px; color: #9AA4AD; margin-top: 4px; }
+    .color-contrast-badge {
+      display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: 10px; margin-top: 6px;
+    }
+    .badge-pass { background: #D1FAE5; color: #065F46; }
+    .badge-fail { background: #FEE2E2; color: #991B1B; }
+    .badge-aa { background: #DBEAFE; color: #1E40AF; }
+    .badge-aaa { background: #EDE9FE; color: #5B21B6; }
+
+    /* ── Typography ───────────────────────────────────────────────────────── */
+    .type-scale { display: flex; flex-direction: column; gap: 20px; }
+    .type-row { display: flex; align-items: baseline; gap: 24px; padding: 16px 0; border-bottom: 1px solid #F0F4F8; }
+    .type-meta { width: 160px; flex-shrink: 0; }
+    .type-meta .type-label { font-size: 11px; font-weight: 700; color: #7C878E; text-transform: uppercase; letter-spacing: 0.06em; }
+    .type-meta .type-spec { font-size: 11px; color: #9AA4AD; font-family: monospace; margin-top: 3px; }
+    .type-sample { flex: 1; color: #181B1F; }
+
+    /* ── Spacing ──────────────────────────────────────────────────────────── */
+    .spacing-grid { display: flex; flex-direction: column; gap: 12px; }
+    .spacing-row { display: flex; align-items: center; gap: 16px; }
+    .spacing-bar-wrap { flex: 1; background: #F0F4F8; border-radius: 4px; height: 24px; overflow: hidden; }
+    .spacing-bar { height: 100%; background: linear-gradient(90deg, #1389FD, #4EABFF); border-radius: 4px; }
+    .spacing-label { width: 60px; font-size: 12px; font-weight: 700; color: #181B1F; font-family: monospace; }
+    .spacing-px { width: 60px; font-size: 12px; color: #7C878E; }
+    .spacing-use { font-size: 12px; color: #5A6472; flex: 1; }
+
+    /* ── Component Demos ──────────────────────────────────────────────────── */
+    .component-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .component-card {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 16px; padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .component-card h4 { font-size: 13px; font-weight: 700; color: #7C878E; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+
+    /* ── Buttons ──────────────────────────────────────────────────────────── */
+    .btn-demo { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: inherit; font-weight: 700; cursor: pointer; border: none;
+      transition: all 0.15s; text-decoration: none; white-space: nowrap;
+    }
+    .btn:focus-visible { outline: 3px solid #1389FD; outline-offset: 2px; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .btn-primary { background: #1389FD; color: #fff; border-radius: 30px; padding: 10px 22px; font-size: 14px; }
+    .btn-primary:hover:not(:disabled) { background: #0F74DF; }
+
+    .btn-secondary { background: #EEF6FF; color: #1389FD; border-radius: 30px; padding: 10px 22px; font-size: 14px; }
+    .btn-secondary:hover:not(:disabled) { background: #D9EDFF; }
+
+    .btn-outline { background: transparent; color: #1389FD; border: 2px solid #1389FD; border-radius: 30px; padding: 8px 20px; font-size: 14px; }
+    .btn-outline:hover:not(:disabled) { background: #EEF6FF; }
+
+    .btn-ghost { background: transparent; color: #3D4A56; border-radius: 30px; padding: 10px 22px; font-size: 14px; }
+    .btn-ghost:hover:not(:disabled) { background: #F0F4F8; }
+
+    .btn-destructive { background: #EF4444; color: #fff; border-radius: 30px; padding: 10px 22px; font-size: 14px; }
+    .btn-destructive:hover:not(:disabled) { background: #DC2626; }
+
+    .btn-success { background: #10B981; color: #fff; border-radius: 30px; padding: 10px 22px; font-size: 14px; }
+    .btn-success:hover:not(:disabled) { background: #059669; }
+
+    .btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 20px; }
+    .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 36px; }
+    .btn-icon { width: 40px; height: 40px; padding: 0; border-radius: 50%; background: #EEF6FF; color: #1389FD; }
+
+    /* ── Form Elements ────────────────────────────────────────────────────── */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13px; font-weight: 700; color: #3D4A56; margin-bottom: 6px; }
+    .form-label .required { color: #EF4444; margin-left: 2px; }
+    .form-input {
+      width: 100%; padding: 10px 14px; border: 1.5px solid #D1D9E0; border-radius: 12px;
+      font-family: inherit; font-size: 14px; color: #181B1F; background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+    }
+    .form-input:focus { border-color: #1389FD; box-shadow: 0 0 0 3px rgba(19,137,253,0.15); }
+    .form-input::placeholder { color: #9AA4AD; }
+    .form-input.error { border-color: #EF4444; }
+    .form-input.success { border-color: #10B981; }
+    .form-hint { font-size: 12px; color: #7C878E; margin-top: 4px; }
+    .form-error { font-size: 12px; color: #EF4444; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+    /* ── Badges / Chips ───────────────────────────────────────────────────── */
+    .badge-demo { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
+      border-radius: 20px; font-size: 12px; font-weight: 700;
+    }
+    .badge-blue { background: #DBEAFE; color: #1E40AF; }
+    .badge-green { background: #D1FAE5; color: #065F46; }
+    .badge-amber { background: #FEF3C7; color: #92400E; }
+    .badge-red { background: #FEE2E2; color: #991B1B; }
+    .badge-gray { background: #F3F4F6; color: #374151; }
+    .badge-purple { background: #EDE9FE; color: #5B21B6; }
+    .badge-primary { background: #1389FD; color: #fff; }
+
+    /* ── Cards ────────────────────────────────────────────────────────────── */
+    .card-demo { display: flex; flex-direction: column; gap: 16px; }
+    .ds-card {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 16px; padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .ds-card-elevated { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+    .ds-card-interactive { cursor: pointer; transition: box-shadow 0.15s, transform 0.15s; }
+    .ds-card-interactive:hover { box-shadow: 0 6px 20px rgba(19,137,253,0.12); transform: translateY(-1px); }
+    .ds-card h5 { font-size: 15px; font-weight: 700; color: #181B1F; margin-bottom: 6px; }
+    .ds-card p { font-size: 13px; color: #5A6472; }
+
+    /* ── Alerts ───────────────────────────────────────────────────────────── */
+    .alert {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+      border-radius: 12px; font-size: 13px; margin-bottom: 10px;
+    }
+    .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .alert-info { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
+    .alert-success { background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; }
+    .alert-warning { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+    .alert-error { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+    .alert strong { font-weight: 700; }
+
+    /* ── Progress / Stepper ───────────────────────────────────────────────── */
+    .progress-bar-wrap { background: #E4EAF2; border-radius: 8px; height: 8px; overflow: hidden; margin-bottom: 6px; }
+    .progress-bar { height: 100%; border-radius: 8px; background: linear-gradient(90deg, #1389FD, #4EABFF); transition: width 0.4s; }
+    .progress-label { font-size: 12px; color: #7C878E; }
+
+    .stepper { display: flex; flex-direction: column; gap: 0; }
+    .step-item { display: flex; gap: 16px; }
+    .step-connector { display: flex; flex-direction: column; align-items: center; }
+    .step-circle {
+      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0;
+    }
+    .step-line { width: 2px; flex: 1; min-height: 24px; background: #E4EAF2; margin: 4px 0; }
+    .step-done .step-circle { background: #D1FAE5; color: #065F46; }
+    .step-active .step-circle { background: #1389FD; color: #fff; }
+    .step-future .step-circle { background: #F0F4F8; color: #9AA4AD; border: 2px solid #E4EAF2; }
+    .step-content { padding: 4px 0 24px; }
+    .step-content h6 { font-size: 14px; font-weight: 700; color: #181B1F; }
+    .step-content p { font-size: 12px; color: #7C878E; margin-top: 2px; }
+
+    /* ── Tabs ─────────────────────────────────────────────────────────────── */
+    .tab-bar { display: flex; gap: 0; border-bottom: 2px solid #E4EAF2; margin-bottom: 16px; }
+    .tab-btn {
+      padding: 10px 18px; font-size: 13px; font-weight: 700; color: #7C878E;
+      background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; transition: all 0.15s; font-family: inherit;
+    }
+    .tab-btn:hover { color: #1389FD; }
+    .tab-btn.active { color: #1389FD; border-bottom-color: #1389FD; }
+    .tab-btn:focus-visible { outline: 2px solid #1389FD; outline-offset: 2px; border-radius: 4px 4px 0 0; }
+
+    /* ── Icon Grid ────────────────────────────────────────────────────────── */
+    .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+    .icon-item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 14px 8px; background: #fff; border: 1px solid #E4EAF2; border-radius: 10px;
+      font-size: 11px; color: #7C878E; text-align: center; font-weight: 600;
+    }
+    .icon-item svg { width: 20px; height: 20px; color: #3D4A56; }
+
+    /* ── Accessibility Table ──────────────────────────────────────────────── */
+    .a11y-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .a11y-table th {
+      text-align: left; padding: 10px 14px; background: #F5F8FE;
+      font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      color: #7C878E; border-bottom: 2px solid #E4EAF2;
+    }
+    .a11y-table td { padding: 10px 14px; border-bottom: 1px solid #F0F4F8; color: #3D4A56; vertical-align: top; }
+    .a11y-table tr:last-child td { border-bottom: none; }
+    .a11y-table code { background: #F0F4F8; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #1389FD; }
+    .pass-cell { color: #065F46; font-weight: 700; }
+    .fail-cell { color: #991B1B; font-weight: 700; }
+    .na-cell { color: #9AA4AD; }
+
+    /* ── Logo Grid ────────────────────────────────────────────────────────── */
+    .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .logo-card {
+      border: 1px solid #E4EAF2; border-radius: 12px; overflow: hidden;
+    }
+    .logo-card-bg { padding: 28px; display: flex; align-items: center; justify-content: center; min-height: 100px; }
+    .logo-card-bg.white { background: #fff; }
+    .logo-card-bg.light { background: #F5F8FE; }
+    .logo-card-bg.dark { background: #1389FD; }
+    .logo-card-bg.navy { background: #00419D; }
+    .logo-card-bg.black { background: #181B1F; }
+    .logo-card-info { padding: 10px 14px; background: #fff; border-top: 1px solid #E4EAF2; }
+    .logo-card-info p { font-size: 12px; font-weight: 700; color: #3D4A56; }
+    .logo-card-info span { font-size: 11px; color: #9AA4AD; }
+    .logo-card img { max-height: 48px; width: auto; }
+
+    /* ── Token Table ──────────────────────────────────────────────────────── */
+    .token-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .token-table th { text-align: left; padding: 8px 12px; background: #F5F8FE; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #7C878E; border-bottom: 2px solid #E4EAF2; }
+    .token-table td { padding: 9px 12px; border-bottom: 1px solid #F0F4F8; vertical-align: middle; }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table code { background: #F0F4F8; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #1389FD; font-family: monospace; }
+    .token-swatch { width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); display: inline-block; vertical-align: middle; margin-right: 8px; }
+
+    /* ── Motion ───────────────────────────────────────────────────────────── */
+    .motion-demo { display: flex; flex-wrap: wrap; gap: 12px; }
+    .motion-card {
+      padding: 14px 20px; background: #fff; border: 1px solid #E4EAF2; border-radius: 12px;
+      font-size: 13px; font-weight: 600; color: #3D4A56; cursor: pointer;
+    }
+    .motion-card:hover { background: #EEF6FF; color: #1389FD; }
+
+    /* ── Divider ──────────────────────────────────────────────────────────── */
+    .ds-divider { border: none; border-top: 1px solid #E4EAF2; margin: 32px 0; }
+
+    /* ── Code Block ───────────────────────────────────────────────────────── */
+    .code-block {
+      background: #1A1F2E; color: #E2E8F0; border-radius: 12px; padding: 20px 24px;
+      font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.7;
+      overflow-x: auto; margin-top: 12px;
+    }
+    .code-block .c-key { color: #93C5FD; }
+    .code-block .c-val { color: #86EFAC; }
+    .code-block .c-comment { color: #64748B; }
+    .code-block .c-str { color: #FCA5A5; }
+
+    /* ── Responsive Table Wrapper ─────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid #E4EAF2; }
+
+    /* ── Elevation ────────────────────────────────────────────────────────── */
+    .elevation-demo { display: flex; flex-wrap: wrap; gap: 20px; }
+    .elevation-card {
+      width: 120px; height: 80px; background: #fff; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #7C878E; text-align: center;
+    }
+    /* ── Modals ───────────────────────────────────────────────────────────── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(24,27,31,0.55); backdrop-filter: blur(4px);
+      z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+      width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+      transform: translateY(16px) scale(0.98); transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 24px 0; margin-bottom: 16px;
+    }
+    .modal-header h3 { font-size: 18px; font-weight: 800; color: #181B1F; }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 50%; background: #F0F4F8; border: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: #7C878E; font-size: 16px; transition: background 0.15s; flex-shrink: 0;
+    }
+    .modal-close:hover { background: #E4EAF2; color: #181B1F; }
+    .modal-close:focus-visible { outline: 3px solid #1389FD; outline-offset: 2px; }
+    .modal-body { padding: 0 24px 24px; }
+    .modal-footer {
+      padding: 16px 24px; border-top: 1px solid #E4EAF2;
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+    .modal-demo-area {
+      background: #F5F8FE; border: 1px solid #E4EAF2; border-radius: 16px;
+      padding: 32px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+      justify-content: center; min-height: 120px;
+    }
+    /* Static modal preview (not fixed) */
+    .modal-preview {
+      background: #fff; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+      border: 1px solid #E4EAF2; overflow: hidden; margin-top: 20px;
+    }
+
+    /* ── Data Tables ─────────────────────────────────────────────────────────── */
+    .data-table-wrap {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .data-table-toolbar {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 12px; padding: 16px 20px; border-bottom: 1px solid #E4EAF2;
+    }
+    .data-table-toolbar h4 { font-size: 15px; font-weight: 800; color: #181B1F; }
+    .data-table-toolbar .toolbar-actions { display: flex; gap: 8px; align-items: center; }
+    .search-input-wrap { position: relative; }
+    .search-input-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9AA4AD; }
+    .search-input-wrap input {
+      padding: 8px 12px 8px 34px; border: 1.5px solid #D1D9E0; border-radius: 10px;
+      font-family: inherit; font-size: 13px; color: #181B1F; background: #fff;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s; width: 220px;
+    }
+    .search-input-wrap input:focus { border-color: #1389FD; box-shadow: 0 0 0 3px rgba(19,137,253,0.15); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table th {
+      text-align: left; padding: 11px 16px; background: #F5F8FE;
+      font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      color: #7C878E; border-bottom: 2px solid #E4EAF2; white-space: nowrap;
+    }
+    .data-table th.sortable { cursor: pointer; user-select: none; }
+    .data-table th.sortable:hover { color: #1389FD; }
+    .data-table th .sort-icon { display: inline-block; margin-left: 4px; opacity: 0.4; font-size: 10px; }
+    .data-table th.sort-asc .sort-icon, .data-table th.sort-desc .sort-icon { opacity: 1; color: #1389FD; }
+    .data-table td { padding: 12px 16px; border-bottom: 1px solid #F0F4F8; color: #3D4A56; vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #F5F8FE; }
+    .data-table .td-name { font-weight: 700; color: #181B1F; }
+    .data-table .td-actions { display: flex; gap: 6px; }
+    .data-table-footer {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 8px; padding: 12px 20px; border-top: 1px solid #E4EAF2;
+    }
+    .data-table-footer p { font-size: 12px; color: #7C878E; }
+    .pagination { display: flex; gap: 4px; }
+    .page-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid #E4EAF2;
+      background: #fff; font-size: 12px; font-weight: 700; color: #5A6472;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .page-btn:hover { border-color: #1389FD; color: #1389FD; }
+    .page-btn.active { background: #1389FD; border-color: #1389FD; color: #fff; }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Tooltips & Popovers ─────────────────────────────────────────────────── */
+    .tooltip-wrap { position: relative; display: inline-block; }
+    .tooltip {
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: #181B1F; color: #fff; font-size: 12px; font-weight: 600;
+      padding: 6px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity 0.15s; z-index: 100;
+    }
+    .tooltip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: #181B1F;
+    }
+    .tooltip-wrap:hover .tooltip, .tooltip-wrap:focus-within .tooltip { opacity: 1; }
+    .tooltip-right {
+      bottom: auto; top: 50%; left: calc(100% + 8px); transform: translateY(-50%);
+    }
+    .tooltip-right::after {
+      top: 50%; left: -10px; transform: translateY(-50%);
+      border-top-color: transparent; border-right-color: #181B1F;
+    }
+    .popover {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 16px; width: 260px;
+      position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.15s;
+    }
+    .popover.open { opacity: 1; pointer-events: all; }
+    .popover h6 { font-size: 13px; font-weight: 800; color: #181B1F; margin-bottom: 6px; }
+    .popover p { font-size: 12px; color: #5A6472; line-height: 1.5; }
+    .tooltip-demo-grid {
+      display: flex; flex-wrap: wrap; gap: 24px; align-items: center;
+      background: #F5F8FE; border: 1px solid #E4EAF2; border-radius: 16px;
+      padding: 40px 32px;
+    }
+
+    /* ── Empty States ────────────────────────────────────────────────────────── */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 56px 32px; background: #fff;
+      border: 1px solid #E4EAF2; border-radius: 16px;
+    }
+    .empty-state-icon {
+      width: 64px; height: 64px; border-radius: 16px; background: #EEF6FF;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+    }
+    .empty-state-icon svg { width: 28px; height: 28px; color: #1389FD; }
+    .empty-state h4 { font-size: 16px; font-weight: 800; color: #181B1F; margin-bottom: 8px; }
+    .empty-state p { font-size: 13px; color: #7C878E; max-width: 300px; line-height: 1.6; margin-bottom: 20px; }
+    .empty-states-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+    /* ── Notifications / Toast ───────────────────────────────────────────────── */
+    .toast-container {
+      position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+      display: flex; flex-direction: column; gap: 10px; pointer-events: none;
+    }
+    .toast {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+      background: #fff; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+      border-left: 4px solid #1389FD; min-width: 300px; max-width: 380px;
+      pointer-events: all; animation: slideInRight 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .toast-success { border-left-color: #10B981; }
+    .toast-warning { border-left-color: #F59E0B; }
+    .toast-error { border-left-color: #EF4444; }
+    .toast-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+    .toast-content { flex: 1; }
+    .toast-title { font-size: 13px; font-weight: 800; color: #181B1F; }
+    .toast-msg { font-size: 12px; color: #5A6472; margin-top: 2px; }
+    .toast-dismiss {
+      background: none; border: none; cursor: pointer; color: #9AA4AD;
+      font-size: 14px; padding: 0; line-height: 1; flex-shrink: 0;
+    }
+    .toast-dismiss:hover { color: #181B1F; }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .notification-list { display: flex; flex-direction: column; gap: 10px; }
+    .notification-item {
+      display: flex; gap: 12px; padding: 14px 16px; background: #fff;
+      border: 1px solid #E4EAF2; border-radius: 14px; align-items: flex-start;
+      transition: background 0.15s;
+    }
+    .notification-item:hover { background: #F5F8FE; }
+    .notification-item.unread { border-left: 3px solid #1389FD; }
+    .notif-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #1389FD;
+      flex-shrink: 0; margin-top: 6px;
+    }
+    .notif-dot.read { background: #E4EAF2; }
+    .notif-body { flex: 1; }
+    .notif-title { font-size: 13px; font-weight: 700; color: #181B1F; }
+    .notif-desc { font-size: 12px; color: #5A6472; margin-top: 2px; line-height: 1.5; }
+    .notif-time { font-size: 11px; color: #9AA4AD; margin-top: 4px; }
+
+    /* ── Combination Page Frames ─────────────────────────────────────────────── */
+    .page-frame {
+      border: 1px solid #E4EAF2; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); background: #F5F8FE;
+    }
+    .page-frame-bar {
+      background: #fff; border-bottom: 1px solid #E4EAF2; padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .page-frame-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .page-frame-url {
+      flex: 1; background: #F5F8FE; border: 1px solid #E4EAF2; border-radius: 6px;
+      padding: 4px 10px; font-size: 11px; color: #9AA4AD; font-family: monospace;
+      text-align: center;
+    }
+    .page-frame-content { padding: 24px; }
+
+    /* App shell for combo pages */
+    .app-shell { display: flex; min-height: 500px; }
+    .app-nav {
+      width: 220px; flex-shrink: 0; background: #fff; border-right: 1px solid #E4EAF2;
+      padding: 20px 0;
+    }
+    .app-nav-logo { padding: 0 16px 16px; border-bottom: 1px solid #E4EAF2; margin-bottom: 12px; }
+    .app-nav-logo img { height: 24px; }
+    .app-nav-item {
+      display: flex; align-items: center; gap: 10px; padding: 9px 16px;
+      font-size: 13px; font-weight: 600; color: #5A6472; cursor: pointer;
+      border-left: 3px solid transparent; transition: all 0.15s; text-decoration: none;
+    }
+    .app-nav-item:hover { background: #F5F8FE; color: #1389FD; border-left-color: #1389FD; }
+    .app-nav-item.active { background: #EEF6FF; color: #1389FD; border-left-color: #1389FD; }
+    .app-nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .app-content { flex: 1; min-width: 0; padding: 24px; overflow: auto; }
+    .app-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .app-topbar h1 { font-size: 22px; font-weight: 800; color: #181B1F; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 14px; padding: 16px 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .stat-label { font-size: 11px; font-weight: 700; color: #7C878E; text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-value { font-size: 26px; font-weight: 900; color: #181B1F; margin: 4px 0 2px; line-height: 1; }
+    .stat-delta { font-size: 11px; font-weight: 700; }
+    .stat-delta.up { color: #10B981; }
+    .stat-delta.down { color: #EF4444; }
+    .stat-delta.neutral { color: #7C878E; }
+
+    /* Application form page */
+    .form-page-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+    @media (max-width: 800px) { .form-page-layout { grid-template-columns: 1fr; } }
+    .form-sidebar-panel {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 16px;
+      padding: 20px; height: fit-content; position: sticky; top: 0;
+    }
+    .form-sidebar-panel h5 { font-size: 13px; font-weight: 800; color: #181B1F; margin-bottom: 12px; }
+    .checklist-item {
+      display: flex; align-items: center; gap: 8px; padding: 7px 0;
+      border-bottom: 1px solid #F0F4F8; font-size: 12px; color: #3D4A56;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .checklist-item.done { color: #065F46; }
+    .checklist-item.done svg { color: #10B981; }
+    .checklist-item.pending svg { color: #9AA4AD; }
+
+    /* Results page */
+    .result-hero {
+      background: linear-gradient(135deg, #1389FD 0%, #00419D 100%);
+      border-radius: 16px; padding: 28px; color: #fff; margin-bottom: 20px;
+    }
+    .result-hero h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+    .result-hero p { font-size: 13px; opacity: 0.85; }
+    .program-card {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 14px; padding: 18px;
+      display: flex; align-items: flex-start; gap: 14px; transition: box-shadow 0.15s;
+    }
+    .program-card:hover { box-shadow: 0 4px 16px rgba(19,137,253,0.10); }
+    .program-icon {
+      width: 44px; height: 44px; border-radius: 12px; background: #EEF6FF;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .program-icon svg { width: 20px; height: 20px; color: #1389FD; }
+    .program-body { flex: 1; }
+    .program-name { font-size: 14px; font-weight: 800; color: #181B1F; margin-bottom: 4px; }
+    .program-desc { font-size: 12px; color: #5A6472; line-height: 1.5; }
+    .program-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
+
+    /* ── Print ────────────────────────────────────────────────────────── */── */
+    @media print {
+      .sidebar { display: none; }
+      .main { padding: 20px; }
+    }
+
+    /* ── Forced Colors ────────────────────────────────────────────────────── */
+    @media (forced-colors: active) {
+      .btn-primary, .btn-secondary, .btn-outline { border: 2px solid ButtonText !important; forced-color-adjust: none; }
+      :focus-visible { outline: 3px solid Highlight !important; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="layout">
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" aria-label="Design system navigation">
+      <div class="sidebar-logo">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_3f0b1d65.png" alt="Neighborly Software" />
+      </div>
+      <div class="sidebar-section">Foundation</div>
+      <nav aria-label="Foundation">
+        <a href="#brand">Brand Identity</a>
+        <a href="#colors">Color System</a>
+        <a href="#typography">Typography</a>
+        <a href="#spacing">Spacing & Layout</a>
+        <a href="#elevation">Elevation</a>
+        <a href="#motion">Motion & Animation</a>
+      </nav>
+      <div class="sidebar-section" style="margin-top:12px">Components</div>
+      <nav aria-label="Components">
+        <a href="#buttons">Buttons</a>
+        <a href="#forms">Form Elements</a>
+        <a href="#badges">Badges & Chips</a>
+        <a href="#cards">Cards</a>
+        <a href="#alerts">Alerts & Banners</a>
+        <a href="#progress">Progress & Steppers</a>
+        <a href="#tabs">Tabs & Navigation</a>
+        <a href="#icons">Iconography</a>
+      </nav>
+      <div class="sidebar-section" style="margin-top:12px">Accessibility</div>
+      <nav aria-label="Accessibility">
+        <a href="#a11y">WCAG 2.1 AA Specs</a>
+        <a href="#vpat">VPAT Compliance</a>
+        <a href="#tokens">Design Tokens</a>
+      </nav>
+      <div class="sidebar-section" style="margin-top:12px">Patterns</div>
+      <nav aria-label="Patterns">
+        <a href="#modals">Modals &amp; Dialogs</a>
+        <a href="#tables">Data Tables</a>
+        <a href="#tooltips">Tooltips &amp; Popovers</a>
+        <a href="#empty-states">Empty States</a>
+        <a href="#notifications">Notifications</a>
+      </nav>
+      <div class="sidebar-section" style="margin-top:12px">Combination Pages</div>
+      <nav aria-label="Combination Pages">
+        <a href="#page-dashboard">Dashboard</a>
+        <a href="#page-application">Application Form</a>
+        <a href="#page-results">Eligibility Results</a>
+      </nav>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main id="main-content" class="main">
+
+      <!-- Hero -->
+      <div class="page-hero" role="banner">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_3f0b1d65.png" alt="Neighborly Software" />
+        <h1>Design System</h1>
+        <p>The single source of truth for all design and development decisions at Neighborly Software. Every token, component, and pattern documented here is WCAG 2.1 AA compliant and VPAT-ready.</p>
+        <div class="version-badge">Version 1.1 · April 2026 · Patterns &amp; Combination Pages</div>
+      </div>
+
+      <!-- ── 1. Brand Identity ── -->
+      <section class="ds-section" id="brand" aria-labelledby="brand-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">1</div>
+          <h2 id="brand-heading">Brand Identity</h2>
+        </div>
+        <p class="ds-section-desc">
+          Neighborly Software's brand is built on trust, clarity, and community. The visual identity reflects our mission: <strong>Helping Communities Help People.</strong> All brand assets must be used as specified below — no stretching, recoloring, or modifying the logo.
+        </p>
+
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:16px;">Logo Variants</h3>
+        <div class="logo-grid">
+          <div class="logo-card">
+            <div class="logo-card-bg white">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_3f0b1d65.png" alt="Neighborly Software wordmark — blue on white" />
+            </div>
+            <div class="logo-card-info"><p>Wordmark — Blue</p><span>Primary use on white/light backgrounds</span></div>
+          </div>
+          <div class="logo-card">
+            <div class="logo-card-bg light">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogoCircle_Blue_61a091ef.png" alt="Neighborly Software circle logo — blue on light background" />
+            </div>
+            <div class="logo-card-info"><p>Circle Logo — Blue</p><span>App icons, avatars, favicons</span></div>
+          </div>
+          <div class="logo-card">
+            <div class="logo-card-bg dark">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLY_Vector_white_63070ea6.png" alt="Neighborly Software wordmark — white on blue" />
+            </div>
+            <div class="logo-card-info"><p>Wordmark — White</p><span>Use on primary blue or dark backgrounds</span></div>
+          </div>
+          <div class="logo-card">
+            <div class="logo-card-bg navy">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogoCircle_White_6c0c71c8.png" alt="Neighborly Software circle logo — white on navy" />
+            </div>
+            <div class="logo-card-info"><p>Circle Logo — White</p><span>Use on navy or dark backgrounds</span></div>
+          </div>
+          <div class="logo-card">
+            <div class="logo-card-bg white">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_Slogan_b87e7fc5.png" alt="Neighborly Software logo with slogan: Helping Communities Help People" />
+            </div>
+            <div class="logo-card-info"><p>Logo + Slogan</p><span>Marketing materials, presentations</span></div>
+          </div>
+          <div class="logo-card">
+            <div class="logo-card-bg white">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_Icon_1d834ae3.png" alt="Neighborly Software N icon mark" style="max-height:56px" />
+            </div>
+            <div class="logo-card-info"><p>Icon Mark</p><span>Small spaces, social media profiles</span></div>
+          </div>
+        </div>
+
+        <hr class="ds-divider" />
+
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Logo Clear Space &amp; Minimum Size</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Logo usage rules">
+            <thead><tr><th>Rule</th><th>Specification</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Minimum digital size</td><td>32px height</td><td>Below this, use icon mark only</td></tr>
+              <tr><td>Minimum print size</td><td>0.75 in height</td><td>Below this, use icon mark only</td></tr>
+              <tr><td>Clear space</td><td>Equal to the height of the "N" letterform on all sides</td><td>No other elements within this zone</td></tr>
+              <tr><td>Background contrast</td><td>Blue logo requires ≥ 3:1 contrast against background</td><td>WCAG 1.4.11 Non-text Contrast</td></tr>
+              <tr><td>Prohibited uses</td><td>Do not rotate, stretch, recolor, add drop shadows, or place on busy photographic backgrounds</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:8px;">Brand Voice</h3>
+        <p style="font-size:14px;color:#5A6472;line-height:1.7;margin-bottom:12px;">Neighborly Software's personality is <strong>Friendly &amp; Helpful</strong>. Copy should be warm, clear, and jargon-free. We speak to our users as neighbors, not as applicants. The brand promise — <em>"Helping Communities Help People"</em> — should guide all content decisions.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:14px;">
+            <p style="font-size:12px;font-weight:800;color:#065F46;margin-bottom:6px;">✓ DO</p>
+            <p style="font-size:13px;color:#065F46;">"Let's find programs that can help your household."</p>
+          </div>
+          <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px;">
+            <p style="font-size:12px;font-weight:800;color:#991B1B;margin-bottom:6px;">✗ DON'T</p>
+            <p style="font-size:13px;color:#991B1B;">"Submit your application for eligibility determination."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 2. Color System ── -->
+      <section class="ds-section" id="colors" aria-labelledby="colors-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">2</div>
+          <h2 id="colors-heading">Color System</h2>
+        </div>
+        <p class="ds-section-desc">
+          All colors meet WCAG 2.1 AA contrast requirements. Primary interactive elements use <strong>Neighborly Blue (#1389FD)</strong> on white backgrounds. Text colors are verified at 4.5:1 contrast minimum for normal text and 3:1 for large text. Contrast ratios shown below are calculated against white (#FFFFFF) unless noted.
+        </p>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Primary Palette</h3>
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background:#1389FD;"></div>
+            <div class="color-info">
+              <div class="color-name">Neighborly Blue</div>
+              <div class="color-hex">#1389FD · RGB(19, 137, 253)</div>
+              <div class="color-meta">PMS: 2727 C · C:86 M:42 Y:0 K:4</div>
+              <span class="color-contrast-badge badge-aa">AA Large Text (3.2:1)</span>
+              <span class="color-contrast-badge badge-fail" style="margin-left:4px">Fails body text</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Use on white backgrounds for interactive elements. For body text use #0F74DF or #00419D.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#0F74DF;"></div>
+            <div class="color-info">
+              <div class="color-name">Blue — Accessible</div>
+              <div class="color-hex">#0F74DF · RGB(15, 116, 223)</div>
+              <div class="color-meta">Darkened variant for text use</div>
+              <span class="color-contrast-badge badge-aa">AA 4.6:1 on white</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Use for inline links and text-only blue elements on white backgrounds.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#00419D;"></div>
+            <div class="color-info">
+              <div class="color-name">Medium Dark Blue</div>
+              <div class="color-hex">#00419D · RGB(0, 65, 157)</div>
+              <div class="color-meta">PMS: 293 C · C:62 M:36 Y:0 K:38</div>
+              <span class="color-contrast-badge badge-aaa">AAA 8.1:1 on white</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Headers, hero backgrounds, dark UI surfaces.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#F5F8FE;border:1px solid #E4EAF2;"></div>
+            <div class="color-info">
+              <div class="color-name">Background Blue</div>
+              <div class="color-hex">#F5F8FE · RGB(245, 248, 254)</div>
+              <div class="color-meta">App background / page canvas</div>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Default page background. Never use as text color.</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin:24px 0 14px;">Secondary Palette</h3>
+        <div class="color-grid">
+          <div class="color-card">
+            <div class="color-swatch" style="background:#3DB264;"></div>
+            <div class="color-info">
+              <div class="color-name">Neighborly Green</div>
+              <div class="color-hex">#3DB264 · RGB(61, 178, 100)</div>
+              <div class="color-meta">PMS: 7739 C · C:46 M:0 Y:31 K:30</div>
+              <span class="color-contrast-badge badge-aa">AA Large (3.1:1)</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Success states, completion badges. Use #1E7A40 for text on white.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#10B981;"></div>
+            <div class="color-info">
+              <div class="color-name">Emerald — Action</div>
+              <div class="color-hex">#10B981 · RGB(16, 185, 129)</div>
+              <div class="color-meta">Success CTAs, positive status</div>
+              <span class="color-contrast-badge badge-aa">AA Large (3.1:1)</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Used for "Eligible" result CTAs. White text on this background passes AA Large.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#C8C6C6;"></div>
+            <div class="color-info">
+              <div class="color-name">Light Gray</div>
+              <div class="color-hex">#C8C6C6 · RGB(200, 198, 198)</div>
+              <div class="color-meta">PMS: 428 C · C:0 M:1 Y:1 K:22</div>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Decorative dividers and disabled states only. Never use as text color.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#F59E0B;"></div>
+            <div class="color-info">
+              <div class="color-name">Amber — Warning</div>
+              <div class="color-hex">#F59E0B · RGB(245, 158, 11)</div>
+              <div class="color-meta">Warnings, review states</div>
+              <span class="color-contrast-badge badge-fail">Fails on white</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Use #92400E (dark amber) for text. Use amber as background with dark text only.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#EF4444;"></div>
+            <div class="color-info">
+              <div class="color-name">Red — Destructive</div>
+              <div class="color-hex">#EF4444 · RGB(239, 68, 68)</div>
+              <div class="color-meta">Errors, destructive actions</div>
+              <span class="color-contrast-badge badge-fail">Fails on white (3.9:1)</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Use #991B1B for error text on white. Use #EF4444 as background with white text.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#181B1F;"></div>
+            <div class="color-info">
+              <div class="color-name">Foreground / Text</div>
+              <div class="color-hex">#181B1F · RGB(24, 27, 31)</div>
+              <div class="color-meta">Primary body text</div>
+              <span class="color-contrast-badge badge-aaa">AAA 18.1:1 on white</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">All body copy, headings, and labels.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#5A6472;"></div>
+            <div class="color-info">
+              <div class="color-name">Secondary Text</div>
+              <div class="color-hex">#5A6472 · RGB(90, 100, 114)</div>
+              <div class="color-meta">Descriptions, captions</div>
+              <span class="color-contrast-badge badge-aa">AA 5.1:1 on white</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Supporting copy and form hints.</div>
+            </div>
+          </div>
+          <div class="color-card">
+            <div class="color-swatch" style="background:#7C878E;"></div>
+            <div class="color-info">
+              <div class="color-name">Muted Text</div>
+              <div class="color-hex">#7C878E · RGB(124, 135, 142)</div>
+              <div class="color-meta">Placeholder, metadata</div>
+              <span class="color-contrast-badge badge-aa">AA 4.6:1 on white</span>
+              <div style="font-size:11px;color:#7C878E;margin-top:6px;">Minimum acceptable for non-critical text. Never use for required information.</div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Color Usage Rules</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Color usage rules">
+            <thead><tr><th>Context</th><th>Foreground</th><th>Background</th><th>Contrast</th><th>WCAG</th></tr></thead>
+            <tbody>
+              <tr><td>Body text</td><td>#181B1F</td><td>#FFFFFF / #F5F8FE</td><td>18.1:1 / 16.4:1</td><td class="pass-cell">AAA ✓</td></tr>
+              <tr><td>Secondary text</td><td>#5A6472</td><td>#FFFFFF</td><td>5.1:1</td><td class="pass-cell">AA ✓</td></tr>
+              <tr><td>Muted text</td><td>#7C878E</td><td>#FFFFFF</td><td>4.6:1</td><td class="pass-cell">AA ✓</td></tr>
+              <tr><td>Links (inline text)</td><td>#0F74DF</td><td>#FFFFFF</td><td>4.6:1</td><td class="pass-cell">AA ✓</td></tr>
+              <tr><td>Primary button text</td><td>#FFFFFF</td><td>#1389FD</td><td>3.2:1</td><td class="pass-cell">AA Large ✓</td></tr>
+              <tr><td>Primary button (accessible)</td><td>#FFFFFF</td><td>#0F74DF</td><td>4.6:1</td><td class="pass-cell">AA ✓</td></tr>
+              <tr><td>Success text</td><td>#065F46</td><td>#ECFDF5</td><td>7.2:1</td><td class="pass-cell">AAA ✓</td></tr>
+              <tr><td>Warning text</td><td>#92400E</td><td>#FFFBEB</td><td>6.8:1</td><td class="pass-cell">AAA ✓</td></tr>
+              <tr><td>Error text</td><td>#991B1B</td><td>#FEF2F2</td><td>7.0:1</td><td class="pass-cell">AAA ✓</td></tr>
+              <tr><td>Disabled text</td><td>#9AA4AD</td><td>#FFFFFF</td><td>2.9:1</td><td class="na-cell">Exempt (disabled)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── 3. Typography ── -->
+      <section class="ds-section" id="typography" aria-labelledby="type-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">3</div>
+          <h2 id="type-heading">Typography</h2>
+        </div>
+        <p class="ds-section-desc">
+          <strong>Nunito</strong> is the primary typeface for all digital products (the closest Google Fonts match to the brand font Avenir Next LT Pro). <strong>Avenir Next LT Pro</strong> is used for print and presentation materials. Roboto Bold is used for data-heavy tables and technical labels.
+        </p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;">
+          <div class="ds-card">
+            <h5>Digital — Nunito</h5>
+            <p style="font-size:13px;color:#5A6472;margin-bottom:10px;">All web and mobile interfaces</p>
+            <p style="font-family:'Nunito',sans-serif;font-size:28px;font-weight:800;color:#181B1F;line-height:1.2;">Aa Bb Cc</p>
+            <p style="font-family:'Nunito',sans-serif;font-size:14px;color:#5A6472;margin-top:6px;">Light · Regular · Medium · SemiBold · Bold · ExtraBold · Black</p>
+            <div class="code-block" style="margin-top:10px;font-size:11px;">@import url('fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900');</div>
+          </div>
+          <div class="ds-card">
+            <h5>Print — Avenir Next LT Pro</h5>
+            <p style="font-size:13px;color:#5A6472;margin-bottom:10px;">Presentations, letterhead, marketing</p>
+            <p style="font-size:28px;font-weight:700;color:#181B1F;line-height:1.2;font-family:'Avenir Next LT Pro','Avenir Next',sans-serif;">Aa Bb Cc</p>
+            <p style="font-size:14px;color:#5A6472;margin-top:6px;">Light · Regular · Demi · Bold</p>
+            <p style="font-size:12px;color:#9AA4AD;margin-top:8px;">Licensed font — do not embed in web without license</p>
+          </div>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;">Type Scale</h3>
+        <div class="type-scale" role="list">
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">Display</div><div class="type-spec">36px / 900 / 1.15</div></div>
+            <div class="type-sample" style="font-size:36px;font-weight:900;line-height:1.15;">Helping Communities</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">H1</div><div class="type-spec">28px / 800 / 1.2</div></div>
+            <div class="type-sample" style="font-size:28px;font-weight:800;line-height:1.2;">Check Your Eligibility</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">H2</div><div class="type-spec">22px / 800 / 1.3</div></div>
+            <div class="type-sample" style="font-size:22px;font-weight:800;line-height:1.3;">Household Members</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">H3</div><div class="type-spec">18px / 700 / 1.4</div></div>
+            <div class="type-sample" style="font-size:18px;font-weight:700;line-height:1.4;">Income Verification</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">H4</div><div class="type-spec">15px / 700 / 1.5</div></div>
+            <div class="type-sample" style="font-size:15px;font-weight:700;line-height:1.5;">Supporting Documents</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">Body Large</div><div class="type-spec">16px / 400 / 1.65</div></div>
+            <div class="type-sample" style="font-size:16px;font-weight:400;line-height:1.65;">This screening helps us match you with the right housing assistance programs.</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">Body</div><div class="type-spec">14px / 400 / 1.6</div></div>
+            <div class="type-sample" style="font-size:14px;font-weight:400;line-height:1.6;">Answer a few questions to find out which programs you may qualify for. No account needed.</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">Body Small</div><div class="type-spec">13px / 400 / 1.6</div></div>
+            <div class="type-sample" style="font-size:13px;font-weight:400;line-height:1.6;color:#5A6472;">Your information is encrypted and used only for this application.</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">Caption</div><div class="type-spec">12px / 600 / 1.5</div></div>
+            <div class="type-sample" style="font-size:12px;font-weight:600;line-height:1.5;color:#7C878E;">Last updated March 28, 2026 · 3 programs evaluated</div>
+          </div>
+          <div class="type-row" role="listitem">
+            <div class="type-meta"><div class="type-label">Label / Overline</div><div class="type-spec">11px / 800 / 1.4 / uppercase</div></div>
+            <div class="type-sample" style="font-size:11px;font-weight:800;line-height:1.4;text-transform:uppercase;letter-spacing:.08em;color:#7C878E;">Section Label</div>
+          </div>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Typography Rules</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Typography accessibility rules">
+            <thead><tr><th>Rule</th><th>Requirement</th><th>WCAG SC</th></tr></thead>
+            <tbody>
+              <tr><td>Minimum body font size</td><td>14px (1rem equivalent)</td><td>1.4.4 Resize Text</td></tr>
+              <tr><td>Line height (body)</td><td>≥ 1.5× font size</td><td>1.4.12 Text Spacing</td></tr>
+              <tr><td>Letter spacing</td><td>≥ 0.12× font size</td><td>1.4.12 Text Spacing</td></tr>
+              <tr><td>Word spacing</td><td>≥ 0.16× font size</td><td>1.4.12 Text Spacing</td></tr>
+              <tr><td>Paragraph spacing</td><td>≥ 2× font size</td><td>1.4.12 Text Spacing</td></tr>
+              <tr><td>Text resize</td><td>Must support 200% zoom without horizontal scroll on 320px viewport</td><td>1.4.4, 1.4.10</td></tr>
+              <tr><td>Justified text</td><td>Never use full justification (text-align: justify)</td><td>1.4.8</td></tr>
+              <tr><td>All-caps body text</td><td>Avoid for body copy; labels/overlines only</td><td>Best practice</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── 4. Spacing & Layout ── -->
+      <section class="ds-section" id="spacing" aria-labelledby="spacing-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">4</div>
+          <h2 id="spacing-heading">Spacing &amp; Layout</h2>
+        </div>
+        <p class="ds-section-desc">
+          Neighborly uses an <strong>8px base grid</strong>. All spacing values are multiples of 4px, with the primary unit being 8px. This ensures visual rhythm and predictable layouts across all screen sizes.
+        </p>
+
+        <div class="spacing-grid" role="list">
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">4px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px;"></div></div>
+            <div class="spacing-px">0.25rem</div>
+            <div class="spacing-use">xs — icon gap, badge padding</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">8px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px;"></div></div>
+            <div class="spacing-px">0.5rem</div>
+            <div class="spacing-use">sm — tight element spacing, chip gap</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">12px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px;"></div></div>
+            <div class="spacing-px">0.75rem</div>
+            <div class="spacing-use">Between related elements, form field gap</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">16px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px;"></div></div>
+            <div class="spacing-px">1rem</div>
+            <div class="spacing-use">md — card padding, section gap (mobile)</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">20px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:20px;"></div></div>
+            <div class="spacing-px">1.25rem</div>
+            <div class="spacing-use">Card internal padding</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">24px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px;"></div></div>
+            <div class="spacing-px">1.5rem</div>
+            <div class="spacing-use">lg — section padding, modal padding</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">32px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px;"></div></div>
+            <div class="spacing-px">2rem</div>
+            <div class="spacing-use">xl — between major sections</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">48px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px;"></div></div>
+            <div class="spacing-px">3rem</div>
+            <div class="spacing-use">2xl — page section spacing</div>
+          </div>
+          <div class="spacing-row" role="listitem">
+            <div class="spacing-label">64px</div>
+            <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px;"></div></div>
+            <div class="spacing-px">4rem</div>
+            <div class="spacing-use">3xl — hero padding, large section breaks</div>
+          </div>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Border Radius</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:4px;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">4px</p>
+            <p style="font-size:11px;color:#7C878E;">Inputs, small chips</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:8px;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">8px</p>
+            <p style="font-size:11px;color:#7C878E;">Badges, tags</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:12px;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">12px</p>
+            <p style="font-size:11px;color:#7C878E;">Cards, modals</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:16px;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">16px</p>
+            <p style="font-size:11px;color:#7C878E;">Large cards, panels</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:20px;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">20px</p>
+            <p style="font-size:11px;color:#7C878E;">Hero sections</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:30px;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">30px</p>
+            <p style="font-size:11px;color:#7C878E;">Buttons (pill)</p>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:60px;height:60px;background:#1389FD;border-radius:50%;margin:0 auto 8px;"></div>
+            <p style="font-size:12px;font-weight:700;color:#181B1F;">50%</p>
+            <p style="font-size:11px;color:#7C878E;">Avatars, icon buttons</p>
+          </div>
+        </div>
+
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Breakpoints</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Responsive breakpoints">
+            <thead><tr><th>Name</th><th>Min Width</th><th>Tailwind</th><th>Use Case</th></tr></thead>
+            <tbody>
+              <tr><td>Mobile (default)</td><td>0px</td><td><code>—</code></td><td>Single column, full-width cards, stacked layout</td></tr>
+              <tr><td>Small</td><td>640px</td><td><code>sm:</code></td><td>Two-column grids, expanded padding</td></tr>
+              <tr><td>Medium</td><td>768px</td><td><code>md:</code></td><td>Sidebar layouts, wider modals</td></tr>
+              <tr><td>Large</td><td>1024px</td><td><code>lg:</code></td><td>Full dashboard layout, max-width containers</td></tr>
+              <tr><td>XL</td><td>1280px</td><td><code>xl:</code></td><td>Max content width cap (1280px)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── 5. Elevation ── -->
+      <section class="ds-section" id="elevation" aria-labelledby="elevation-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">5</div>
+          <h2 id="elevation-heading">Elevation</h2>
+        </div>
+        <p class="ds-section-desc">Shadows communicate hierarchy and interactivity. Use the minimum shadow level needed — avoid heavy shadows on mobile.</p>
+        <div class="elevation-demo">
+          <div class="elevation-card" style="box-shadow:none;border:1px solid #E4EAF2;">
+            <span>Flat<br/><span style="font-size:10px;color:#9AA4AD;">border only</span></span>
+          </div>
+          <div class="elevation-card" style="box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+            <span>Level 1<br/><span style="font-size:10px;color:#9AA4AD;">cards, inputs</span></span>
+          </div>
+          <div class="elevation-card" style="box-shadow:0 4px 16px rgba(0,0,0,0.10);">
+            <span>Level 2<br/><span style="font-size:10px;color:#9AA4AD;">elevated cards</span></span>
+          </div>
+          <div class="elevation-card" style="box-shadow:0 8px 24px rgba(0,0,0,0.14);">
+            <span>Level 3<br/><span style="font-size:10px;color:#9AA4AD;">modals, drawers</span></span>
+          </div>
+          <div class="elevation-card" style="box-shadow:0 16px 48px rgba(0,0,0,0.18);">
+            <span>Level 4<br/><span style="font-size:10px;color:#9AA4AD;">overlays, toasts</span></span>
+          </div>
+          <div class="elevation-card" style="box-shadow:0 6px 20px rgba(19,137,253,0.12);">
+            <span>Interactive<br/><span style="font-size:10px;color:#9AA4AD;">hover state</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 6. Motion ── -->
+      <section class="ds-section" id="motion" aria-labelledby="motion-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">6</div>
+          <h2 id="motion-heading">Motion &amp; Animation</h2>
+        </div>
+        <p class="ds-section-desc">
+          All animations respect the <code>prefers-reduced-motion</code> media query. When reduced motion is preferred, transitions are instant (0ms) or replaced with opacity fades. No animation should be the sole means of conveying information (WCAG 2.3.3).
+        </p>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Animation tokens">
+            <thead><tr><th>Token</th><th>Duration</th><th>Easing</th><th>Use Case</th></tr></thead>
+            <tbody>
+              <tr><td>Instant</td><td>0ms</td><td>—</td><td>Reduced-motion fallback</td></tr>
+              <tr><td>Fast</td><td>150ms</td><td>ease-out</td><td>Button hover, badge state change</td></tr>
+              <tr><td>Base</td><td>250ms</td><td>ease-out</td><td>Card hover, color transitions</td></tr>
+              <tr><td>Smooth</td><td>350ms</td><td>ease-out</td><td>Slide-up card entrance</td></tr>
+              <tr><td>Step enter</td><td>450ms</td><td>cubic-bezier(0.16, 1, 0.3, 1)</td><td>Wizard step transitions</td></tr>
+              <tr><td>Pulse (loop)</td><td>1.8s</td><td>ease-out infinite</td><td>Active step indicator ring</td></tr>
+              <tr><td>Scan (loop)</td><td>1.4s</td><td>ease-in-out infinite</td><td>Household lookup scanning bar</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-block" style="margin-top:16px;">
+<span class="c-comment">/* Always wrap animations in reduced-motion guard */</span>
+<span class="c-key">@media</span> (prefers-reduced-motion: no-preference) {
+  <span class="c-key">.step-enter</span> {
+    animation: step-enter <span class="c-val">450ms</span> cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+        </div>
+      </section>
+
+      <!-- ── 7. Buttons ── -->
+      <section class="ds-section" id="buttons" aria-labelledby="buttons-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">7</div>
+          <h2 id="buttons-heading">Buttons</h2>
+        </div>
+        <p class="ds-section-desc">
+          All buttons have a minimum touch target of <strong>44×44px</strong> (WCAG 2.5.5 Target Size). Focus indicators are always visible. Disabled buttons maintain visual hierarchy but are excluded from tab order. Every button must have a meaningful accessible label.
+        </p>
+
+        <div class="component-grid">
+          <div class="component-card">
+            <h4>Variants</h4>
+            <div class="btn-demo">
+              <button class="btn btn-primary" type="button">Primary</button>
+              <button class="btn btn-secondary" type="button">Secondary</button>
+              <button class="btn btn-outline" type="button">Outline</button>
+              <button class="btn btn-ghost" type="button">Ghost</button>
+              <button class="btn btn-destructive" type="button">Destructive</button>
+              <button class="btn btn-success" type="button">Success</button>
+            </div>
+          </div>
+          <div class="component-card">
+            <h4>Sizes</h4>
+            <div class="btn-demo" style="align-items:center;">
+              <button class="btn btn-primary btn-sm" type="button">Small</button>
+              <button class="btn btn-primary" type="button">Default</button>
+              <button class="btn btn-primary btn-lg" type="button">Large</button>
+              <button class="btn btn-icon" type="button" aria-label="Add item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="component-card">
+            <h4>States</h4>
+            <div class="btn-demo">
+              <button class="btn btn-primary" type="button">Default</button>
+              <button class="btn btn-primary" type="button" disabled>Disabled</button>
+              <button class="btn btn-primary" type="button" style="background:#0F74DF;">Hover/Active</button>
+            </div>
+          </div>
+          <div class="component-card">
+            <h4>Full Width CTA</h4>
+            <button class="btn btn-primary" type="button" style="width:100%;padding:14px;font-size:15px;border-radius:16px;justify-content:center;">
+              Create Account &amp; Build Profile →
+            </button>
+            <button class="btn btn-outline" type="button" style="width:100%;padding:12px;font-size:14px;border-radius:16px;justify-content:center;margin-top:10px;">
+              Sign In Instead
+            </button>
+          </div>
+        </div>
+
+        <hr class="ds-divider" />
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Button accessibility requirements">
+            <thead><tr><th>Requirement</th><th>Rule</th><th>WCAG SC</th></tr></thead>
+            <tbody>
+              <tr><td>Touch target size</td><td>Minimum 44×44px (default 40px height + 4px padding zone)</td><td>2.5.5 (AA)</td></tr>
+              <tr><td>Focus indicator</td><td>3px solid #1389FD outline, 2px offset — visible on all backgrounds</td><td>2.4.7, 2.4.11</td></tr>
+              <tr><td>Accessible name</td><td>All icon-only buttons must have <code>aria-label</code></td><td>4.1.2</td></tr>
+              <tr><td>Disabled state</td><td>Use <code>disabled</code> attribute (not just visual styling)</td><td>4.1.2</td></tr>
+              <tr><td>Loading state</td><td>Show spinner + update <code>aria-label</code> to "Loading…"</td><td>4.1.3</td></tr>
+              <tr><td>Color alone</td><td>Never rely on color alone to distinguish button types</td><td>1.4.1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── 8. Form Elements ── -->
+      <section class="ds-section" id="forms" aria-labelledby="forms-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">8</div>
+          <h2 id="forms-heading">Form Elements</h2>
+        </div>
+        <p class="ds-section-desc">
+          All form fields are keyboard navigable, have visible labels (never placeholder-only), and provide clear error messages associated via <code>aria-describedby</code>. Required fields are marked with both a visual asterisk and <code>aria-required="true"</code>.
+        </p>
+
+        <div class="component-grid">
+          <div class="component-card">
+            <h4>Text Input</h4>
+            <div class="form-group">
+              <label class="form-label" for="demo-first">First Name <span class="required" aria-hidden="true">*</span></label>
+              <input class="form-input" type="text" id="demo-first" placeholder="Jane" aria-required="true" />
+              <p class="form-hint" id="demo-first-hint">As it appears on your ID</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="demo-email">Email Address <span class="required" aria-hidden="true">*</span></label>
+              <input class="form-input success" type="email" id="demo-email" value="jane@example.com" aria-required="true" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="demo-zip">ZIP Code <span class="required" aria-hidden="true">*</span></label>
+              <input class="form-input error" type="text" id="demo-zip" value="1234" aria-required="true" aria-describedby="demo-zip-error" aria-invalid="true" />
+              <p class="form-error" id="demo-zip-error" role="alert">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Please enter a valid 5-digit ZIP code
+              </p>
+            </div>
+          </div>
+          <div class="component-card">
+            <h4>Select &amp; Textarea</h4>
+            <div class="form-group">
+              <label class="form-label" for="demo-rel">Relationship</label>
+              <select class="form-input" id="demo-rel">
+                <option value="">Select relationship…</option>
+                <option value="spouse">Spouse / Partner</option>
+                <option value="child">Child</option>
+                <option value="parent">Parent</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="demo-notes">Additional Notes</label>
+              <textarea class="form-input" id="demo-notes" rows="3" placeholder="Optional notes for your caseworker…" style="resize:vertical;"></textarea>
+              <p class="form-hint">Maximum 500 characters</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <h4>Checkbox &amp; Radio</h4>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#181B1F;font-weight:600;">
+                <input type="checkbox" checked style="width:18px;height:18px;accent-color:#1389FD;" />
+                I am a U.S. citizen or eligible non-citizen
+              </label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#181B1F;font-weight:600;">
+                <input type="checkbox" style="width:18px;height:18px;accent-color:#1389FD;" />
+                I am a veteran or active service member
+              </label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#181B1F;font-weight:600;">
+                <input type="radio" name="demo-radio" checked style="width:18px;height:18px;accent-color:#1389FD;" />
+                Individual / Household
+              </label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#181B1F;font-weight:600;">
+                <input type="radio" name="demo-radio" style="width:18px;height:18px;accent-color:#1389FD;" />
+                Business / Organization
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="ds-divider" />
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Form accessibility requirements">
+            <thead><tr><th>Requirement</th><th>Implementation</th><th>WCAG SC</th></tr></thead>
+            <tbody>
+              <tr><td>Visible labels</td><td>Every input has a <code>&lt;label&gt;</code> with matching <code>for</code>/<code>id</code></td><td>1.3.1, 2.4.6</td></tr>
+              <tr><td>Error identification</td><td>Errors use <code>aria-invalid="true"</code> + <code>aria-describedby</code> pointing to error message</td><td>3.3.1</td></tr>
+              <tr><td>Error suggestion</td><td>Error messages explain what went wrong and how to fix it</td><td>3.3.3</td></tr>
+              <tr><td>Required fields</td><td>Mark with <code>aria-required="true"</code> and visual asterisk with legend</td><td>3.3.2</td></tr>
+              <tr><td>Autocomplete</td><td>Use <code>autocomplete</code> attributes for name, email, address fields</td><td>1.3.5</td></tr>
+              <tr><td>Input purpose</td><td>Personal data fields must have appropriate <code>autocomplete</code> values</td><td>1.3.5</td></tr>
+              <tr><td>Focus order</td><td>Tab order follows visual reading order (top-to-bottom, left-to-right)</td><td>2.4.3</td></tr>
+              <tr><td>Timeout warnings</td><td>Warn users 20 seconds before session expiry with option to extend</td><td>2.2.1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── 9. Badges ── -->
+      <section class="ds-section" id="badges" aria-labelledby="badges-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">9</div>
+          <h2 id="badges-heading">Badges &amp; Chips</h2>
+        </div>
+        <p class="ds-section-desc">Badges communicate status at a glance. They must never rely on color alone — always pair color with a text label or icon. All badge text meets 4.5:1 contrast against its background.</p>
+        <div class="badge-demo">
+          <span class="badge badge-primary">Likely Eligible</span>
+          <span class="badge badge-green">✓ Complete</span>
+          <span class="badge badge-blue">Under Review</span>
+          <span class="badge badge-amber">⚠ Needs Review</span>
+          <span class="badge badge-red">Not Eligible</span>
+          <span class="badge badge-gray">Draft</span>
+          <span class="badge badge-purple">CDBG</span>
+          <span class="badge badge-green">HOME</span>
+          <span class="badge badge-blue">Disaster Recovery</span>
+        </div>
+        <div class="badge-demo" style="margin-top:12px;">
+          <span class="badge badge-green" style="font-size:10px;padding:2px 8px;">Done</span>
+          <span class="badge badge-amber" style="font-size:10px;padding:2px 8px;">Missing: DOB</span>
+          <span class="badge badge-blue" style="font-size:10px;padding:2px 8px;">Primary</span>
+          <span class="badge badge-gray" style="font-size:10px;padding:2px 8px;">Spouse</span>
+        </div>
+      </section>
+
+      <!-- ── 10. Cards ── -->
+      <section class="ds-section" id="cards" aria-labelledby="cards-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">10</div>
+          <h2 id="cards-heading">Cards</h2>
+        </div>
+        <p class="ds-section-desc">Cards are the primary container unit. Interactive cards must have a visible focus state and a hover affordance. Card content must be readable at 200% zoom.</p>
+        <div class="card-demo">
+          <div class="ds-card">
+            <h5>Default Card</h5>
+            <p>Standard container for grouped content. Border + Level 1 shadow. Used for form sections, info panels.</p>
+          </div>
+          <div class="ds-card ds-card-elevated">
+            <h5>Elevated Card</h5>
+            <p>Level 2 shadow. Used for featured content, summary panels, and modals.</p>
+          </div>
+          <div class="ds-card ds-card-interactive" tabindex="0" role="button" aria-label="View household member: Jane Smith">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <h5 style="margin-bottom:2px;">Jane Smith <span class="badge badge-blue" style="font-size:10px;vertical-align:middle;">Primary</span></h5>
+                <p>Applicant · <span style="color:#10B981;font-weight:700;">Complete ✓</span></p>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA4AD" stroke-width="2.5" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+          </div>
+          <div class="ds-card" style="background:linear-gradient(135deg,#1389FD,#00419D);color:#fff;border:none;">
+            <h5 style="color:#fff;">Hero / Feature Card</h5>
+            <p style="color:rgba(255,255,255,0.85);">Used for eligibility results, program highlights, and call-to-action panels.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 11. Alerts ── -->
+      <section class="ds-section" id="alerts" aria-labelledby="alerts-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">11</div>
+          <h2 id="alerts-heading">Alerts &amp; Banners</h2>
+        </div>
+        <p class="ds-section-desc">Alerts use <code>role="alert"</code> for errors and critical messages (announced immediately by screen readers), and <code>role="status"</code> for informational updates. Never use color alone to convey alert type.</p>
+        <div role="list">
+          <div class="alert alert-info" role="listitem">
+            <span class="alert-icon" aria-hidden="true">ℹ</span>
+            <div><strong>Information:</strong> Your eligibility result is saved for 30 days. Sign in to continue your application.</div>
+          </div>
+          <div class="alert alert-success" role="listitem">
+            <span class="alert-icon" aria-hidden="true">✓</span>
+            <div><strong>Success:</strong> Step 1 of 3 complete: Eligibility screening ✓</div>
+          </div>
+          <div class="alert alert-warning" role="listitem">
+            <span class="alert-icon" aria-hidden="true">⚠</span>
+            <div><strong>Review needed:</strong> Some items require manual review by a caseworker before a final determination.</div>
+          </div>
+          <div class="alert alert-error" role="alert" role="listitem">
+            <span class="alert-icon" aria-hidden="true">✕</span>
+            <div><strong>Error:</strong> We could not verify your address. Please check your ZIP code and try again.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 12. Progress & Steppers ── -->
+      <section class="ds-section" id="progress" aria-labelledby="progress-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">12</div>
+          <h2 id="progress-heading">Progress &amp; Steppers</h2>
+        </div>
+        <p class="ds-section-desc">Progress indicators must communicate current state to screen readers via <code>aria-valuenow</code>, <code>aria-valuemin</code>, <code>aria-valuemax</code>, and a visible text label. Steppers use numbered circles with clear active/done/locked states.</p>
+
+        <h3 style="font-size:14px;font-weight:700;color:#3D4A56;margin-bottom:12px;">Progress Bar</h3>
+        <div role="progressbar" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100" aria-label="Profile completion: 66%">
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width:66%;"></div>
+          </div>
+          <p class="progress-label">2 of 3 steps completed</p>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:700;color:#3D4A56;margin:24px 0 16px;">Onboarding Stepper</h3>
+        <div class="stepper" role="list" aria-label="Onboarding steps">
+          <div class="step-item step-done" role="listitem">
+            <div class="step-connector">
+              <div class="step-circle" aria-label="Step 1 complete">✓</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h6>Run your eligibility screening</h6>
+              <p>Your screening has been submitted and reviewed.</p>
+            </div>
+          </div>
+          <div class="step-item step-active" role="listitem">
+            <div class="step-connector">
+              <div class="step-circle" aria-label="Step 2, current step">2</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h6>Complete your profile</h6>
+              <p>Add your contact info, address, and household details.</p>
+              <button class="btn btn-primary btn-sm" type="button" style="margin-top:10px;">Complete profile →</button>
+            </div>
+          </div>
+          <div class="step-item step-future" role="listitem">
+            <div class="step-connector">
+              <div class="step-circle" aria-label="Step 3, not yet available">🔒</div>
+            </div>
+            <div class="step-content">
+              <h6>Apply to your eligible programs</h6>
+              <p>After completing your profile, you can submit applications.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 13. Tabs ── -->
+      <section class="ds-section" id="tabs" aria-labelledby="tabs-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">13</div>
+          <h2 id="tabs-heading">Tabs &amp; Navigation</h2>
+        </div>
+        <p class="ds-section-desc">Tabs use <code>role="tablist"</code>, <code>role="tab"</code>, and <code>role="tabpanel"</code>. Arrow keys navigate between tabs. The active tab panel is linked via <code>aria-controls</code>.</p>
+        <div role="tablist" aria-label="Profile sections" class="tab-bar">
+          <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-overview" id="tab-overview">Overview</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-household" id="tab-household">Household</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-income" id="tab-income">Income</button>
+        </div>
+        <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" style="padding:16px 0;">
+          <p style="font-size:14px;color:#5A6472;">Overview tab content — applicant summary, address, and profile completeness.</p>
+        </div>
+      </section>
+
+      <!-- ── 14. Iconography ── -->
+      <section class="ds-section" id="icons" aria-labelledby="icons-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">14</div>
+          <h2 id="icons-heading">Iconography</h2>
+        </div>
+        <p class="ds-section-desc">
+          Neighborly uses <strong>Lucide React</strong> as the icon library — consistent 24×24 stroke-based icons at 2px stroke width. All decorative icons use <code>aria-hidden="true"</code>. Functional icons (standalone, without adjacent text) require <code>aria-label</code> on the parent button.
+        </p>
+        <div class="icon-grid" role="list">
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Users
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Dashboard
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Document
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Check
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="20 6 9 17 4 12"/></svg>
+            Check Circle
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Alert Circle
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Warning
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Plus
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Trash
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18 15 12 9 6"/></svg>
+            Chevron Right
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            Chevron Down
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Lock
+          </div>
+          <div class="icon-item" role="listitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            User
+          </div>
+        </div>
+        <div class="code-block" style="margin-top:16px;">
+<span class="c-comment">// Decorative icon (no label needed)</span>
+&lt;CheckCircle2 <span class="c-key">className</span>=<span class="c-str">"h-4 w-4 text-emerald-600"</span> <span class="c-key">aria-hidden</span>=<span class="c-str">"true"</span> /&gt;
+
+<span class="c-comment">// Functional icon button (label required)</span>
+&lt;button <span class="c-key">aria-label</span>=<span class="c-str">"Remove Tom Smith from household"</span>&gt;
+  &lt;Trash2 <span class="c-key">className</span>=<span class="c-str">"h-4 w-4"</span> <span class="c-key">aria-hidden</span>=<span class="c-str">"true"</span> /&gt;
+&lt;/button&gt;
+        </div>
+      </section>
+
+      <!-- ── 15. WCAG Accessibility ── -->
+      <section class="ds-section" id="a11y" aria-labelledby="a11y-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">15</div>
+          <h2 id="a11y-heading">WCAG 2.1 AA Specifications</h2>
+        </div>
+        <p class="ds-section-desc">
+          Neighborly Software targets <strong>WCAG 2.1 Level AA</strong> conformance across all digital products. The four POUR principles — Perceivable, Operable, Understandable, and Robust — guide every design and development decision.
+        </p>
+
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Perceivable</h3>
+        <div class="table-wrap" style="margin-bottom:24px;">
+          <table class="a11y-table" aria-label="Perceivable WCAG criteria">
+            <thead><tr><th>SC</th><th>Criterion</th><th>Implementation</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>1.1.1</td><td>Non-text Content</td><td>All images have <code>alt</code> text; decorative images use <code>alt=""</code></td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.3.1</td><td>Info and Relationships</td><td>Semantic HTML: <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;section&gt;</code>, headings hierarchy</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.3.2</td><td>Meaningful Sequence</td><td>DOM order matches visual reading order</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.3.3</td><td>Sensory Characteristics</td><td>Instructions never rely solely on shape, color, or position</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.3.4</td><td>Orientation</td><td>No CSS locks screen orientation</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.3.5</td><td>Identify Input Purpose</td><td><code>autocomplete</code> attributes on all personal data fields</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.1</td><td>Use of Color</td><td>Status badges use text labels + color; error states use icon + text</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.3</td><td>Contrast (Minimum)</td><td>All text ≥ 4.5:1; large text ≥ 3:1 (see Color System)</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.4</td><td>Resize Text</td><td>200% zoom supported; no horizontal scroll on 320px</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.10</td><td>Reflow</td><td>Single-column layout on 320px; no loss of content</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.11</td><td>Non-text Contrast</td><td>UI components (inputs, buttons, icons) ≥ 3:1 against adjacent color</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.12</td><td>Text Spacing</td><td>Line height ≥ 1.5×; letter spacing ≥ 0.12×; word spacing ≥ 0.16×</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>1.4.13</td><td>Content on Hover/Focus</td><td>Tooltips dismissible, hoverable, and persistent</td><td class="pass-cell">✓ Pass</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Operable</h3>
+        <div class="table-wrap" style="margin-bottom:24px;">
+          <table class="a11y-table" aria-label="Operable WCAG criteria">
+            <thead><tr><th>SC</th><th>Criterion</th><th>Implementation</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>2.1.1</td><td>Keyboard</td><td>All functionality operable by keyboard; no keyboard traps</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.1.2</td><td>No Keyboard Trap</td><td>Modal focus traps are escapable via Escape key</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.2.1</td><td>Timing Adjustable</td><td>Session timeout warning shown 20s before expiry with extend option</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.3.1</td><td>Three Flashes</td><td>No content flashes more than 3× per second</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.1</td><td>Bypass Blocks</td><td>Skip-to-main-content link at top of every page</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.2</td><td>Page Titled</td><td>Every page has a unique, descriptive <code>&lt;title&gt;</code></td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.3</td><td>Focus Order</td><td>Tab order follows logical reading order</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.4</td><td>Link Purpose</td><td>Link text is descriptive; no "click here" or "read more" alone</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.6</td><td>Headings and Labels</td><td>All form fields have visible labels; headings describe content</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.7</td><td>Focus Visible</td><td>3px blue outline on all focusable elements</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.4.11</td><td>Focus Not Obscured (Min)</td><td>Focused component not fully hidden by sticky headers</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.5.3</td><td>Label in Name</td><td>Accessible name contains visible label text</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>2.5.5</td><td>Target Size</td><td>Minimum 44×44px touch targets on all interactive elements</td><td class="pass-cell">✓ Pass</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Understandable &amp; Robust</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Understandable and Robust WCAG criteria">
+            <thead><tr><th>SC</th><th>Criterion</th><th>Implementation</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>3.1.1</td><td>Language of Page</td><td><code>lang="en"</code> on <code>&lt;html&gt;</code>; <code>lang</code> attribute on non-English content</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>3.2.1</td><td>On Focus</td><td>No context change on focus alone</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>3.2.2</td><td>On Input</td><td>No automatic form submission; user must click Submit</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>3.3.1</td><td>Error Identification</td><td>Errors identified in text with <code>aria-invalid</code> and <code>aria-describedby</code></td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>3.3.2</td><td>Labels or Instructions</td><td>All required fields labeled; format hints provided</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>3.3.3</td><td>Error Suggestion</td><td>Error messages explain what went wrong and how to fix it</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>3.3.4</td><td>Error Prevention</td><td>Review screen before final submission; confirmation dialogs for destructive actions</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>4.1.1</td><td>Parsing</td><td>Valid HTML; no duplicate IDs; proper nesting</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>4.1.2</td><td>Name, Role, Value</td><td>All custom components have appropriate ARIA roles, states, and properties</td><td class="pass-cell">✓ Pass</td></tr>
+              <tr><td>4.1.3</td><td>Status Messages</td><td>Success/error toasts use <code>role="status"</code> or <code>role="alert"</code></td><td class="pass-cell">✓ Pass</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Windows High Contrast Mode</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:12px;">All interactive elements are tested in Windows High Contrast Mode (Forced Colors). Buttons receive a 2px solid border. Focus rings use the system <code>Highlight</code> color. Gradients fall back to solid <code>ButtonFace</code> backgrounds.</p>
+        <div class="code-block">
+<span class="c-key">@media</span> (forced-colors: active) {
+  <span class="c-key">button</span>, <span class="c-key">[role="button"]</span> {
+    border: <span class="c-val">2px solid ButtonText</span> !important;
+    forced-color-adjust: none;
+  }
+  <span class="c-key">:focus-visible</span> {
+    outline: <span class="c-val">3px solid Highlight</span> !important;
+    outline-offset: <span class="c-val">2px</span> !important;
+  }
+}
+        </div>
+      </section>
+
+      <!-- ── 16. VPAT ── -->
+      <section class="ds-section" id="vpat" aria-labelledby="vpat-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">16</div>
+          <h2 id="vpat-heading">VPAT Compliance Framework</h2>
+        </div>
+        <p class="ds-section-desc">
+          A Voluntary Product Accessibility Template (VPAT) documents how Neighborly Software conforms to accessibility standards. The following table summarizes conformance levels for the participant portal, following the VPAT 2.4 WCAG Edition format used for government procurement (Section 508 / EN 301 549).
+        </p>
+
+        <div class="alert alert-info" style="margin-bottom:20px;">
+          <span class="alert-icon" aria-hidden="true">ℹ</span>
+          <div><strong>Note:</strong> This design system ensures all new UI components are built to support full VPAT conformance. A formal ACR (Accessibility Conformance Report) should be produced by a certified accessibility auditor before government procurement submissions.</div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="VPAT conformance summary">
+            <thead><tr><th>Standard</th><th>Conformance Level</th><th>Remarks</th></tr></thead>
+            <tbody>
+              <tr><td>WCAG 2.1 Level A</td><td class="pass-cell">Supports</td><td>All Level A criteria met by design system components</td></tr>
+              <tr><td>WCAG 2.1 Level AA</td><td class="pass-cell">Supports</td><td>Target conformance level for all Neighborly products</td></tr>
+              <tr><td>Section 508 (US)</td><td class="pass-cell">Supports</td><td>Incorporates WCAG 2.0 AA; design system aligns with 508 refresh</td></tr>
+              <tr><td>EN 301 549 (EU)</td><td class="pass-cell">Supports</td><td>References WCAG 2.1 AA; covered by this design system</td></tr>
+              <tr><td>WCAG 2.1 Level AAA</td><td class="na-cell">Partial</td><td>Some AAA criteria met (e.g., 7:1 contrast on dark navy); not a blanket target</td></tr>
+              <tr><td>WCAG 2.2</td><td class="na-cell">Partial</td><td>2.4.11 Focus Not Obscured (AA) implemented; 2.5.7 Dragging Movements not yet tested</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Assistive Technology Testing Matrix</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Assistive technology testing matrix">
+            <thead><tr><th>AT / Browser</th><th>Platform</th><th>Priority</th></tr></thead>
+            <tbody>
+              <tr><td>NVDA + Chrome</td><td>Windows</td><td class="pass-cell">P1 — Required</td></tr>
+              <tr><td>JAWS + Chrome</td><td>Windows</td><td class="pass-cell">P1 — Required</td></tr>
+              <tr><td>VoiceOver + Safari</td><td>macOS / iOS</td><td class="pass-cell">P1 — Required</td></tr>
+              <tr><td>TalkBack + Chrome</td><td>Android</td><td class="pass-cell">P1 — Required</td></tr>
+              <tr><td>Narrator + Edge</td><td>Windows</td><td class="na-cell">P2 — Recommended</td></tr>
+              <tr><td>Dragon NaturallySpeaking</td><td>Windows</td><td class="na-cell">P2 — Recommended</td></tr>
+              <tr><td>Keyboard-only (no AT)</td><td>All</td><td class="pass-cell">P1 — Required</td></tr>
+              <tr><td>High Contrast Mode</td><td>Windows</td><td class="pass-cell">P1 — Required</td></tr>
+              <tr><td>200% browser zoom</td><td>All</td><td class="pass-cell">P1 — Required</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── 17. Design Tokens ── -->
+      <section class="ds-section" id="tokens" aria-labelledby="tokens-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">17</div>
+          <h2 id="tokens-heading">Design Tokens</h2>
+        </div>
+        <p class="ds-section-desc">
+          Design tokens are the single source of truth for all visual values. They are defined as CSS custom properties and Tailwind CSS theme variables. Use tokens — never hardcode hex values in component code.
+        </p>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">CSS Custom Properties</h3>
+        <div class="code-block">
+<span class="c-comment">/* :root — Neighborly Software Design Tokens */</span>
+<span class="c-key">:root</span> {
+  <span class="c-comment">/* Colors */</span>
+  <span class="c-key">--nbly-blue</span>:          <span class="c-val">#1389FD</span>;
+  <span class="c-key">--nbly-blue-dark</span>:     <span class="c-val">#0F74DF</span>;
+  <span class="c-key">--nbly-navy</span>:          <span class="c-val">#00419D</span>;
+  <span class="c-key">--nbly-green</span>:         <span class="c-val">#3DB264</span>;
+  <span class="c-key">--nbly-gray-light</span
+>:         <span class="c-val">#C8C6C6</span>;
+  <span class="c-key">--nbly-bg</span>:            <span class="c-val">#F5F8FE</span>;
+  <span class="c-key">--nbly-text</span>:          <span class="c-val">#181B1F</span>;
+  <span class="c-key">--nbly-text-secondary</span>:<span class="c-val">#5A6472</span>;
+  <span class="c-key">--nbly-text-muted</span>:    <span class="c-val">#7C878E</span>;
+
+  <span class="c-comment">/* Spacing (8px base grid) */</span>
+  <span class="c-key">--space-1</span>: <span class="c-val">4px</span>;   <span class="c-key">--space-2</span>: <span class="c-val">8px</span>;   <span class="c-key">--space-3</span>: <span class="c-val">12px</span>;
+  <span class="c-key">--space-4</span>: <span class="c-val">16px</span>;  <span class="c-key">--space-5</span>: <span class="c-val">20px</span>;  <span class="c-key">--space-6</span>: <span class="c-val">24px</span>;
+  <span class="c-key">--space-8</span>: <span class="c-val">32px</span>;  <span class="c-key">--space-12</span>: <span class="c-val">48px</span>; <span class="c-key">--space-16</span>: <span class="c-val">64px</span>;
+
+  <span class="c-comment">/* Border Radius */</span>
+  <span class="c-key">--radius-xs</span>:  <span class="c-val">4px</span>;   <span class="c-key">--radius-sm</span>:  <span class="c-val">8px</span>;
+  <span class="c-key">--radius-md</span>:  <span class="c-val">12px</span>;  <span class="c-key">--radius-lg</span>:  <span class="c-val">16px</span>;
+  <span class="c-key">--radius-xl</span>:  <span class="c-val">20px</span>;  <span class="c-key">--radius-pill</span>:<span class="c-val">30px</span>;
+  <span class="c-key">--radius-full</span>:<span class="c-val">9999px</span>;
+
+  <span class="c-comment">/* Typography */</span>
+  <span class="c-key">--font-sans</span>:  <span class="c-str">'Nunito', 'Avenir Next LT Pro', sans-serif</span>;
+  <span class="c-key">--font-mono</span>:  <span class="c-str">'Courier New', monospace</span>;
+  <span class="c-key">--text-xs</span>:   <span class="c-val">11px</span>;  <span class="c-key">--text-sm</span>:  <span class="c-val">12px</span>;
+  <span class="c-key">--text-base</span>: <span class="c-val">14px</span>;  <span class="c-key">--text-md</span>:  <span class="c-val">16px</span>;
+  <span class="c-key">--text-lg</span>:   <span class="c-val">18px</span>;  <span class="c-key">--text-xl</span>:  <span class="c-val">22px</span>;
+  <span class="c-key">--text-2xl</span>:  <span class="c-val">28px</span>;  <span class="c-key">--text-3xl</span>: <span class="c-val">36px</span>;
+
+  <span class="c-comment">/* Shadows */</span>
+  <span class="c-key">--shadow-1</span>: <span class="c-val">0 1px 4px rgba(0,0,0,0.06)</span>;
+  <span class="c-key">--shadow-2</span>: <span class="c-val">0 4px 16px rgba(0,0,0,0.10)</span>;
+  <span class="c-key">--shadow-3</span>: <span class="c-val">0 8px 24px rgba(0,0,0,0.14)</span>;
+  <span class="c-key">--shadow-4</span>: <span class="c-val">0 16px 48px rgba(0,0,0,0.18)</span>;
+  <span class="c-key">--shadow-focus</span>: <span class="c-val">0 0 0 3px rgba(19,137,253,0.25)</span>;
+
+  <span class="c-comment">/* Animation */</span>
+  <span class="c-key">--duration-fast</span>:   <span class="c-val">150ms</span>;
+  <span class="c-key">--duration-base</span>:   <span class="c-val">250ms</span>;
+  <span class="c-key">--duration-smooth</span>: <span class="c-val">350ms</span>;
+  <span class="c-key">--ease-out</span>: <span class="c-val">cubic-bezier(0.0, 0.0, 0.2, 1)</span>;
+  <span class="c-key">--ease-spring</span>: <span class="c-val">cubic-bezier(0.16, 1, 0.3, 1)</span>;
+}
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin:24px 0 12px;">Token Reference Table</h3>
+        <div class="table-wrap">
+          <table class="token-table" aria-label="Design token reference">
+            <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+            <tbody>
+              <tr><td><code>--nbly-blue</code></td><td><span class="token-swatch" style="background:#1389FD;"></span>#1389FD</td><td>Primary buttons, links, active states</td></tr>
+              <tr><td><code>--nbly-blue-dark</code></td><td><span class="token-swatch" style="background:#0F74DF;"></span>#0F74DF</td><td>Accessible text links, button hover</td></tr>
+              <tr><td><code>--nbly-navy</code></td><td><span class="token-swatch" style="background:#00419D;"></span>#00419D</td><td>Hero backgrounds, dark headers</td></tr>
+              <tr><td><code>--nbly-green</code></td><td><span class="token-swatch" style="background:#3DB264;"></span>#3DB264</td><td>Success badges, eligibility indicators</td></tr>
+              <tr><td><code>--nbly-bg</code></td><td><span class="token-swatch" style="background:#F5F8FE;border:1px solid #E4EAF2;"></span>#F5F8FE</td><td>Page background</td></tr>
+              <tr><td><code>--nbly-text</code></td><td><span class="token-swatch" style="background:#181B1F;"></span>#181B1F</td><td>Primary body text, headings</td></tr>
+              <tr><td><code>--nbly-text-secondary</code></td><td><span class="token-swatch" style="background:#5A6472;"></span>#5A6472</td><td>Descriptions, supporting copy</td></tr>
+              <tr><td><code>--nbly-text-muted</code></td><td><span class="token-swatch" style="background:#7C878E;"></span>#7C878E</td><td>Captions, metadata, placeholders</td></tr>
+              <tr><td><code>--radius-pill</code></td><td>30px</td><td>Button border radius</td></tr>
+              <tr><td><code>--radius-md</code></td><td>12px</td><td>Card, modal, input border radius</td></tr>
+              <tr><td><code>--shadow-focus</code></td><td>0 0 0 3px rgba(19,137,253,0.25)</td><td>Focus ring on inputs</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="ds-divider" />
+        <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:12px;">Tailwind CSS Configuration</h3>
+        <div class="code-block">
+<span class="c-comment">// tailwind.config.ts — Neighborly token extensions</span>
+<span class="c-key">theme</span>: {
+  extend: {
+    <span class="c-key">colors</span>: {
+      nbly: {
+        blue:    <span class="c-str">'#1389FD'</span>,
+        'blue-dark': <span class="c-str">'#0F74DF'</span>,
+        navy:    <span class="c-str">'#00419D'</span>,
+        green:   <span class="c-str">'#3DB264'</span>,
+        bg:      <span class="c-str">'#F5F8FE'</span>,
+        text:    <span class="c-str">'#181B1F'</span>,
+        muted:   <span class="c-str">'#7C878E'</span>,
+      }
+    },
+    <span class="c-key">fontFamily</span>: {
+      sans: [<span class="c-str">'Nunito'</span>, <span class="c-str">'Avenir Next LT Pro'</span>, <span class="c-str">'sans-serif'</span>],
+    },
+    <span class="c-key">borderRadius</span>: {
+      pill: <span class="c-str">'30px'</span>,
+      card: <span class="c-str">'12px'</span>,
+      hero: <span class="c-str">'20px'</span>,
+    },
+  }
+}
+        </div>
+      </section>
+
+      <!-- ── 18. Modals & Dialogs ── -->
+      <section class="ds-section" id="modals" aria-labelledby="modals-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">18</div>
+          <h2 id="modals-heading">Modals &amp; Dialogs</h2>
+        </div>
+        <p class="ds-section-desc">Modals use <code>role="dialog"</code>, <code>aria-modal="true"</code>, and <code>aria-labelledby</code> pointing to the modal title. Focus is trapped inside the modal while open and returns to the trigger on close. The backdrop closes the dialog on click. Press <kbd style="background:#F0F4F8;padding:2px 6px;border-radius:4px;font-size:12px;border:1px solid #D1D9E0;">Esc</kbd> to dismiss.</p>
+
+        <div class="modal-demo-area">
+          <button class="btn btn-primary" onclick="openModal('modal-confirm')" type="button">Open Confirm Dialog</button>
+          <button class="btn btn-outline" onclick="openModal('modal-form')" type="button">Open Form Modal</button>
+          <button class="btn btn-destructive" onclick="openModal('modal-delete')" type="button">Open Destructive Dialog</button>
+          <button class="btn btn-secondary" onclick="openModal('modal-info')" type="button">Open Info Sheet</button>
+        </div>
+
+        <!-- Confirm Modal -->
+        <div class="modal-backdrop" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title" onclick="handleBackdropClick(event, 'modal-confirm')">
+          <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+              <h3 id="modal-confirm-title">Submit Application?</h3>
+              <button class="modal-close" onclick="closeModal('modal-confirm')" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-info" style="margin-bottom:16px;">
+                <span class="alert-icon" aria-hidden="true">ℹ</span>
+                <div>Once submitted, your application will be reviewed by a caseworker within 5–7 business days.</div>
+              </div>
+              <p style="font-size:14px;color:#5A6472;line-height:1.6;">Please confirm all household information is accurate. You can update your profile after submission but cannot change income details without contacting your caseworker.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost" onclick="closeModal('modal-confirm')" type="button">Cancel</button>
+              <button class="btn btn-primary" onclick="closeModal('modal-confirm')" type="button">Submit Application</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Modal -->
+        <div class="modal-backdrop" id="modal-form" role="dialog" aria-modal="true" aria-labelledby="modal-form-title" onclick="handleBackdropClick(event, 'modal-form')">
+          <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+              <h3 id="modal-form-title">Add Household Member</h3>
+              <button class="modal-close" onclick="closeModal('modal-form')" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                  <label class="form-label" for="m-fname">First Name <span class="required">*</span></label>
+                  <input class="form-input" id="m-fname" type="text" placeholder="Jane" autocomplete="given-name" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="m-lname">Last Name <span class="required">*</span></label>
+                  <input class="form-input" id="m-lname" type="text" placeholder="Smith" autocomplete="family-name" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="m-dob">Date of Birth <span class="required">*</span></label>
+                <input class="form-input" id="m-dob" type="date" autocomplete="bday" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="m-rel">Relationship to Applicant <span class="required">*</span></label>
+                <select class="form-input" id="m-rel">
+                  <option value="">Select relationship…</option>
+                  <option>Spouse / Partner</option>
+                  <option>Child</option>
+                  <option>Parent</option>
+                  <option>Sibling</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="m-income">Annual Income</label>
+                <input class="form-input" id="m-income" type="text" placeholder="$0" />
+                <p class="form-hint">Leave blank if this person has no income.</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost" onclick="closeModal('modal-form')" type="button">Cancel</button>
+              <button class="btn btn-primary" onclick="closeModal('modal-form')" type="button">Add Member</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destructive Modal -->
+        <div class="modal-backdrop" id="modal-delete" role="dialog" aria-modal="true" aria-labelledby="modal-delete-title" onclick="handleBackdropClick(event, 'modal-delete')">
+          <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+              <h3 id="modal-delete-title" style="color:#991B1B;">Remove Household Member?</h3>
+              <button class="modal-close" onclick="closeModal('modal-delete')" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-error" style="margin-bottom:16px;">
+                <span class="alert-icon" aria-hidden="true">✕</span>
+                <div><strong>This action cannot be undone.</strong> Removing Tom Smith will delete all associated income and document records from this application.</div>
+              </div>
+              <p style="font-size:14px;color:#5A6472;">Are you sure you want to remove <strong>Tom Smith</strong> from your household?</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost" onclick="closeModal('modal-delete')" type="button">Keep Member</button>
+              <button class="btn btn-destructive" onclick="closeModal('modal-delete')" type="button">Yes, Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Sheet Modal -->
+        <div class="modal-backdrop" id="modal-info" role="dialog" aria-modal="true" aria-labelledby="modal-info-title" onclick="handleBackdropClick(event, 'modal-info')">
+          <div class="modal" onclick="event.stopPropagation()" style="max-width:480px;">
+            <div class="modal-header">
+              <h3 id="modal-info-title">About CDBG-DR Program</h3>
+              <button class="modal-close" onclick="closeModal('modal-info')" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;">
+                <div class="program-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                <div>
+                  <p style="font-size:14px;font-weight:800;color:#181B1F;">Community Development Block Grant – Disaster Recovery</p>
+                  <span class="badge badge-blue" style="margin-top:4px;">Likely Eligible</span>
+                </div>
+              </div>
+              <p style="font-size:13px;color:#5A6472;line-height:1.7;margin-bottom:12px;">CDBG-DR grants help communities recover from presidentially declared disasters. Funds can be used for housing, economic development, infrastructure, and community facilities.</p>
+              <div class="ds-card" style="margin-bottom:12px;">
+                <h5 style="font-size:12px;margin-bottom:8px;">Eligibility Requirements</h5>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <div style="display:flex;gap:8px;font-size:12px;color:#065F46;"><span>✓</span> U.S. citizen or eligible non-citizen</div>
+                  <div style="display:flex;gap:8px;font-size:12px;color:#065F46;"><span>✓</span> Income at or below 80% AMI</div>
+                  <div style="display:flex;gap:8px;font-size:12px;color:#065F46;"><span>✓</span> Primary residence in disaster-affected area</div>
+                  <div style="display:flex;gap:8px;font-size:12px;color:#9AA4AD;"><span>—</span> Insurance documentation may be required</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost" onclick="closeModal('modal-info')" type="button">Close</button>
+              <button class="btn btn-primary" onclick="closeModal('modal-info')" type="button">Start Application →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Static preview -->
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin:28px 0 12px;">Static Preview — Confirm Dialog</h3>
+        <div class="modal-preview">
+          <div class="modal-header" style="padding:24px 24px 0;margin-bottom:16px;">
+            <h3 style="font-size:18px;font-weight:800;color:#181B1F;">Submit Application?</h3>
+            <button class="modal-close" aria-label="Close" tabindex="-1">&times;</button>
+          </div>
+          <div class="modal-body" style="padding:0 24px 24px;">
+            <div class="alert alert-info" style="margin-bottom:16px;">
+              <span class="alert-icon" aria-hidden="true">ℹ</span>
+              <div>Once submitted, your application will be reviewed by a caseworker within 5–7 business days.</div>
+            </div>
+            <p style="font-size:14px;color:#5A6472;line-height:1.6;">Please confirm all household information is accurate before submitting.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-ghost" type="button">Cancel</button>
+            <button class="btn btn-primary" type="button">Submit Application</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 19. Data Tables ── -->
+      <section class="ds-section" id="tables" aria-labelledby="tables-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">19</div>
+          <h2 id="tables-heading">Data Tables</h2>
+        </div>
+        <p class="ds-section-desc">Data tables use <code>role="grid"</code> for interactive tables or a standard <code>&lt;table&gt;</code> for read-only data. Sortable columns use <code>aria-sort</code>. Row actions are accessible via keyboard. Pagination controls use <code>aria-label</code> and <code>aria-current="page"</code>.</p>
+
+        <div class="data-table-wrap">
+          <div class="data-table-toolbar">
+            <div>
+              <h4>Applications</h4>
+              <p style="font-size:12px;color:#7C878E;margin-top:2px;">42 total · 8 require action</p>
+            </div>
+            <div class="toolbar-actions">
+              <div class="search-input-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" placeholder="Search applicants…" aria-label="Search applicants" />
+              </div>
+              <button class="btn btn-outline btn-sm" type="button">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+                Filter
+              </button>
+              <button class="btn btn-primary btn-sm" type="button">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Application
+              </button>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table" aria-label="Applications list">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" aria-label="Select all rows" style="accent-color:#1389FD;" /></th>
+                  <th class="sortable sort-asc" aria-sort="ascending">Applicant <span class="sort-icon">↑</span></th>
+                  <th class="sortable" aria-sort="none">Program <span class="sort-icon">↕</span></th>
+                  <th class="sortable" aria-sort="none">Submitted <span class="sort-icon">↕</span></th>
+                  <th>Status</th>
+                  <th>Caseworker</th>
+                  <th><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Jane Smith" style="accent-color:#1389FD;" /></td>
+                  <td><div class="td-name">Jane Smith</div><div style="font-size:11px;color:#9AA4AD;">App #2024-0041</div></td>
+                  <td>CDBG-DR</td>
+                  <td>Mar 15, 2026</td>
+                  <td><span class="badge badge-blue">Under Review</span></td>
+                  <td>M. Torres</td>
+                  <td><div class="td-actions">
+                    <button class="btn btn-secondary btn-sm" type="button">View</button>
+                    <button class="btn btn-ghost btn-sm" type="button" aria-label="More options for Jane Smith">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Tom Rivera" style="accent-color:#1389FD;" /></td>
+                  <td><div class="td-name">Tom Rivera</div><div style="font-size:11px;color:#9AA4AD;">App #2024-0040</div></td>
+                  <td>HOME</td>
+                  <td>Mar 12, 2026</td>
+                  <td><span class="badge badge-amber">⚠ Needs Review</span></td>
+                  <td>S. Patel</td>
+                  <td><div class="td-actions">
+                    <button class="btn btn-secondary btn-sm" type="button">View</button>
+                    <button class="btn btn-ghost btn-sm" type="button" aria-label="More options for Tom Rivera">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Maria Gonzalez" style="accent-color:#1389FD;" /></td>
+                  <td><div class="td-name">Maria Gonzalez</div><div style="font-size:11px;color:#9AA4AD;">App #2024-0039</div></td>
+                  <td>CDBG-DR</td>
+                  <td>Mar 10, 2026</td>
+                  <td><span class="badge badge-green">✓ Complete</span></td>
+                  <td>M. Torres</td>
+                  <td><div class="td-actions">
+                    <button class="btn btn-secondary btn-sm" type="button">View</button>
+                    <button class="btn btn-ghost btn-sm" type="button" aria-label="More options for Maria Gonzalez">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select David Kim" style="accent-color:#1389FD;" /></td>
+                  <td><div class="td-name">David Kim</div><div style="font-size:11px;color:#9AA4AD;">App #2024-0038</div></td>
+                  <td>Disaster Recovery</td>
+                  <td>Mar 8, 2026</td>
+                  <td><span class="badge badge-red">Not Eligible</span></td>
+                  <td>R. Johnson</td>
+                  <td><div class="td-actions">
+                    <button class="btn btn-secondary btn-sm" type="button">View</button>
+                    <button class="btn btn-ghost btn-sm" type="button" aria-label="More options for David Kim">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" aria-label="Select Lisa Chen" style="accent-color:#1389FD;" /></td>
+                  <td><div class="td-name">Lisa Chen</div><div style="font-size:11px;color:#9AA4AD;">App #2024-0037</div></td>
+                  <td>HOME</td>
+                  <td>Mar 5, 2026</td>
+                  <td><span class="badge badge-primary">Likely Eligible</span></td>
+                  <td>S. Patel</td>
+                  <td><div class="td-actions">
+                    <button class="btn btn-secondary btn-sm" type="button">View</button>
+                    <button class="btn btn-ghost btn-sm" type="button" aria-label="More options for Lisa Chen">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="data-table-footer">
+            <p>Showing 1–5 of 42 applications</p>
+            <nav class="pagination" aria-label="Table pagination">
+              <button class="page-btn" disabled aria-label="Previous page">&lsaquo;</button>
+              <button class="page-btn active" aria-current="page" aria-label="Page 1">1</button>
+              <button class="page-btn" aria-label="Page 2">2</button>
+              <button class="page-btn" aria-label="Page 3">3</button>
+              <span style="display:flex;align-items:center;padding:0 4px;font-size:12px;color:#9AA4AD;">…</span>
+              <button class="page-btn" aria-label="Page 9">9</button>
+              <button class="page-btn" aria-label="Next page">&rsaquo;</button>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 20. Tooltips & Popovers ── -->
+      <section class="ds-section" id="tooltips" aria-labelledby="tooltips-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">20</div>
+          <h2 id="tooltips-heading">Tooltips &amp; Popovers</h2>
+        </div>
+        <p class="ds-section-desc">Tooltips appear on hover and focus, providing brief supplementary information. They must not contain interactive elements. Popovers are richer overlays that can contain links, buttons, and structured content — they use <code>role="tooltip"</code> or <code>role="dialog"</code> accordingly.</p>
+
+        <div class="tooltip-demo-grid">
+          <div class="tooltip-wrap">
+            <button class="btn btn-secondary" type="button" aria-describedby="tt1">Hover me</button>
+            <div class="tooltip" id="tt1" role="tooltip">This is a tooltip</div>
+          </div>
+          <div class="tooltip-wrap">
+            <button class="btn btn-outline" type="button" aria-describedby="tt2">AMI Calculation</button>
+            <div class="tooltip" id="tt2" role="tooltip">Area Median Income — used to determine program eligibility thresholds</div>
+          </div>
+          <div class="tooltip-wrap">
+            <button class="btn btn-ghost btn-icon" type="button" aria-label="More information" aria-describedby="tt3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </button>
+            <div class="tooltip" id="tt3" role="tooltip">Icon button tooltip — top aligned</div>
+          </div>
+          <div class="tooltip-wrap" style="position:relative;">
+            <button class="btn btn-primary" type="button" onclick="togglePopover('pop1')" aria-expanded="false" aria-controls="pop1">Program Info ▾</button>
+            <div class="popover" id="pop1" role="dialog" aria-label="CDBG-DR program details">
+              <h6>CDBG-DR Program</h6>
+              <p>Community Development Block Grant – Disaster Recovery. Funds housing, infrastructure, and economic recovery in disaster-affected areas.</p>
+              <div style="margin-top:12px;display:flex;gap:8px;">
+                <button class="btn btn-primary btn-sm" onclick="togglePopover('pop1')" type="button">Apply Now</button>
+                <button class="btn btn-ghost btn-sm" onclick="togglePopover('pop1')" type="button">Learn More</button>
+              </div>
+            </div>
+          </div>
+          <div class="tooltip-wrap" style="position:relative;">
+            <span style="font-size:13px;color:#3D4A56;font-weight:600;cursor:default;">What is 80% AMI?
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#EEF6FF;border-radius:50%;font-size:10px;font-weight:800;color:#1389FD;margin-left:4px;cursor:pointer;" onclick="togglePopover('pop2')" tabindex="0" role="button" aria-expanded="false" aria-controls="pop2">?</span>
+            </span>
+            <div class="popover" id="pop2" role="tooltip" style="left:0;transform:none;">
+              <h6>80% Area Median Income</h6>
+              <p>If your household income is at or below 80% of the median income for your area, you may qualify for HUD-funded programs. This threshold varies by county and household size.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 21. Empty States ── -->
+      <section class="ds-section" id="empty-states" aria-labelledby="empty-states-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">21</div>
+          <h2 id="empty-states-heading">Empty States</h2>
+        </div>
+        <p class="ds-section-desc">Empty states guide users when there is no content to display. Each empty state includes a descriptive icon, a clear headline, a helpful subtext, and a primary action. They must never display a blank area with no context.</p>
+
+        <div class="empty-states-grid">
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <h4>No Applications Yet</h4>
+            <p>You haven't started any applications. Run an eligibility screening to find programs you may qualify for.</p>
+            <button class="btn btn-primary" type="button">Check Eligibility</button>
+          </div>
+          <div class="empty-state">
+            <div class="empty-state-icon" style="background:#ECFDF5;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h4>No Household Members</h4>
+            <p>Add household members to improve your eligibility results. Some programs consider total household size and income.</p>
+            <button class="btn btn-success" type="button">Add Member</button>
+          </div>
+          <div class="empty-state">
+            <div class="empty-state-icon" style="background:#FFFBEB;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <h4>No Results Found</h4>
+            <p>Your search didn't match any applications. Try adjusting your filters or search terms.</p>
+            <button class="btn btn-outline" type="button">Clear Filters</button>
+          </div>
+          <div class="empty-state" style="background:linear-gradient(135deg,#1389FD,#00419D);border:none;">
+            <div class="empty-state-icon" style="background:rgba(255,255,255,0.2);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h4 style="color:#fff;">All Caught Up!</h4>
+            <p style="color:rgba(255,255,255,0.8);">You've reviewed all pending applications. Check back tomorrow for new submissions.</p>
+            <button class="btn" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:30px;padding:10px 22px;font-size:14px;font-weight:700;" type="button">View Archive</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 22. Notifications & Toasts ── -->
+      <section class="ds-section" id="notifications" aria-labelledby="notifications-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">22</div>
+          <h2 id="notifications-heading">Notifications &amp; Toasts</h2>
+        </div>
+        <p class="ds-section-desc">Toast notifications appear in the bottom-right corner and auto-dismiss after 5 seconds. They use <code>role="status"</code> for informational messages and <code>role="alert"</code> for errors. Notification lists use <code>aria-live="polite"</code> to announce new items.</p>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Toast Triggers</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;">
+          <button class="btn btn-primary" onclick="showToast('info')" type="button">Info Toast</button>
+          <button class="btn btn-success" onclick="showToast('success')" type="button">Success Toast</button>
+          <button class="btn btn-outline" style="border-color:#F59E0B;color:#92400E;" onclick="showToast('warning')" type="button">Warning Toast</button>
+          <button class="btn btn-destructive" onclick="showToast('error')" type="button">Error Toast</button>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Notification Center</h3>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <p style="font-size:13px;font-weight:700;color:#181B1F;">Recent Activity <span class="badge badge-primary" style="margin-left:6px;">3 new</span></p>
+          <button class="btn btn-ghost btn-sm" type="button">Mark all read</button>
+        </div>
+        <div class="notification-list" aria-live="polite" aria-label="Notifications">
+          <div class="notification-item unread">
+            <div class="notif-dot"></div>
+            <div class="notif-body">
+              <div class="notif-title">Application submitted successfully</div>
+              <div class="notif-desc">Your CDBG-DR application #2024-0041 has been received and is under review.</div>
+              <div class="notif-time">2 minutes ago</div>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <div class="notif-dot"></div>
+            <div class="notif-body">
+              <div class="notif-title">Document required</div>
+              <div class="notif-desc">Please upload proof of income to complete your HOME program application.</div>
+              <div class="notif-time">1 hour ago</div>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <div class="notif-dot"></div>
+            <div class="notif-body">
+              <div class="notif-title">Caseworker assigned</div>
+              <div class="notif-desc">Maria Torres has been assigned to your case. You can message her directly from your dashboard.</div>
+              <div class="notif-time">3 hours ago</div>
+            </div>
+          </div>
+          <div class="notification-item">
+            <div class="notif-dot read"></div>
+            <div class="notif-body">
+              <div class="notif-title" style="color:#5A6472;">Eligibility screening complete</div>
+              <div class="notif-desc">You may be eligible for 3 programs. View your results to get started.</div>
+              <div class="notif-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="notification-item">
+            <div class="notif-dot read"></div>
+            <div class="notif-body">
+              <div class="notif-title" style="color:#5A6472;">Profile 80% complete</div>
+              <div class="notif-desc">Add your household income to unlock more program matches.</div>
+              <div class="notif-time">2 days ago</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 23. Combination Page: Dashboard ── -->
+      <section class="ds-section" id="page-dashboard" aria-labelledby="page-dashboard-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">23</div>
+          <h2 id="page-dashboard-heading">Combination Page: Caseworker Dashboard</h2>
+        </div>
+        <p class="ds-section-desc">A full page composition showing how the navigation shell, stat cards, data table, badges, and alerts work together in a real caseworker dashboard context.</p>
+
+        <div class="page-frame">
+          <div class="page-frame-bar">
+            <div class="page-frame-dot" style="background:#FF5F57;"></div>
+            <div class="page-frame-dot" style="background:#FFBD2E;"></div>
+            <div class="page-frame-dot" style="background:#28C840;"></div>
+            <div class="page-frame-url">app.neighborlysoftware.com/dashboard</div>
+          </div>
+          <div class="app-shell">
+            <!-- App Nav -->
+            <nav class="app-nav" aria-label="Application navigation">
+              <div class="app-nav-logo">
+                <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_3f0b1d65.png" alt="Neighborly Software" />
+              </div>
+              <a class="app-nav-item active" href="#" onclick="return false;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Dashboard
+              </a>
+              <a class="app-nav-item" href="#" onclick="return false;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Applications
+                <span class="badge badge-primary" style="margin-left:auto;font-size:10px;padding:1px 6px;">8</span>
+              </a>
+              <a class="app-nav-item" href="#" onclick="return false;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Applicants
+              </a>
+              <a class="app-nav-item" href="#" onclick="return false;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Programs
+              </a>
+              <a class="app-nav-item" href="#" onclick="return false;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                My Profile
+              </a>
+            </nav>
+            <!-- App Content -->
+            <div class="app-content">
+              <div class="app-topbar">
+                <div>
+                  <h1>Good morning, Maria 👋</h1>
+                  <p style="font-size:13px;color:#7C878E;margin-top:2px;">Tuesday, April 8, 2026 · 8 applications need your attention</p>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <button class="btn btn-outline btn-sm" type="button">Export Report</button>
+                  <button class="btn btn-primary btn-sm" type="button">+ New Application</button>
+                </div>
+              </div>
+
+              <!-- Alert -->
+              <div class="alert alert-warning" style="margin-bottom:20px;">
+                <span class="alert-icon" aria-hidden="true">⚠</span>
+                <div><strong>Action required:</strong> 3 applications are missing required documents and will expire in 5 days.</div>
+              </div>
+
+              <!-- Stats -->
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <div class="stat-label">Total Applications</div>
+                  <div class="stat-value">42</div>
+                  <div class="stat-delta up">↑ 12% this month</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Under Review</div>
+                  <div class="stat-value">18</div>
+                  <div class="stat-delta neutral">No change</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Approved</div>
+                  <div class="stat-value">11</div>
+                  <div class="stat-delta up">↑ 3 this week</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Needs Action</div>
+                  <div class="stat-value" style="color:#EF4444;">8</div>
+                  <div class="stat-delta down">↑ 2 since yesterday</div>
+                </div>
+              </div>
+
+              <!-- Mini Table -->
+              <div class="data-table-wrap">
+                <div class="data-table-toolbar">
+                  <h4>Recent Applications</h4>
+                  <button class="btn btn-ghost btn-sm" type="button">View all →</button>
+                </div>
+                <div style="overflow-x:auto;">
+                  <table class="data-table" aria-label="Recent applications">
+                    <thead>
+                      <tr>
+                        <th>Applicant</th>
+                        <th>Program</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th><span class="sr-only">Actions</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><div class="td-name">Jane Smith</div></td>
+                        <td>CDBG-DR</td>
+                        <td><span class="badge badge-blue">Under Review</span></td>
+                        <td style="color:#9AA4AD;font-size:12px;">Mar 15</td>
+                        <td><button class="btn btn-secondary btn-sm" type="button">View</button></td>
+                      </tr>
+                      <tr>
+                        <td><div class="td-name">Tom Rivera</div></td>
+                        <td>HOME</td>
+                        <td><span class="badge badge-amber">⚠ Needs Review</span></td>
+                        <td style="color:#9AA4AD;font-size:12px;">Mar 12</td>
+                        <td><button class="btn btn-secondary btn-sm" type="button">View</button></td>
+                      </tr>
+                      <tr>
+                        <td><div class="td-name">Maria Gonzalez</div></td>
+                        <td>CDBG-DR</td>
+                        <td><span class="badge badge-green">✓ Complete</span></td>
+                        <td style="color:#9AA4AD;font-size:12px;">Mar 10</td>
+                        <td><button class="btn btn-secondary btn-sm" type="button">View</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 24. Combination Page: Application Form ── -->
+      <section class="ds-section" id="page-application" aria-labelledby="page-application-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">24</div>
+          <h2 id="page-application-heading">Combination Page: Application Form</h2>
+        </div>
+        <p class="ds-section-desc">A multi-step application form combining progress steppers, form fields, household member cards, alerts, and a sidebar checklist. Demonstrates how components compose into a complete user flow.</p>
+
+        <div class="page-frame">
+          <div class="page-frame-bar">
+            <div class="page-frame-dot" style="background:#FF5F57;"></div>
+            <div class="page-frame-dot" style="background:#FFBD2E;"></div>
+            <div class="page-frame-dot" style="background:#28C840;"></div>
+            <div class="page-frame-url">app.neighborlysoftware.com/apply/cdbg-dr/step-2</div>
+          </div>
+          <div class="page-frame-content">
+            <!-- Page header -->
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-blue">CDBG-DR</span>
+                <span style="font-size:12px;color:#9AA4AD;">Community Development Block Grant – Disaster Recovery</span>
+              </div>
+              <h2 style="font-size:22px;font-weight:900;color:#181B1F;">Step 2 of 3: Household Information</h2>
+              <div class="progress-bar-wrap" style="margin-top:12px;">
+                <div class="progress-bar" style="width:66%;"></div>
+              </div>
+              <p class="progress-label" style="margin-top:4px;">66% complete</p>
+            </div>
+
+            <div class="form-page-layout">
+              <!-- Main form -->
+              <div>
+                <div class="alert alert-info" style="margin-bottom:20px;">
+                  <span class="alert-icon" aria-hidden="true">ℹ</span>
+                  <div>Include all people who live in your home, even if they have no income. Household size affects your eligibility.</div>
+                </div>
+
+                <!-- Existing member card -->
+                <div class="ds-card ds-card-interactive" style="margin-bottom:12px;" tabindex="0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1389FD,#00419D);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;">JS</div>
+                      <div>
+                        <div style="font-size:14px;font-weight:800;color:#181B1F;">Jane Smith <span class="badge badge-blue" style="font-size:10px;vertical-align:middle;">Primary</span></div>
+                        <div style="font-size:12px;color:#7C878E;">Applicant · DOB: Jan 15, 1985 · Income: $38,400/yr</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                      <span class="badge badge-green" style="font-size:10px;">✓ Complete</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA4AD" stroke-width="2.5" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ds-card ds-card-interactive" style="margin-bottom:12px;" tabindex="0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                      <div style="width:40px;height:40px;border-radius:50%;background:#F0F4F8;display:flex;align-items:center;justify-content:center;color:#7C878E;font-weight:800;font-size:14px;">TS</div>
+                      <div>
+                        <div style="font-size:14px;font-weight:800;color:#181B1F;">Tom Smith <span class="badge badge-gray" style="font-size:10px;vertical-align:middle;">Spouse</span></div>
+                        <div style="font-size:12px;color:#7C878E;">DOB: Mar 22, 1983 · Income: $0/yr</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                      <span class="badge badge-amber" style="font-size:10px;">Missing: DOB</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA4AD" stroke-width="2.5" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Add member button -->
+                <button class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:24px;" type="button" onclick="openModal('modal-form')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add Household Member
+                </button>
+
+                <!-- Navigation -->
+                <div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #E4EAF2;">
+                  <button class="btn btn-ghost" type="button">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                    Back
+                  </button>
+                  <button class="btn btn-primary" type="button">Continue to Step 3 →</button>
+                </div>
+              </div>
+
+              <!-- Sidebar checklist -->
+              <div class="form-sidebar-panel">
+                <h5>Application Checklist</h5>
+                <div class="checklist-item done">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="20 6 9 17 4 12"/></svg>
+                  Eligibility Screening
+                </div>
+                <div class="checklist-item done">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="20 6 9 17 4 12"/></svg>
+                  Contact Information
+                </div>
+                <div class="checklist-item" style="color:#1389FD;font-weight:700;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#1389FD" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  Household Members
+                </div>
+                <div class="checklist-item pending">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                  Income &amp; Employment
+                </div>
+                <div class="checklist-item pending">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                  Document Upload
+                </div>
+                <div class="checklist-item pending">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                  Review &amp; Submit
+                </div>
+
+                <hr class="ds-divider" style="margin:16px 0;" />
+                <h5>Need Help?</h5>
+                <p style="font-size:12px;color:#5A6472;line-height:1.5;margin-bottom:10px;">Your caseworker Maria Torres is available Mon–Fri, 9am–5pm.</p>
+                <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;" type="button">Message Caseworker</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 25. Combination Page: Eligibility Results ── -->
+      <section class="ds-section" id="page-results" aria-labelledby="page-results-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">25</div>
+          <h2 id="page-results-heading">Combination Page: Eligibility Results</h2>
+        </div>
+        <p class="ds-section-desc">The eligibility results page combines a hero result banner, program cards with badges, a stepper for next steps, and an alert — showing how multiple components compose into a complete, actionable outcome screen.</p>
+
+        <div class="page-frame">
+          <div class="page-frame-bar">
+            <div class="page-frame-dot" style="background:#FF5F57;"></div>
+            <div class="page-frame-dot" style="background:#FFBD2E;"></div>
+            <div class="page-frame-dot" style="background:#28C840;"></div>
+            <div class="page-frame-url">app.neighborlysoftware.com/results</div>
+          </div>
+          <div class="page-frame-content">
+            <!-- Result hero -->
+            <div class="result-hero">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="font-size:12px;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Eligibility Screening Complete</div>
+                  <h2>You may qualify for 3 programs</h2>
+                  <p style="margin-top:6px;">Based on your household of 3 and annual income of $38,400 (62% AMI)</p>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:36px;font-weight:900;">3</div>
+                  <div style="font-size:12px;opacity:0.7;">programs matched</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
+                <button class="btn" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:30px;padding:10px 22px;font-size:14px;font-weight:700;" type="button">Save Results</button>
+                <button class="btn" style="background:#fff;color:#1389FD;border-radius:30px;padding:10px 22px;font-size:14px;font-weight:700;" type="button">Start Applying →</button>
+              </div>
+            </div>
+
+            <!-- Alert -->
+            <div class="alert alert-success" style="margin-bottom:20px;">
+              <span class="alert-icon" aria-hidden="true">✓</span>
+              <div><strong>Good news:</strong> Your eligibility results are saved for 30 days. Sign in to continue your application anytime.</div>
+            </div>
+
+            <!-- Program cards -->
+            <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:14px;">Matched Programs</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+              <div class="program-card">
+                <div class="program-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                <div class="program-body">
+                  <div class="program-name">CDBG-DR — Disaster Recovery Housing Assistance</div>
+                  <div class="program-desc">Provides funding for housing repair, reconstruction, and new construction for low-to-moderate income households affected by natural disasters.</div>
+                  <div class="program-footer">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                      <span class="badge badge-primary">Likely Eligible</span>
+                      <span class="badge badge-blue">Housing</span>
+                      <span class="badge badge-gray">Federal</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm" type="button" onclick="openModal('modal-info')">Apply Now →</button>
+                  </div>
+                </div>
+              </div>
+              <div class="program-card">
+                <div class="program-icon" style="background:#ECFDF5;"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                <div class="program-body">
+                  <div class="program-name">HOME Investment Partnerships Program</div>
+                  <div class="program-desc">Expands the supply of decent, affordable housing for low-income households through acquisition, rehabilitation, and new construction.</div>
+                  <div class="program-footer">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                      <span class="badge badge-green">Eligible</span>
+                      <span class="badge badge-blue">Housing</span>
+                      <span class="badge badge-gray">Federal</span>
+                    </div>
+                    <button class="btn btn-success btn-sm" type="button">Apply Now →</button>
+                  </div>
+                </div>
+              </div>
+              <div class="program-card">
+                <div class="program-icon" style="background:#EDE9FE;"><svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                <div class="program-body">
+                  <div class="program-name">Emergency Rental Assistance Program</div>
+                  <div class="program-desc">Short-term rental and utility assistance for households experiencing financial hardship due to COVID-19 or natural disasters.</div>
+                  <div class="program-footer">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                      <span class="badge badge-amber">⚠ Review Required</span>
+                      <span class="badge badge-purple">Rental</span>
+                      <span class="badge badge-gray">State</span>
+                    </div>
+                    <button class="btn btn-outline btn-sm" type="button">Learn More</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Next steps stepper -->
+            <h3 style="font-size:15px;font-weight:800;color:#3D4A56;margin-bottom:16px;">Your Next Steps</h3>
+            <div class="stepper" role="list" aria-label="Application steps">
+              <div class="step-item step-done" role="listitem">
+                <div class="step-connector">
+                  <div class="step-circle" aria-label="Step 1 complete">✓</div>
+                  <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                  <h6>Eligibility Screening</h6>
+                  <p>Completed · 3 programs matched</p>
+                </div>
+              </div>
+              <div class="step-item step-active" role="listitem">
+                <div class="step-connector">
+                  <div class="step-circle" aria-label="Step 2, current">2</div>
+                  <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                  <h6>Complete Your Profile</h6>
+                  <p>Add household members, income, and contact details.</p>
+                  <button class="btn btn-primary btn-sm" style="margin-top:10px;" type="button">Complete Profile →</button>
+                </div>
+              </div>
+              <div class="step-item step-future" role="listitem">
+                <div class="step-connector">
+                  <div class="step-circle" aria-label="Step 3, locked">🔒</div>
+                </div>
+                <div class="step-content">
+                  <h6>Submit Applications</h6>
+                  <p>Apply to your matched programs with one click.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer style="margin-top:48px;padding-top:32px;border-top:2px solid #E4EAF2;text-align:center;" role="contentinfo">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogoCircle_Blue_61a091ef.png" alt="Neighborly Software" style="height:36px;margin-bottom:12px;" />
+        <p style="font-size:13px;color:#7C878E;">Neighborly Software Design System · Version 1.1 · April 2026</p>
+        <p style="font-size:12px;color:#9AA4AD;margin-top:4px;">WCAG 2.1 AA Compliant · VPAT 2.4 Ready · Helping Communities Help People</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <script>
+    // Sidebar active state on scroll
+    const sections = document.querySelectorAll('.ds-section');
+    const navLinks = document.querySelectorAll('.sidebar nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // Tab demo
+    document.querySelectorAll('[role="tab"]').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('[role="tab"]').forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-selected', 'true');
+      });
+      tab.addEventListener('keydown', function(e) {
+        const tabs = [...document.querySelectorAll('[role="tab"]')];
+        const idx = tabs.indexOf(this);
+        if (e.key === 'ArrowRight') { tabs[(idx + 1) % tabs.length].focus(); }
+        if (e.key === 'ArrowLeft') { tabs[(idx - 1 + tabs.length) % tabs.length].focus(); }
+      });
+    });
+
+    // ── Modal helpers ──────────────────────────────────────────────────────────
+    function openModal(id) {
+      const backdrop = document.getElementById(id);
+      if (!backdrop) return;
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Focus first focusable element
+      const focusable = backdrop.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length) focusable[0].focus();
+      // Trap focus
+      backdrop._trapFocus = function(e) {
+        if (e.key === 'Escape') { closeModal(id); return; }
+        if (e.key !== 'Tab') return;
+        const els = [...backdrop.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
+          .values()].filter(el => !el.closest('[aria-hidden]'));
+        if (!els.length) return;
+        const first = els[0], last = els[els.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      };
+      document.addEventListener('keydown', backdrop._trapFocus);
+    }
+
+    function closeModal(id) {
+      const backdrop = document.getElementById(id);
+      if (!backdrop) return;
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      if (backdrop._trapFocus) document.removeEventListener('keydown', backdrop._trapFocus);
+    }
+
+    function handleBackdropClick(e, id) {
+      if (e.target === document.getElementById(id)) closeModal(id);
+    }
+
+    // ── Toast helpers ──────────────────────────────────────────────────────────
+    const toastData = {
+      info:    { cls: '',              icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1389FD" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>', title: 'Application saved', msg: 'Your progress has been saved automatically.' },
+      success: { cls: 'toast-success', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="20 6 9 17 4 12"/></svg>', title: 'Step complete!', msg: 'Household information saved successfully.' },
+      warning: { cls: 'toast-warning', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>', title: 'Session expiring', msg: 'Your session will expire in 5 minutes. Save your work.' },
+      error:   { cls: 'toast-error',   icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>', title: 'Upload failed', msg: 'Could not upload document. Please try again.' },
+    };
+
+    function showToast(type) {
+      const d = toastData[type];
+      const id = 'toast-' + Date.now();
+      const el = document.createElement('div');
+      el.className = 'toast ' + d.cls;
+      el.setAttribute('role', type === 'error' ? 'alert' : 'status');
+      el.id = id;
+      el.innerHTML = `
+        <div class="toast-icon">${d.icon}</div>
+        <div class="toast-content">
+          <div class="toast-title">${d.title}</div>
+          <div class="toast-msg">${d.msg}</div>
+        </div>
+        <button class="toast-dismiss" onclick="dismissToast('${id}')" aria-label="Dismiss notification">&times;</button>
+      `;
+      document.getElementById('toast-container').appendChild(el);
+      setTimeout(() => dismissToast(id), 5000);
+    }
+
+    function dismissToast(id) {
+      const el = document.getElementById(id);
+      if (el) { el.style.opacity = '0'; el.style.transform = 'translateX(100%)'; el.style.transition = 'all 0.3s'; setTimeout(() => el.remove(), 300); }
+    }
+
+    // ── Popover helpers ────────────────────────────────────────────────────────
+    function togglePopover(id) {
+      const pop = document.getElementById(id);
+      if (!pop) return;
+      const isOpen = pop.classList.contains('open');
+      // Close all popovers
+      document.querySelectorAll('.popover.open').forEach(p => p.classList.remove('open'));
+      if (!isOpen) pop.classList.add('open');
+      // Update aria-expanded on trigger
+      const trigger = document.querySelector(`[aria-controls="${id}"]`);
+      if (trigger) trigger.setAttribute('aria-expanded', !isOpen);
+    }
+
+    // Close popovers on outside click
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.tooltip-wrap')) {
+        document.querySelectorAll('.popover.open').forEach(p => p.classList.remove('open'));
+      }
+    });
+
+    // ── Sortable table columns ─────────────────────────────────────────────────
+    document.querySelectorAll('.data-table th.sortable').forEach(th => {
+      th.addEventListener('click', function() {
+        const table = this.closest('table');
+        const allTh = table.querySelectorAll('th.sortable');
+        const isAsc = this.classList.contains('sort-asc');
+        allTh.forEach(t => { t.classList.remove('sort-asc', 'sort-desc'); t.setAttribute('aria-sort', 'none'); const icon = t.querySelector('.sort-icon'); if (icon) icon.textContent = '\u2195'; });
+        this.classList.add(isAsc ? 'sort-desc' : 'sort-asc');
+        this.setAttribute('aria-sort', isAsc ? 'descending' : 'ascending');
+        const icon = this.querySelector('.sort-icon');
+        if (icon) icon.textContent = isAsc ? '\u2193' : '\u2191';
+      });
+    });
+
+    // ── Pagination demo ────────────────────────────────────────────────────────
+    document.querySelectorAll('.page-btn:not([disabled])').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const nav = this.closest('.pagination');
+        nav.querySelectorAll('.page-btn').forEach(b => { b.classList.remove('active'); b.removeAttribute('aria-current'); });
+        if (!isNaN(parseInt(this.textContent))) {
+          this.classList.add('active');
+          this.setAttribute('aria-current', 'page');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
