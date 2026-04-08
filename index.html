@@ -598,6 +598,194 @@
     .program-desc { font-size: 12px; color: #5A6472; line-height: 1.5; }
     .program-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
 
+    /* ── Loading / Processing Button State ─────────────────────────────── */
+    .btn-loading {
+      position: relative; pointer-events: none; opacity: 0.8;
+    }
+    .btn-loading .btn-text { visibility: hidden; }
+    .btn-loading::after {
+      content: ''; position: absolute; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+      border-radius: 50%; animation: btn-spin 0.6s linear infinite;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+    .btn-secondary.btn-loading::after, .btn-outline.btn-loading::after, .btn-ghost.btn-loading::after {
+      border-color: rgba(19,137,253,0.3); border-top-color: #1389FD;
+    }
+    @keyframes btn-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .btn-loading::after { animation: none; border: 2px solid currentColor; opacity: 0.5; }
+    }
+
+    /* ── Skeleton Screens ────────────────────────────────────────────────── */
+    .skeleton {
+      background: linear-gradient(90deg, #E4EAF2 25%, #F0F4F8 50%, #E4EAF2 75%);
+      background-size: 200% 100%; border-radius: 6px;
+      animation: skeleton-shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes skeleton-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton { animation: none; background: #E4EAF2; }
+    }
+    .skeleton-text { height: 14px; border-radius: 4px; }
+    .skeleton-text.lg { height: 20px; }
+    .skeleton-text.sm { height: 11px; }
+    .skeleton-avatar { border-radius: 50%; }
+    .skeleton-card {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 16px;
+      padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .skeleton-demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+    /* ── Responsive Data Table ───────────────────────────────────────────── */
+    .table-responsive-note {
+      background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 10px;
+      padding: 12px 16px; font-size: 13px; color: #92400E; margin-bottom: 16px;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    @media (max-width: 640px) {
+      .data-table thead { display: none; }
+      .data-table tbody tr {
+        display: block; background: #fff; border: 1px solid #E4EAF2;
+        border-radius: 12px; margin-bottom: 12px; padding: 12px 16px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      }
+      .data-table tbody td {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 6px 0; border-bottom: 1px solid #F0F4F8; font-size: 13px;
+      }
+      .data-table tbody td:last-child { border-bottom: none; }
+      .data-table tbody td::before {
+        content: attr(data-label); font-weight: 700; color: #7C878E;
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+        flex-shrink: 0; margin-right: 12px;
+      }
+    }
+    .table-mobile-demo {
+      border: 1px solid #E4EAF2; border-radius: 14px; overflow: hidden;
+      max-width: 360px; margin: 0 auto;
+    }
+    .table-mobile-row {
+      background: #fff; padding: 14px 16px;
+      border-bottom: 1px solid #F0F4F8;
+    }
+    .table-mobile-row:last-child { border-bottom: none; }
+    .table-mobile-field {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; font-size: 13px;
+    }
+    .table-mobile-label {
+      font-size: 11px; font-weight: 700; color: #7C878E;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+
+    /* ── Dark Mode Token Map ─────────────────────────────────────────────── */
+    .dark-mode-preview {
+      background: #0F172A; border-radius: 16px; padding: 24px;
+      border: 1px solid #1E293B;
+    }
+    .dark-mode-preview .dm-surface {
+      background: #1E293B; border: 1px solid #334155; border-radius: 12px;
+      padding: 16px; margin-bottom: 12px;
+    }
+    .dark-mode-preview .dm-text-primary { color: #F1F5F9; }
+    .dark-mode-preview .dm-text-secondary { color: #94A3B8; }
+    .dark-mode-preview .dm-text-muted { color: #64748B; }
+    .dark-mode-preview .dm-badge {
+      background: rgba(19,137,253,0.2); color: #60A5FA;
+      border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700;
+    }
+    .dark-mode-preview .dm-input {
+      background: #0F172A; border: 1.5px solid #334155; border-radius: 10px;
+      padding: 8px 12px; color: #F1F5F9; font-size: 13px; width: 100%;
+      font-family: inherit;
+    }
+    .dark-mode-preview .dm-input:focus { border-color: #1389FD; outline: none; }
+    .dark-token-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dark-token-row {
+      display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+      background: #1E293B; border-radius: 8px;
+    }
+    .dark-token-swatch { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+    .dark-token-name { font-size: 11px; font-weight: 700; color: #94A3B8; font-family: monospace; }
+    .dark-token-val { font-size: 11px; color: #64748B; font-family: monospace; }
+
+    /* ── Brand Voice Expanded ────────────────────────────────────────────── */
+    .voice-scenario {
+      background: #fff; border: 1px solid #E4EAF2; border-radius: 14px;
+      overflow: hidden; margin-bottom: 16px;
+    }
+    .voice-scenario-header {
+      background: #F5F8FE; padding: 10px 16px; font-size: 11px; font-weight: 800;
+      color: #7C878E; text-transform: uppercase; letter-spacing: 0.08em;
+      border-bottom: 1px solid #E4EAF2;
+    }
+    .voice-cols { display: grid; grid-template-columns: 1fr 1fr; }
+    .voice-col { padding: 16px; }
+    .voice-col:first-child { border-right: 1px solid #E4EAF2; }
+    .voice-col-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .voice-col-label.do { color: #065F46; }
+    .voice-col-label.dont { color: #991B1B; }
+    .voice-example {
+      font-size: 13px; line-height: 1.6; padding: 10px 12px; border-radius: 8px;
+    }
+    .voice-example.do { background: #ECFDF5; color: #065F46; }
+    .voice-example.dont { background: #FEF2F2; color: #991B1B; }
+    .voice-reason { font-size: 11px; color: #7C878E; margin-top: 6px; line-height: 1.5; }
+
+    /* ── Governance ──────────────────────────────────────────────────────── */
+    .governance-flow {
+      display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .gov-step {
+      background: #fff; border: 1.5px solid #E4EAF2; border-radius: 12px;
+      padding: 14px 18px; text-align: center; flex: 1; min-width: 120px;
+    }
+    .gov-step-num {
+      width: 28px; height: 28px; border-radius: 50%; background: #1389FD;
+      color: #fff; font-size: 12px; font-weight: 800; display: flex;
+      align-items: center; justify-content: center; margin: 0 auto 8px;
+    }
+    .gov-step-title { font-size: 12px; font-weight: 800; color: #181B1F; }
+    .gov-step-desc { font-size: 11px; color: #7C878E; margin-top: 3px; line-height: 1.4; }
+    .gov-arrow {
+      font-size: 18px; color: #C8D0D8; padding: 0 6px; flex-shrink: 0;
+    }
+    @media (max-width: 700px) { .gov-arrow { display: none; } .gov-step { min-width: 100%; } }
+
+    /* ── Readability / Line Length ───────────────────────────────────────── */
+    .measure-demo {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .measure-example {
+      padding: 16px 20px; border-radius: 12px; border: 1.5px solid #E4EAF2;
+      background: #fff; position: relative;
+    }
+    .measure-label {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 8px;
+    }
+    .measure-label.good { color: #065F46; }
+    .measure-label.bad { color: #991B1B; }
+    .measure-label.neutral { color: #7C878E; }
+    .measure-text { font-size: 14px; line-height: 1.65; color: #181B1F; }
+    .measure-text.constrained { max-width: 65ch; }
+    .measure-ruler {
+      display: flex; align-items: center; gap: 8px; margin-top: 10px;
+      font-size: 11px; color: #9AA4AD;
+    }
+    .measure-ruler-line {
+      height: 2px; background: linear-gradient(90deg, #1389FD, #4EABFF);
+      border-radius: 2px;
+    }
+
     /* ── Print ────────────────────────────────────────────────────────── */── */
     @media print {
       .sidebar { display: none; }
@@ -660,6 +848,18 @@
         <a href="#page-application">Application Form</a>
         <a href="#page-results">Eligibility Results</a>
       </nav>
+      <div class="sidebar-section" style="margin-top:12px">Content &amp; Voice</div>
+      <nav aria-label="Content and Voice">
+        <a href="#brand-voice-expanded">Brand Voice Guide</a>
+        <a href="#readability">Readability &amp; Measure</a>
+        <a href="#dark-mode">Dark Mode Tokens</a>
+      </nav>
+      <div class="sidebar-section" style="margin-top:12px">Developer Handoff</div>
+      <nav aria-label="Developer Handoff">
+        <a href="#loading-states">Loading &amp; Skeleton</a>
+        <a href="#responsive-tables">Responsive Tables</a>
+        <a href="#governance">Governance</a>
+      </nav>
     </aside>
 
     <!-- ── Main ── -->
@@ -670,7 +870,7 @@
         <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogo_Blue_3f0b1d65.png" alt="Neighborly Software" />
         <h1>Design System</h1>
         <p>The single source of truth for all design and development decisions at Neighborly Software. Every token, component, and pattern documented here is WCAG 2.1 AA compliant and VPAT-ready.</p>
-        <div class="version-badge">Version 1.1 · April 2026 · Patterns &amp; Combination Pages</div>
+        <div class="version-badge">Version 1.2 · April 2026 · Complete System</div>
       </div>
 
       <!-- ── 1. Brand Identity ── -->
@@ -2662,10 +2862,471 @@
         </div>
       </section>
 
+      <!-- ── 26. Brand Voice Guide ── -->
+      <section class="ds-section" id="brand-voice-expanded" aria-labelledby="bv-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">26</div>
+          <h2 id="bv-heading">Brand Voice Guide</h2>
+        </div>
+        <p class="ds-section-desc">
+          Neighborly's voice is <strong>warm, direct, and empowering</strong>. Every word in the product should reduce anxiety, not add to it. The people using our software are often navigating difficult circumstances — our language should feel like a trusted neighbor, not a government form. The following Do/Don't examples cover the four highest-impact moments in the product.
+        </p>
+
+        <!-- Error Messages -->
+        <div class="voice-scenario">
+          <div class="voice-scenario-header">Scenario 1 — Error Messages</div>
+          <div class="voice-cols">
+            <div class="voice-col">
+              <div class="voice-col-label do">✓ Do</div>
+              <div class="voice-example do">"We couldn't save your progress. Please check your connection and try again."</div>
+              <p class="voice-reason">Explains what happened, who's responsible (not the user), and what to do next.</p>
+            </div>
+            <div class="voice-col">
+              <div class="voice-col-label dont">✗ Don't</div>
+              <div class="voice-example dont">"Error 500: Internal server error. Request failed."</div>
+              <p class="voice-reason">Technical jargon creates anxiety and gives the user no path forward.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty States -->
+        <div class="voice-scenario">
+          <div class="voice-scenario-header">Scenario 2 — Empty States</div>
+          <div class="voice-cols">
+            <div class="voice-col">
+              <div class="voice-col-label do">✓ Do</div>
+              <div class="voice-example do">"No applications yet. When you start one, it'll show up here so you can pick up right where you left off."</div>
+              <p class="voice-reason">Reassures the user, explains what will happen, and reduces the feeling of a dead end.</p>
+            </div>
+            <div class="voice-col">
+              <div class="voice-col-label dont">✗ Don't</div>
+              <div class="voice-example dont">"No records found."</div>
+              <p class="voice-reason">Cold and clinical. Gives no context and no next step.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Confirmations -->
+        <div class="voice-scenario">
+          <div class="voice-scenario-header">Scenario 3 — Success Confirmations</div>
+          <div class="voice-cols">
+            <div class="voice-col">
+              <div class="voice-col-label do">✓ Do</div>
+              <div class="voice-example do">"You're all set! Your application has been submitted. A caseworker will be in touch within 5–7 business days."</div>
+              <p class="voice-reason">Celebrates the moment, confirms what happened, and sets clear expectations.</p>
+            </div>
+            <div class="voice-col">
+              <div class="voice-col-label dont">✗ Don't</div>
+              <div class="voice-example dont">"Submission successful. Application ID: #2024-0041."</div>
+              <p class="voice-reason">Transactional and cold. Misses the opportunity to build trust and reduce post-submission anxiety.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eligibility Results -->
+        <div class="voice-scenario">
+          <div class="voice-scenario-header">Scenario 4 — Eligibility Results (Negative)</div>
+          <div class="voice-cols">
+            <div class="voice-col">
+              <div class="voice-col-label do">✓ Do</div>
+              <div class="voice-example do">"Based on what you shared, you may not qualify for these programs right now — but circumstances change. We'll keep an eye out and let you know if new options open up."</div>
+              <p class="voice-reason">Softens the blow, acknowledges impermanence, and keeps the door open.</p>
+            </div>
+            <div class="voice-col">
+              <div class="voice-col-label dont">✗ Don't</div>
+              <div class="voice-example dont">"You are ineligible for all programs."</div>
+              <p class="voice-reason">Blunt and final. Leaves the user feeling rejected with no hope or next step.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;">
+          <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Voice Principles at a Glance</h3>
+          <div class="table-wrap">
+            <table class="a11y-table" aria-label="Voice principles">
+              <thead><tr><th>Principle</th><th>What it means</th><th>Test question</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Warm</strong></td><td>Speak like a trusted neighbor, not a bureaucrat</td><td>Would a kind neighbor say this?</td></tr>
+                <tr><td><strong>Direct</strong></td><td>Say what you mean in as few words as possible</td><td>Can any word be removed without losing meaning?</td></tr>
+                <tr><td><strong>Empowering</strong></td><td>Always give the user a next step or a path forward</td><td>Does this copy tell the user what to do next?</td></tr>
+                <tr><td><strong>Honest</strong></td><td>Never overpromise; set accurate expectations</td><td>Is this statement 100% true?</td></tr>
+                <tr><td><strong>Inclusive</strong></td><td>Avoid jargon, acronyms, and legal language</td><td>Would a 6th-grader understand this?</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 27. Readability & Measure ── -->
+      <section class="ds-section" id="readability" aria-labelledby="readability-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">27</div>
+          <h2 id="readability-heading">Readability &amp; Measure</h2>
+        </div>
+        <p class="ds-section-desc">
+          <strong>Measure</strong> is the typographic term for line length. Research consistently shows that lines between 45 and 75 characters produce the best reading speed and comprehension. Neighborly targets <strong>60–75 characters</strong> for body text. This is enforced via <code>max-width: 65ch</code> on all long-form text containers.
+        </p>
+
+        <div class="measure-demo">
+          <div class="measure-example">
+            <div class="measure-label good">✓ Optimal — 65ch max-width</div>
+            <p class="measure-text constrained">Answer a few questions to find out which programs your household may qualify for. Your information is kept private and secure. No account is required to get started.</p>
+            <div class="measure-ruler">
+              <div class="measure-ruler-line" style="width:65ch;max-width:100%;"></div>
+              <span>65 characters</span>
+            </div>
+          </div>
+          <div class="measure-example">
+            <div class="measure-label bad">✗ Too wide — no max-width constraint</div>
+            <p class="measure-text">Answer a few questions to find out which programs your household may qualify for. Your information is kept private and secure. No account is required to get started. The eye has to travel too far to return to the next line, causing fatigue and reducing comprehension for users with dyslexia or low literacy.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;">
+          <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Readability Rules</h3>
+          <div class="table-wrap">
+            <table class="a11y-table" aria-label="Readability rules">
+              <thead><tr><th>Rule</th><th>Value</th><th>CSS</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr><td>Body text measure</td><td>60–75 characters</td><td><code>max-width: 65ch</code></td><td>Optimal reading speed and comprehension</td></tr>
+                <tr><td>Heading measure</td><td>30–45 characters</td><td><code>max-width: 40ch</code></td><td>Headings scan better when short</td></tr>
+                <tr><td>Line height (body)</td><td>1.6–1.65×</td><td><code>line-height: 1.65</code></td><td>Prevents lines from feeling cramped</td></tr>
+                <tr><td>Paragraph spacing</td><td>≥2× font size</td><td><code>margin-bottom: 1.5em</code></td><td>WCAG 1.4.12 Text Spacing</td></tr>
+                <tr><td>Justified text</td><td>Never</td><td><code>text-align: left</code></td><td>Uneven word spacing harms readability</td></tr>
+                <tr><td>All-caps body</td><td>Never</td><td>—</td><td>Reduces reading speed by ~13%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 28. Dark Mode Token Map ── -->
+      <section class="ds-section" id="dark-mode" aria-labelledby="dark-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">28</div>
+          <h2 id="dark-heading">Dark Mode Token Map</h2>
+        </div>
+        <p class="ds-section-desc">
+          Dark mode is not yet shipped but the token mapping is defined here to prevent a painful retrofit. When dark mode is implemented, all color references in components should use the CSS custom properties below — never hard-coded hex values. The <code>@media (prefers-color-scheme: dark)</code> block overrides the root tokens automatically.
+        </p>
+
+        <div class="table-wrap" style="margin-bottom:28px;">
+          <table class="a11y-table" aria-label="Dark mode token mapping">
+            <thead><tr><th>Token</th><th>Light Mode</th><th>Dark Mode</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td><code>--color-bg</code></td><td>#F5F8FE</td><td>#0F172A</td><td>Page background</td></tr>
+              <tr><td><code>--color-surface</code></td><td>#FFFFFF</td><td>#1E293B</td><td>Cards, modals, inputs</td></tr>
+              <tr><td><code>--color-surface-2</code></td><td>#F0F4F8</td><td>#334155</td><td>Hover states, table rows</td></tr>
+              <tr><td><code>--color-border</code></td><td>#E4EAF2</td><td>#334155</td><td>All borders and dividers</td></tr>
+              <tr><td><code>--color-text-primary</code></td><td>#181B1F</td><td>#F1F5F9</td><td>Headings, body text</td></tr>
+              <tr><td><code>--color-text-secondary</code></td><td>#5A6472</td><td>#94A3B8</td><td>Descriptions, captions</td></tr>
+              <tr><td><code>--color-text-muted</code></td><td>#7C878E</td><td>#64748B</td><td>Placeholders, metadata</td></tr>
+              <tr><td><code>--color-primary</code></td><td>#1389FD</td><td>#60A5FA</td><td>Interactive elements, links</td></tr>
+              <tr><td><code>--color-primary-bg</code></td><td>#EEF6FF</td><td>rgba(96,165,250,0.15)</td><td>Secondary button, active nav</td></tr>
+              <tr><td><code>--color-success</code></td><td>#10B981</td><td>#34D399</td><td>Success states</td></tr>
+              <tr><td><code>--color-warning</code></td><td>#F59E0B</td><td>#FBBF24</td><td>Warning states</td></tr>
+              <tr><td><code>--color-error</code></td><td>#EF4444</td><td>#F87171</td><td>Error states</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;">Dark Mode Preview</h3>
+        <div class="dark-mode-preview">
+          <div class="dm-surface">
+            <p class="dm-text-muted" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Application Status</p>
+            <p class="dm-text-primary" style="font-size:18px;font-weight:800;margin-bottom:4px;">Jane Smith</p>
+            <p class="dm-text-secondary" style="font-size:13px;margin-bottom:12px;">CDBG-DR · App #2024-0041 · Submitted Mar 15</p>
+            <span class="dm-badge">Under Review</span>
+          </div>
+          <div class="dm-surface">
+            <p class="dm-text-muted" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Search Programs</p>
+            <input class="dm-input" type="search" placeholder="Search by program name or ZIP…" aria-label="Search programs" />
+          </div>
+          <div class="dark-token-grid" style="margin-top:4px;">
+            <div class="dark-token-row"><div class="dark-token-swatch" style="background:#0F172A;"></div><div><div class="dark-token-name">--color-bg</div><div class="dark-token-val">#0F172A</div></div></div>
+            <div class="dark-token-row"><div class="dark-token-swatch" style="background:#1E293B;"></div><div><div class="dark-token-name">--color-surface</div><div class="dark-token-val">#1E293B</div></div></div>
+            <div class="dark-token-row"><div class="dark-token-swatch" style="background:#F1F5F9;"></div><div><div class="dark-token-name">--color-text-primary</div><div class="dark-token-val">#F1F5F9</div></div></div>
+            <div class="dark-token-row"><div class="dark-token-swatch" style="background:#60A5FA;"></div><div><div class="dark-token-name">--color-primary</div><div class="dark-token-val">#60A5FA</div></div></div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="c-comment">/* Light mode defaults (applied globally) */</span>
+<span class="c-key">:root</span> {
+  <span class="c-key">--color-bg</span>: <span class="c-str">#F5F8FE</span>;
+  <span class="c-key">--color-surface</span>: <span class="c-str">#FFFFFF</span>;
+  <span class="c-key">--color-border</span>: <span class="c-str">#E4EAF2</span>;
+  <span class="c-key">--color-text-primary</span>: <span class="c-str">#181B1F</span>;
+  <span class="c-key">--color-primary</span>: <span class="c-str">#1389FD</span>;
+}
+
+<span class="c-comment">/* Dark mode overrides */</span>
+<span class="c-key">@media</span> (prefers-color-scheme: dark) {
+  <span class="c-key">:root</span> {
+    <span class="c-key">--color-bg</span>: <span class="c-str">#0F172A</span>;
+    <span class="c-key">--color-surface</span>: <span class="c-str">#1E293B</span>;
+    <span class="c-key">--color-border</span>: <span class="c-str">#334155</span>;
+    <span class="c-key">--color-text-primary</span>: <span class="c-str">#F1F5F9</span>;
+    <span class="c-key">--color-primary</span>: <span class="c-str">#60A5FA</span>;
+  }
+}
+        </div>
+      </section>
+
+      <!-- ── 29. Loading States & Skeleton Screens ── -->
+      <section class="ds-section" id="loading-states" aria-labelledby="loading-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">29</div>
+          <h2 id="loading-heading">Loading States &amp; Skeleton Screens</h2>
+        </div>
+        <p class="ds-section-desc">
+          Loading states prevent double-submissions and communicate system activity. Skeleton screens replace empty containers while data loads, reducing perceived wait time by up to 40% compared to spinners alone. Every async action in the product must use one of these patterns.
+        </p>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;">Button Loading States</h3>
+        <div class="component-card" style="margin-bottom:24px;">
+          <h4>States</h4>
+          <div class="btn-demo">
+            <button class="btn btn-primary" type="button">Default</button>
+            <button class="btn btn-primary btn-loading" type="button" aria-label="Submitting application…" aria-busy="true"><span class="btn-text">Submitting…</span></button>
+            <button class="btn btn-secondary btn-loading" type="button" aria-label="Saving…" aria-busy="true"><span class="btn-text">Saving…</span></button>
+            <button class="btn btn-outline btn-loading" type="button" aria-label="Loading…" aria-busy="true"><span class="btn-text">Loading…</span></button>
+          </div>
+          <p style="font-size:12px;color:#7C878E;margin-top:12px;">Add <code>.btn-loading</code> + <code>aria-busy="true"</code> on click. Remove both when the async action resolves.</p>
+        </div>
+
+        <div class="code-block" style="margin-bottom:28px;">
+<span class="c-comment">// Toggle loading state on form submit</span>
+<span class="c-key">submitBtn</span>.addEventListener(<span class="c-str">'click'</span>, <span class="c-key">async</span> () =&gt; {
+  submitBtn.classList.add(<span class="c-str">'btn-loading'</span>);
+  submitBtn.setAttribute(<span class="c-str">'aria-busy'</span>, <span class="c-str">'true'</span>);
+  <span class="c-key">await</span> submitApplication();
+  submitBtn.classList.remove(<span class="c-str">'btn-loading'</span>);
+  submitBtn.removeAttribute(<span class="c-str">'aria-busy'</span>);
+});
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;">Skeleton Screens</h3>
+        <div class="skeleton-demo-grid">
+          <!-- Card skeleton -->
+          <div class="skeleton-card">
+            <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+              <div class="skeleton skeleton-avatar" style="width:40px;height:40px;flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div class="skeleton skeleton-text lg" style="width:60%;margin-bottom:6px;"></div>
+                <div class="skeleton skeleton-text sm" style="width:40%;"></div>
+              </div>
+            </div>
+            <div class="skeleton skeleton-text" style="width:100%;margin-bottom:8px;"></div>
+            <div class="skeleton skeleton-text" style="width:85%;margin-bottom:8px;"></div>
+            <div class="skeleton skeleton-text" style="width:70%;margin-bottom:16px;"></div>
+            <div style="display:flex;gap:8px;">
+              <div class="skeleton" style="width:80px;height:28px;border-radius:20px;"></div>
+              <div class="skeleton" style="width:60px;height:28px;border-radius:20px;"></div>
+            </div>
+          </div>
+          <!-- List skeleton -->
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-text lg" style="width:50%;margin-bottom:20px;"></div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="skeleton skeleton-avatar" style="width:32px;height:32px;flex-shrink:0;"></div>
+                <div style="flex:1;"><div class="skeleton skeleton-text" style="width:70%;margin-bottom:5px;"></div><div class="skeleton skeleton-text sm" style="width:45%;"></div></div>
+                <div class="skeleton" style="width:60px;height:22px;border-radius:20px;"></div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="skeleton skeleton-avatar" style="width:32px;height:32px;flex-shrink:0;"></div>
+                <div style="flex:1;"><div class="skeleton skeleton-text" style="width:55%;margin-bottom:5px;"></div><div class="skeleton skeleton-text sm" style="width:35%;"></div></div>
+                <div class="skeleton" style="width:60px;height:22px;border-radius:20px;"></div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="skeleton skeleton-avatar" style="width:32px;height:32px;flex-shrink:0;"></div>
+                <div style="flex:1;"><div class="skeleton skeleton-text" style="width:65%;margin-bottom:5px;"></div><div class="skeleton skeleton-text sm" style="width:40%;"></div></div>
+                <div class="skeleton" style="width:60px;height:22px;border-radius:20px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Stat skeleton -->
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-text sm" style="width:40%;margin-bottom:10px;"></div>
+            <div class="skeleton skeleton-text" style="width:30%;height:32px;border-radius:8px;margin-bottom:8px;"></div>
+            <div class="skeleton skeleton-text sm" style="width:50%;margin-bottom:20px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div><div class="skeleton skeleton-text sm" style="width:60%;margin-bottom:6px;"></div><div class="skeleton" style="height:28px;border-radius:8px;"></div></div>
+              <div><div class="skeleton skeleton-text sm" style="width:60%;margin-bottom:6px;"></div><div class="skeleton" style="height:28px;border-radius:8px;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="c-comment">/* Skeleton utility classes */</span>
+.skeleton { <span class="c-key">background</span>: linear-gradient(90deg, #E4EAF2 25%, #F0F4F8 50%, #E4EAF2 75%); <span class="c-key">background-size</span>: 200% 100%; <span class="c-key">animation</span>: skeleton-shimmer 1.4s ease-in-out infinite; }
+.skeleton-text { <span class="c-key">height</span>: 14px; <span class="c-key">border-radius</span>: 4px; }
+.skeleton-avatar { <span class="c-key">border-radius</span>: 50%; }
+
+<span class="c-comment">/* Always respect reduced motion */</span>
+@media (prefers-reduced-motion: reduce) { .skeleton { <span class="c-key">animation</span>: none; <span class="c-key">background</span>: #E4EAF2; } }
+        </div>
+      </section>
+
+      <!-- ── 30. Responsive Tables ── -->
+      <section class="ds-section" id="responsive-tables" aria-labelledby="resp-tables-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">30</div>
+          <h2 id="resp-tables-heading">Responsive Data Tables</h2>
+        </div>
+        <p class="ds-section-desc">
+          Complex data tables collapse into a <strong>card-per-row layout</strong> on viewports narrower than 640px. Each cell is labelled via a <code>data-label</code> attribute so the column header context is preserved without the <code>&lt;thead&gt;</code>. Caseworkers frequently access the system on tablets — this pattern ensures no data is lost or truncated.
+        </p>
+
+        <div class="table-responsive-note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span><strong>Implementation note:</strong> Every <code>&lt;td&gt;</code> in a responsive table must include a <code>data-label="Column Name"</code> attribute. The CSS <code>::before</code> pseudo-element reads this to render the label on mobile.</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+          <div>
+            <h3 style="font-size:13px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Desktop — Standard Table</h3>
+            <div class="data-table-wrap">
+              <table class="data-table" aria-label="Applications desktop view">
+                <thead><tr><th>Applicant</th><th>Program</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td data-label="Applicant">Jane Smith</td>
+                    <td data-label="Program">CDBG-DR</td>
+                    <td data-label="Status"><span class="badge badge-blue">Under Review</span></td>
+                    <td data-label="Date">Mar 15</td>
+                  </tr>
+                  <tr>
+                    <td data-label="Applicant">Tom Rivera</td>
+                    <td data-label="Program">HOME</td>
+                    <td data-label="Status"><span class="badge badge-amber">⚠ Needs Review</span></td>
+                    <td data-label="Date">Mar 12</td>
+                  </tr>
+                  <tr>
+                    <td data-label="Applicant">Maria Gonzalez</td>
+                    <td data-label="Program">CDBG-DR</td>
+                    <td data-label="Status"><span class="badge badge-green">✓ Complete</span></td>
+                    <td data-label="Date">Mar 10</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:13px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Mobile — Card Stack (below 640px)</h3>
+            <div class="table-mobile-demo">
+              <div class="table-mobile-row">
+                <div class="table-mobile-field"><span class="table-mobile-label">Applicant</span><span style="font-weight:700;color:#181B1F;">Jane Smith</span></div>
+                <div class="table-mobile-field"><span class="table-mobile-label">Program</span><span>CDBG-DR</span></div>
+                <div class="table-mobile-field"><span class="table-mobile-label">Status</span><span class="badge badge-blue">Under Review</span></div>
+                <div class="table-mobile-field"><span class="table-mobile-label">Date</span><span style="color:#7C878E;">Mar 15</span></div>
+              </div>
+              <div class="table-mobile-row">
+                <div class="table-mobile-field"><span class="table-mobile-label">Applicant</span><span style="font-weight:700;color:#181B1F;">Tom Rivera</span></div>
+                <div class="table-mobile-field"><span class="table-mobile-label">Program</span><span>HOME</span></div>
+                <div class="table-mobile-field"><span class="table-mobile-label">Status</span><span class="badge badge-amber">⚠ Needs Review</span></div>
+                <div class="table-mobile-field"><span class="table-mobile-label">Date</span><span style="color:#7C878E;">Mar 12</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="c-comment">&lt;!-- Always add data-label to every td --&gt;</span>
+&lt;tr&gt;
+  &lt;td <span class="c-key">data-label</span>=<span class="c-str">"Applicant"</span>&gt;Jane Smith&lt;/td&gt;
+  &lt;td <span class="c-key">data-label</span>=<span class="c-str">"Program"</span>&gt;CDBG-DR&lt;/td&gt;
+  &lt;td <span class="c-key">data-label</span>=<span class="c-str">"Status"</span>&gt;&lt;span class=<span class="c-str">"badge badge-blue"</span>&gt;Under Review&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+        </div>
+      </section>
+
+      <!-- ── 31. Governance ── -->
+      <section class="ds-section" id="governance" aria-labelledby="gov-heading">
+        <div class="ds-section-header">
+          <div class="section-num" aria-hidden="true">31</div>
+          <h2 id="gov-heading">Governance</h2>
+        </div>
+        <p class="ds-section-desc">
+          A design system without governance is a design system that drifts. This section defines how the Neighborly Design System evolves — who can propose changes, how they're reviewed, and how they ship. The goal is to make contributing easy and predictable while protecting consistency.
+        </p>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;">Contribution Workflow</h3>
+        <div class="governance-flow">
+          <div class="gov-step">
+            <div class="gov-step-num">1</div>
+            <div class="gov-step-title">Propose</div>
+            <div class="gov-step-desc">Open a GitHub Issue using the Component Request or Bug Report template</div>
+          </div>
+          <div class="gov-arrow">→</div>
+          <div class="gov-step">
+            <div class="gov-step-num">2</div>
+            <div class="gov-step-title">Design Review</div>
+            <div class="gov-step-desc">Design lead reviews for brand fit, accessibility, and duplication</div>
+          </div>
+          <div class="gov-arrow">→</div>
+          <div class="gov-step">
+            <div class="gov-step-num">3</div>
+            <div class="gov-step-title">Build</div>
+            <div class="gov-step-desc">Component built in HTML/CSS with WCAG 2.1 AA compliance verified</div>
+          </div>
+          <div class="gov-arrow">→</div>
+          <div class="gov-step">
+            <div class="gov-step-num">4</div>
+            <div class="gov-step-title">PR Review</div>
+            <div class="gov-step-desc">Pull request reviewed by 1 designer + 1 engineer before merge</div>
+          </div>
+          <div class="gov-arrow">→</div>
+          <div class="gov-step">
+            <div class="gov-step-num">5</div>
+            <div class="gov-step-title">Ship &amp; Document</div>
+            <div class="gov-step-desc">Merged to <code>main</code>, version bumped, changelog updated</div>
+          </div>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;margin-top:28px;">Versioning</h3>
+        <div class="table-wrap" style="margin-bottom:24px;">
+          <table class="a11y-table" aria-label="Versioning rules">
+            <thead><tr><th>Version Type</th><th>When to use</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Patch</strong> (x.x.1)</td><td>Bug fixes, copy corrections, minor style tweaks that don't change API</td><td>v1.2.1</td></tr>
+              <tr><td><strong>Minor</strong> (x.1.0)</td><td>New components, new sections, non-breaking additions</td><td>v1.3.0</td></tr>
+              <tr><td><strong>Major</strong> (2.0.0)</td><td>Breaking changes to tokens, component renames, or structural overhaul</td><td>v2.0.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Roles &amp; Responsibilities</h3>
+        <div class="table-wrap" style="margin-bottom:24px;">
+          <table class="a11y-table" aria-label="Roles and responsibilities">
+            <thead><tr><th>Role</th><th>Responsibilities</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Design System Owner</strong></td><td>Final approval on all changes; maintains vision and consistency; bumps major versions</td></tr>
+              <tr><td><strong>Contributing Designer</strong></td><td>Proposes new components; creates design specs; reviews visual quality of PRs</td></tr>
+              <tr><td><strong>Contributing Engineer</strong></td><td>Implements components; ensures WCAG compliance; reviews code quality of PRs</td></tr>
+              <tr><td><strong>Product Team</strong></td><td>Raises component requests and bug reports via GitHub Issues; consumes the system</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size:14px;font-weight:800;color:#7C878E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Changelog</h3>
+        <div class="table-wrap">
+          <table class="a11y-table" aria-label="Design system changelog">
+            <thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead>
+            <tbody>
+              <tr><td><strong>v1.2.0</strong></td><td>Apr 2026</td><td>Added Brand Voice Guide, Readability &amp; Measure, Dark Mode Token Map, Loading States, Skeleton Screens, Responsive Tables, Governance section. README overhauled.</td></tr>
+              <tr><td><strong>v1.1.0</strong></td><td>Apr 2026</td><td>Added Modals &amp; Dialogs, Data Tables, Tooltips &amp; Popovers, Empty States, Notifications/Toasts, and three Combination Pages (Dashboard, Application Form, Eligibility Results).</td></tr>
+              <tr><td><strong>v1.0.0</strong></td><td>Apr 2026</td><td>Initial release. Foundation tokens, 14 component sections, WCAG 2.1 AA specs, VPAT compliance, Design Tokens.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- Footer -->
       <footer style="margin-top:48px;padding-top:32px;border-top:2px solid #E4EAF2;text-align:center;" role="contentinfo">
         <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663399790963/XyipZVEE7riwQWfV4vzLL8/NBLYLogoCircle_Blue_61a091ef.png" alt="Neighborly Software" style="height:36px;margin-bottom:12px;" />
-        <p style="font-size:13px;color:#7C878E;">Neighborly Software Design System · Version 1.1 · April 2026</p>
+        <p style="font-size:13px;color:#7C878E;">Neighborly Software Design System · Version 1.2 · April 2026</p>
         <p style="font-size:12px;color:#9AA4AD;margin-top:4px;">WCAG 2.1 AA Compliant · VPAT 2.4 Ready · Helping Communities Help People</p>
       </footer>
 

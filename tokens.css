@@ -1,0 +1,224 @@
+/**
+ * Neighborly Software — Design Tokens
+ * Version 1.2.0 · April 2026
+ *
+ * Usage:
+ *   @import url('https://sbneighborly.github.io/neighborlysoftwarebrandguidelines/tokens.css');
+ *
+ * Or in a bundler:
+ *   import 'neighborly-tokens/tokens.css';
+ *
+ * All components should reference these custom properties instead of
+ * hard-coded hex values. The dark mode block overrides them automatically
+ * based on the user's OS preference.
+ */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Light Mode (Default)
+───────────────────────────────────────────────────────────────────────── */
+:root {
+
+  /* Brand Colors */
+  --nbl-blue-50:  #EEF6FF;
+  --nbl-blue-100: #DBEAFE;
+  --nbl-blue-400: #4EABFF;
+  --nbl-blue-500: #1389FD;   /* Primary */
+  --nbl-blue-600: #0F74DF;   /* Primary hover */
+  --nbl-blue-900: #00419D;   /* Deep navy */
+
+  /* Semantic Colors */
+  --nbl-color-primary:        var(--nbl-blue-500);
+  --nbl-color-primary-hover:  var(--nbl-blue-600);
+  --nbl-color-primary-bg:     var(--nbl-blue-50);
+  --nbl-color-primary-subtle: var(--nbl-blue-100);
+
+  /* Neutral Palette */
+  --nbl-gray-50:  #F5F8FE;
+  --nbl-gray-100: #F0F4F8;
+  --nbl-gray-200: #E4EAF2;
+  --nbl-gray-300: #D1D9E0;
+  --nbl-gray-400: #9AA4AD;
+  --nbl-gray-500: #7C878E;
+  --nbl-gray-600: #5A6472;
+  --nbl-gray-700: #3D4A56;
+  --nbl-gray-900: #181B1F;
+
+  /* Status Colors */
+  --nbl-success-bg:   #D1FAE5;
+  --nbl-success:      #10B981;
+  --nbl-success-dark: #065F46;
+  --nbl-warning-bg:   #FEF3C7;
+  --nbl-warning:      #F59E0B;
+  --nbl-warning-dark: #92400E;
+  --nbl-error-bg:     #FEE2E2;
+  --nbl-error:        #EF4444;
+  --nbl-error-dark:   #991B1B;
+  --nbl-info-bg:      #DBEAFE;
+  --nbl-info:         #1389FD;
+  --nbl-info-dark:    #1E40AF;
+
+  /* Surface & Background */
+  --nbl-bg:          var(--nbl-gray-50);
+  --nbl-surface:     #FFFFFF;
+  --nbl-surface-2:   var(--nbl-gray-100);
+  --nbl-border:      var(--nbl-gray-200);
+  --nbl-border-dark: var(--nbl-gray-300);
+
+  /* Text */
+  --nbl-text-primary:   var(--nbl-gray-900);
+  --nbl-text-secondary: var(--nbl-gray-600);
+  --nbl-text-muted:     var(--nbl-gray-500);
+  --nbl-text-disabled:  var(--nbl-gray-400);
+  --nbl-text-link:      var(--nbl-blue-600);
+
+  /* Typography */
+  --nbl-font-family:    'Nunito', 'Avenir Next LT Pro', 'Avenir Next', 'Segoe UI', sans-serif;
+  --nbl-font-mono:      'Courier New', 'Consolas', monospace;
+
+  --nbl-text-xs:   11px;
+  --nbl-text-sm:   12px;
+  --nbl-text-base: 13px;
+  --nbl-text-md:   14px;
+  --nbl-text-lg:   16px;
+  --nbl-text-xl:   18px;
+  --nbl-text-2xl:  22px;
+  --nbl-text-3xl:  28px;
+  --nbl-text-4xl:  36px;
+
+  --nbl-font-normal:    400;
+  --nbl-font-medium:    500;
+  --nbl-font-semibold:  600;
+  --nbl-font-bold:      700;
+  --nbl-font-extrabold: 800;
+  --nbl-font-black:     900;
+
+  --nbl-leading-tight:  1.2;
+  --nbl-leading-snug:   1.4;
+  --nbl-leading-normal: 1.5;
+  --nbl-leading-body:   1.6;
+  --nbl-leading-loose:  1.65;
+
+  /* Spacing (8px base grid) */
+  --nbl-space-1:  4px;
+  --nbl-space-2:  8px;
+  --nbl-space-3:  12px;
+  --nbl-space-4:  16px;
+  --nbl-space-5:  20px;
+  --nbl-space-6:  24px;
+  --nbl-space-8:  32px;
+  --nbl-space-10: 40px;
+  --nbl-space-12: 48px;
+  --nbl-space-14: 56px;
+  --nbl-space-18: 72px;
+
+  /* Border Radius */
+  --nbl-radius-sm:   6px;
+  --nbl-radius-md:   8px;
+  --nbl-radius-lg:   12px;
+  --nbl-radius-xl:   16px;
+  --nbl-radius-2xl:  20px;
+  --nbl-radius-full: 9999px;
+
+  /* Elevation / Shadows */
+  --nbl-shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.05);
+  --nbl-shadow-sm:  0 1px 4px rgba(0, 0, 0, 0.06);
+  --nbl-shadow-md:  0 4px 16px rgba(0, 0, 0, 0.10);
+  --nbl-shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.12);
+  --nbl-shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.16);
+  --nbl-shadow-focus: 0 0 0 3px rgba(19, 137, 253, 0.25);
+
+  /* Motion */
+  --nbl-duration-fast:   100ms;
+  --nbl-duration-base:   150ms;
+  --nbl-duration-slow:   300ms;
+  --nbl-ease-default:    cubic-bezier(0.16, 1, 0.3, 1);
+  --nbl-ease-in:         cubic-bezier(0.4, 0, 1, 1);
+  --nbl-ease-out:        cubic-bezier(0, 0, 0.2, 1);
+
+  /* Z-Index Scale */
+  --nbl-z-base:    0;
+  --nbl-z-raised:  10;
+  --nbl-z-overlay: 100;
+  --nbl-z-modal:   1000;
+  --nbl-z-toast:   2000;
+  --nbl-z-tooltip: 3000;
+
+  /* Readability */
+  --nbl-measure-body:    65ch;
+  --nbl-measure-heading: 40ch;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Dark Mode Overrides
+   Applied automatically when OS is set to dark mode.
+   Override manually with [data-theme="dark"] on <html> for user toggle.
+───────────────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --nbl-bg:          #0F172A;
+    --nbl-surface:     #1E293B;
+    --nbl-surface-2:   #334155;
+    --nbl-border:      #334155;
+    --nbl-border-dark: #475569;
+
+    --nbl-text-primary:   #F1F5F9;
+    --nbl-text-secondary: #94A3B8;
+    --nbl-text-muted:     #64748B;
+    --nbl-text-disabled:  #475569;
+    --nbl-text-link:      #60A5FA;
+
+    --nbl-color-primary:        #60A5FA;
+    --nbl-color-primary-hover:  #93C5FD;
+    --nbl-color-primary-bg:     rgba(96, 165, 250, 0.15);
+    --nbl-color-primary-subtle: rgba(96, 165, 250, 0.10);
+
+    --nbl-success:      #34D399;
+    --nbl-success-dark: #6EE7B7;
+    --nbl-success-bg:   rgba(52, 211, 153, 0.15);
+
+    --nbl-warning:      #FBBF24;
+    --nbl-warning-dark: #FDE68A;
+    --nbl-warning-bg:   rgba(251, 191, 36, 0.15);
+
+    --nbl-error:        #F87171;
+    --nbl-error-dark:   #FCA5A5;
+    --nbl-error-bg:     rgba(248, 113, 113, 0.15);
+
+    --nbl-shadow-focus: 0 0 0 3px rgba(96, 165, 250, 0.35);
+  }
+}
+
+/* Manual dark mode toggle (add data-theme="dark" to <html>) */
+[data-theme="dark"] {
+  --nbl-bg:          #0F172A;
+  --nbl-surface:     #1E293B;
+  --nbl-surface-2:   #334155;
+  --nbl-border:      #334155;
+  --nbl-border-dark: #475569;
+
+  --nbl-text-primary:   #F1F5F9;
+  --nbl-text-secondary: #94A3B8;
+  --nbl-text-muted:     #64748B;
+  --nbl-text-disabled:  #475569;
+  --nbl-text-link:      #60A5FA;
+
+  --nbl-color-primary:        #60A5FA;
+  --nbl-color-primary-hover:  #93C5FD;
+  --nbl-color-primary-bg:     rgba(96, 165, 250, 0.15);
+  --nbl-color-primary-subtle: rgba(96, 165, 250, 0.10);
+
+  --nbl-success:      #34D399;
+  --nbl-success-dark: #6EE7B7;
+  --nbl-success-bg:   rgba(52, 211, 153, 0.15);
+
+  --nbl-warning:      #FBBF24;
+  --nbl-warning-dark: #FDE68A;
+  --nbl-warning-bg:   rgba(251, 191, 36, 0.15);
+
+  --nbl-error:        #F87171;
+  --nbl-error-dark:   #FCA5A5;
+  --nbl-error-bg:     rgba(248, 113, 113, 0.15);
+
+  --nbl-shadow-focus: 0 0 0 3px rgba(96, 165, 250, 0.35);
+}
