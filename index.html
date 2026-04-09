@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neighborly Software — Design System v2.1</title>
+  <title>Neighborly Software — Design System v2.3</title>
   <meta name="description" content="Neighborly Software Design System — MUI-based component library and patterns for grant management applications." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -144,6 +144,7 @@
     .code-block .prop { color: #FDA4AF; }
     .code-block .tag { color: #7DD3FC; }
     .code-block .attr { color: #FDA4AF; }
+    .code-block .comment { color: #64748B; font-style: italic; }
     .code-block .val { color: #FCD34D; }
 
     /* ============================================================
@@ -276,6 +277,9 @@
     .mui-field { margin-bottom: 18px; }
     .mui-field-label { display: block; font-size: 12px; font-weight: 600; color: #5A6472; margin-bottom: 4px; }
     .mui-field-label.required::after { content: ' *'; color: #D32F2F; }
+    .mui-input-wrap { position: relative; margin-bottom: 0; }
+    .mui-label { display: block; font-size: 12px; font-weight: 600; color: #5A6472; margin-bottom: 4px; }
+    .mui-label-float { font-size: 12px; color: #5A6472; }
     .mui-input {
       width: 100%; padding: 10px 14px; font-size: 14px; font-family: inherit;
       border: 1px solid #C8CDD4; border-radius: 8px; background: #fff;
@@ -285,11 +289,11 @@
     .mui-input:focus { border-color: #188af4; box-shadow: 0 0 0 2px rgba(24,138,244,0.2); }
     .mui-input.error { border-color: #D32F2F; }
     .mui-input.error:focus { box-shadow: 0 0 0 2px rgba(211,47,47,0.2); }
-    .mui-input.success { border-color: #2E7D32; }
+    .mui-input.success { border-color: #3aab5c; }
     .mui-input:disabled { background: #F5F7FA; color: #9AA4AD; cursor: not-allowed; }
     .mui-helper { font-size: 12px; margin-top: 4px; color: #5A6472; }
     .mui-helper.error { color: #D32F2F; }
-    .mui-helper.success { color: #2E7D32; }
+    .mui-helper.success { color: #3aab5c; }
     .mui-select {
       width: 100%; padding: 10px 36px 10px 14px; font-size: 14px; font-family: inherit;
       border: 1px solid #C8CDD4; border-radius: 8px; background: #fff;
@@ -528,6 +532,7 @@
     /* ============================================================
        DO / DON'T
     ============================================================ */
+    .combo-frame { overflow-x: auto; border-radius: 12px; }
     .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 640px) { .do-dont-grid { grid-template-columns: 1fr; } }
     .do-box { border: 2px solid #3aab5c; border-radius: 8px; overflow: hidden; }
@@ -639,6 +644,10 @@
         <a href="#snackbar">Snackbar</a>
         <a href="#progress">Progress</a>
         <a href="#tooltips">Tooltip</a>
+        <a href="#autocomplete">Autocomplete</a>
+        <a href="#datepicker">Date Picker</a>
+        <a href="#drawer">Drawer</a>
+        <a href="#menu">Menu</a>
 
         <span class="nav-group-label">Product Patterns</span>
         <a href="#user-types">User Types</a>
@@ -648,15 +657,17 @@
         <a href="#brand-voice">Brand Voice</a>
 
         <span class="nav-group-label">Combination Pages</span>
-        <a href="#page-admin">Admin Dashboard</a>
-        <a href="#page-participant">Participant Portal</a>
-        <a href="#page-review">Application Review</a>
+        <a href="#page-dashboard">Admin Dashboard</a>
+        <a href="#page-cases">Cases List</a>
+        <a href="#page-case-viewer">Case Viewer</a>
+        <a href="#page-messages">Messages</a>
 
         <span class="nav-group-label">Developer Reference</span>
         <a href="#theme">MUI Theme Config</a>
         <a href="#tokens">Design Tokens</a>
         <a href="#a11y">Accessibility</a>
         <a href="#governance">Governance</a>
+        <a href="#sx-styled">sx vs styled()</a>
         <span class="nav-group-label">Additional Patterns</span>
         <a href="#icons">Icons</a>
         <a href="#notifications">Notifications</a>
@@ -804,10 +815,10 @@
             </div>
           </div>
           <div class="color-card">
-            <div class="color-swatch" style="background:#2E7D32;"></div>
+            <div class="color-swatch" style="background:#3aab5c;"></div>
             <div class="color-info">
               <div class="color-name">Success</div>
-              <div class="color-hex">#2E7D32</div>
+              <div class="color-hex">#3aab5c</div>
               <div class="color-token">palette.success.main</div>
               <span class="contrast-badge cb-aaa">AAA on white</span>
             </div>
@@ -2123,301 +2134,651 @@
         </div>
       </section>
 
-      <!-- ============================================================
-           24. COMBINATION PAGE — ADMIN DASHBOARD
+<!-- ============================================================
+           COMBINATION PAGE 1: ADMIN DASHBOARD
       ============================================================ -->
-      <section class="ds-section" id="page-admin">
+      <section class="ds-section" id="page-dashboard" aria-labelledby="page-dashboard-heading">
         <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">24</span>
-          <h2>Admin Dashboard</h2>
+          <span class="section-num">24</span>
+          <h2 id="page-dashboard-heading">Admin Dashboard</h2>
         </div>
-        <p class="ds-section-desc">The Admin dashboard gives caseworkers an at-a-glance view of the application queue, key metrics, and items requiring action. Components in use: AppBar, Drawer, Card, DataGrid, Chip, Alert, LinearProgress.</p>
+        <p class="ds-section-desc">The primary landing page for Admin and Contractor users. Combines stat cards, tabbed content, and a priority queue DataGrid. Components: <code>Card</code>, <code>Tabs</code>, <code>DataGrid</code>, <code>Chip</code>, <code>Button</code>, <code>TextField</code> (search).</p>
 
-        <div class="app-shell">
-          <div class="app-topbar">
-            <div class="app-topbar-brand">
-              <img src="assets/logo.svg" alt="Neighborly Software" />
-              <span style="font-size:13px;color:#5A6472;font-weight:500;">Grant Management</span>
+        <!-- Full mockup -->
+        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
+          <!-- Top nav -->
+          <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:28px;" />
             </div>
-            <div class="app-topbar-actions">
-              <button class="mui-icon-btn" aria-label="Notifications">
-                <span class="material-icons" style="font-size:20px;">notifications</span>
+            <div style="display:flex; align-items:center; gap:0; flex:1; height:100%;">
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; font-weight:600; color:#188af4; border-bottom:2px solid #188af4; text-decoration:none;">Dashboard</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Planning <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Programs <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Cases <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Finance <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Assets</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Reports <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Tasks <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">search</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">person_outline</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">help_outline</span>
+            </div>
+          </div>
+
+          <!-- Stat cards -->
+          <div style="padding:20px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+            <div style="background:#fff; border:1px solid #E2E6EA; border-radius:8px; padding:16px 18px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span style="font-size:12px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">My Pending Reviews</span>
+                <span class="material-icons" style="font-size:16px; color:#8A96A3;">open_in_new</span>
+              </div>
+              <div style="font-size:32px; font-weight:700; color:#1A2332; margin:8px 0 4px;">23</div>
+              <div style="font-size:12px; color:#5A6472; margin-bottom:8px;">8 due this week</div>
+              <span class="mui-chip" style="background:#FFEBEE; color:#C62828; border-radius:4px; font-size:11px; font-weight:700; padding:2px 8px;">5 Overdue</span>
+            </div>
+            <div style="background:#fff; border:1px solid #E2E6EA; border-radius:8px; padding:16px 18px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span style="font-size:12px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Approvals Needed</span>
+                <span class="material-icons" style="font-size:16px; color:#8A96A3;">open_in_new</span>
+              </div>
+              <div style="font-size:32px; font-weight:700; color:#1A2332; margin:8px 0 4px;">12</div>
+              <div style="font-size:12px; color:#5A6472; margin-bottom:8px;">$3.2M total</div>
+              <span class="mui-chip" style="background:#FFF3E0; color:#E65100; border-radius:4px; font-size:11px; font-weight:700; padding:2px 8px;">3 Urgent</span>
+            </div>
+            <div style="background:#fff; border:1px solid #E2E6EA; border-radius:8px; padding:16px 18px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span style="font-size:12px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">My Aging Cases</span>
+                <span class="material-icons" style="font-size:16px; color:#8A96A3;">open_in_new</span>
+              </div>
+              <div style="font-size:32px; font-weight:700; color:#1A2332; margin:8px 0 4px;">18</div>
+              <div style="font-size:12px; color:#5A6472; margin-bottom:8px;">In my queue &gt;30 days</div>
+              <span class="mui-chip" style="background:#FFEBEE; color:#C62828; border-radius:4px; font-size:11px; font-weight:700; padding:2px 8px;">6 Critical</span>
+            </div>
+            <div style="background:#fff; border:1px solid #E2E6EA; border-radius:8px; padding:16px 18px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span style="font-size:12px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Action Items Today</span>
+                <span class="material-icons" style="font-size:16px; color:#8A96A3;">open_in_new</span>
+              </div>
+              <div style="font-size:32px; font-weight:700; color:#1A2332; margin:8px 0 4px;">7</div>
+              <div style="font-size:12px; color:#5A6472; margin-bottom:8px;">14 this week</div>
+              <span class="mui-chip" style="background:#FFEBEE; color:#C62828; border-radius:4px; font-size:11px; font-weight:700; padding:2px 8px;">2 Past Due</span>
+            </div>
+          </div>
+
+          <!-- Tabs + Priority Queue -->
+          <div style="padding:0 20px 20px;">
+            <div style="background:#fff; border:1px solid #E2E6EA; border-radius:8px; overflow:hidden;">
+              <!-- Tabs -->
+              <div style="display:flex; border-bottom:1px solid #E2E6EA; padding:0 16px;">
+                <div style="padding:12px 16px; font-size:13px; font-weight:600; color:#5A6472; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                  <span class="material-icons" style="font-size:16px;">auto_awesome</span> Discover
+                </div>
+                <div style="padding:12px 16px; font-size:13px; font-weight:600; color:#188af4; border-bottom:2px solid #188af4; cursor:pointer;">My Work</div>
+                <div style="padding:12px 16px; font-size:13px; font-weight:600; color:#5A6472; cursor:pointer;">Alerts &amp; Monitoring</div>
+                <div style="padding:12px 16px; font-size:13px; font-weight:600; color:#5A6472; cursor:pointer;">Documents</div>
+              </div>
+
+              <!-- Priority Queue header -->
+              <div style="padding:16px 20px; display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="material-icons" style="font-size:18px; color:#188af4;">info_outline</span>
+                  <span style="font-size:16px; font-weight:700; color:#1A2332;">My Priority Queue</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:20px; padding:6px 12px;">
+                    <span class="material-icons" style="font-size:16px; color:#8A96A3;">search</span>
+                    <span style="font-size:13px; color:#8A96A3;">Search by case, applicant, or task ID...</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:20px; padding:6px 14px; font-size:13px; color:#3D4752; cursor:pointer;">
+                    All Programs <span class="material-icons" style="font-size:16px;">expand_more</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DataGrid -->
+              <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                <thead>
+                  <tr style="background:#F5F7FA; border-top:1px solid #E2E6EA; border-bottom:1px solid #E2E6EA;">
+                    <th style="padding:10px 20px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Task Id</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px; cursor:pointer;">Case <span class="material-icons" style="font-size:12px; vertical-align:middle;">unfold_more</span></th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Case Name</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Tags</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px; cursor:pointer;">Days Until Due <span class="material-icons" style="font-size:12px; vertical-align:middle;">unfold_more</span></th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px; cursor:pointer;">Score <span class="material-icons" style="font-size:12px; vertical-align:middle;">expand_more</span></th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Action</th>
+                    <th style="padding:10px 12px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 20px; color:#3D4752;">1</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:600; cursor:pointer;">CS-2024-1847</td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:500;">Martinez, Sofia</td>
+                    <td style="padding:12px 12px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <span class="mui-chip" style="background:#FFF3E0; color:#E65100; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">SLA 2d left</span>
+                      <span class="mui-chip" style="background:#FFEBEE; color:#C62828; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">Fraud signal</span>
+                    </td>
+                    <td style="padding:12px 12px; color:#3D4752;">18 days</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">95 <span class="material-icons" style="font-size:14px; vertical-align:middle; color:#8A96A3;">info_outline</span></td>
+                    <td style="padding:12px 12px;"><button class="btn btn-outlined-primary" style="font-size:12px; padding:5px 12px;">Approve Eligibility</button></td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:18px;">more_vert</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 20px; color:#3D4752;">2</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:600; cursor:pointer;">CS-2024-1923</td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:500;">Johnson, Robert</td>
+                    <td style="padding:12px 12px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <span class="mui-chip" style="background:#E3F2FD; color:#1565C0; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">DOB out-of-date</span>
+                      <span class="mui-chip" style="background:#E8F5E9; color:#2E7D32; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">New FEMA data</span>
+                    </td>
+                    <td style="padding:12px 12px; color:#3D4752;">12 days</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">88 <span class="material-icons" style="font-size:14px; vertical-align:middle; color:#8A96A3;">info_outline</span></td>
+                    <td style="padding:12px 12px;"><button class="btn btn-outlined-primary" style="font-size:12px; padding:5px 12px;">Re-run DOB</button></td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:18px;">more_vert</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 20px; color:#3D4752;">3</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:600; cursor:pointer;">CS-2024-2014</td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:500;">Chen, Wei</td>
+                    <td style="padding:12px 12px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <span class="mui-chip" style="background:#F3E5F5; color:#6A1B9A; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">Docs missing</span>
+                      <span class="mui-chip" style="background:#FFF3E0; color:#E65100; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">SLA 5d left</span>
+                    </td>
+                    <td style="padding:12px 12px; color:#3D4752;">8 days</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">85 <span class="material-icons" style="font-size:14px; vertical-align:middle; color:#8A96A3;">info_outline</span></td>
+                    <td style="padding:12px 12px;"><button class="btn btn-outlined-primary" style="font-size:12px; padding:5px 12px;">Request Docs</button></td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:18px;">more_vert</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 20px; color:#3D4752;">4</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:600; cursor:pointer;">CS-2024-1756</td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:500;">Thompson, Lisa</td>
+                    <td style="padding:12px 12px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <span class="mui-chip" style="background:#E8F5E9; color:#2E7D32; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">ENV pending</span>
+                      <span class="mui-chip" style="background:#FFF3E0; color:#E65100; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">SLA 3d left</span>
+                    </td>
+                    <td style="padding:12px 12px; color:#3D4752;">45 days</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">82 <span class="material-icons" style="font-size:14px; vertical-align:middle; color:#8A96A3;">info_outline</span></td>
+                    <td style="padding:12px 12px;"><button class="btn btn-outlined-primary" style="font-size:12px; padding:5px 12px;">Clear ENV</button></td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:18px;">more_vert</span></td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 20px; color:#3D4752;">5</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:600; cursor:pointer;">CS-2024-1889</td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:500;">Davis, Michael</td>
+                    <td style="padding:12px 12px; display:flex; gap:6px; flex-wrap:wrap;">
+                      <span class="mui-chip" style="background:#E3F2FD; color:#1565C0; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">Appeal filed</span>
+                      <span class="mui-chip" style="background:#FFF3E0; color:#E65100; border-radius:4px; font-size:11px; font-weight:600; padding:2px 8px;">SLA 7d left</span>
+                    </td>
+                    <td style="padding:12px 12px; color:#3D4752;">15 days</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">78 <span class="material-icons" style="font-size:14px; vertical-align:middle; color:#8A96A3;">info_outline</span></td>
+                    <td style="padding:12px 12px;"><button class="btn btn-outlined-primary" style="font-size:12px; padding:5px 12px;">Schedule Hearing</button></td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:18px;">more_vert</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           COMBINATION PAGE 2: CASES LIST
+      ============================================================ -->
+      <section class="ds-section" id="page-cases" aria-labelledby="page-cases-heading">
+        <div class="ds-section-header">
+          <span class="section-num">25</span>
+          <h2 id="page-cases-heading">Cases List</h2>
+        </div>
+        <p class="ds-section-desc">The main case management view for Admin users. Features filter dropdowns, view tabs, a full DataGrid with sortable columns, status chips, financial summary row, and row-level action menus. Components: <code>DataGrid</code>, <code>Tabs</code>, <code>Select</code>, <code>Chip</code>, <code>Menu</code>, <code>Button</code>.</p>
+
+        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#fff;">
+          <!-- Top nav (same as dashboard) -->
+          <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:28px;" />
+            </div>
+            <div style="display:flex; align-items:center; gap:0; flex:1; height:100%;">
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Dashboard</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Planning <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Programs <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; font-weight:600; color:#188af4; border-bottom:2px solid #188af4; text-decoration:none; gap:3px;">Cases <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Finance <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Assets</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Reports <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">search</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">person_outline</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">help_outline</span>
+            </div>
+          </div>
+
+          <div style="padding:20px 24px;">
+            <!-- Page header -->
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+              <h1 style="font-size:28px; font-weight:700; color:#1A2332; margin:0;">Cases</h1>
+              <button class="btn btn-contained-primary" style="display:flex; align-items:center; gap:6px;">
+                <span class="material-icons" style="font-size:18px;">add</span> New Case
               </button>
-              <div class="mui-avatar mui-avatar-sm" aria-label="James R.">J</div>
             </div>
-          </div>
-          <div class="app-body">
-            <nav class="app-sidenav" aria-label="Admin navigation">
-              <div class="app-nav-item active">
-                <span class="material-icons">dashboard</span>Dashboard
-              </div>
-              <div class="app-nav-item">
-                <span class="material-icons">folder_open</span>Applications
-              </div>
-              <div class="app-nav-item">
-                <span class="material-icons">people</span>Participants
-              </div>
-              <div class="app-nav-item">
-                <span class="material-icons">handyman</span>Contractors
-              </div>
-              <div class="app-nav-item">
-                <span class="material-icons">bar_chart</span>Reports
-              </div>
-              <div class="app-nav-item">
-                <span class="material-icons">settings</span>Settings
-              </div>
-            </nav>
-            <div class="app-content">
-              <div class="app-page-title">Dashboard</div>
-              <div class="app-page-sub">Wednesday, April 9, 2026 — Emergency Rental Assistance Program</div>
 
-              <div class="mui-alert alert-warning" style="margin-bottom:16px;">
-                <span class="mui-alert-icon material-icons">warning</span>
-                <div class="mui-alert-content">
-                  <strong>12 applications</strong> have been waiting more than 7 days without a caseworker assignment.
-                  <button class="mui-btn btn-text-primary mui-btn-sm" style="margin-left:8px;">Assign Now</button>
-                </div>
+            <!-- View tabs -->
+            <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #E2E6EA; margin-bottom:16px;">
+              <div style="display:flex;">
+                <div style="padding:10px 16px; font-size:13px; font-weight:600; color:#188af4; border-bottom:2px solid #188af4; cursor:pointer;">All Cases</div>
+                <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer;">Eligibility</div>
+                <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer;">Scoring</div>
+                <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer;">DOB View</div>
+                <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer;">Appeals</div>
+                <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer;">Awards &amp; Closing</div>
+                <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer;">Environmental Review</div>
+                <div style="padding:10px 16px; font-size:13px; color:#188af4; cursor:pointer; display:flex; align-items:center; gap:4px;"><span class="material-icons" style="font-size:14px;">add</span> New View</div>
               </div>
-
-              <div class="stat-grid">
-                <div class="stat-card">
-                  <div class="stat-label">Total Applications</div>
-                  <div class="stat-value">284</div>
-                  <div class="stat-delta up">+18 this week</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-label">Under Review</div>
-                  <div class="stat-value">47</div>
-                  <div class="stat-delta neutral">Avg. 4.2 days</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-label">Approved This Month</div>
-                  <div class="stat-value">63</div>
-                  <div class="stat-delta up">$142,800 disbursed</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-label">Pending Documents</div>
-                  <div class="stat-value">21</div>
-                  <div class="stat-delta down">8 overdue</div>
-                </div>
-              </div>
-
-              <div class="mui-table-container">
-                <div class="table-toolbar">
-                  <span class="table-toolbar-title">Recent Applications</span>
-                  <button class="mui-btn btn-text-primary mui-btn-sm">View All</button>
-                </div>
-                <table class="mui-table" aria-label="Recent applications">
-                  <thead><tr><th>Applicant</th><th>Program</th><th>Status</th><th>Assigned</th></tr></thead>
-                  <tbody>
-                    <tr>
-                      <td data-label="Applicant">Maria Santos</td>
-                      <td data-label="Program">Emergency Rental</td>
-                      <td data-label="Status"><span class="mui-chip chip-filled-warning chip-sm">Under Review</span></td>
-                      <td data-label="Assigned">James R.</td>
-                    </tr>
-                    <tr>
-                      <td data-label="Applicant">David Kim</td>
-                      <td data-label="Program">Utility Relief</td>
-                      <td data-label="Status"><span class="mui-chip chip-filled-info chip-sm">Submitted</span></td>
-                      <td data-label="Assigned">Unassigned</td>
-                    </tr>
-                    <tr>
-                      <td data-label="Applicant">Aisha Johnson</td>
-                      <td data-label="Program">Home Repair</td>
-                      <td data-label="Status"><span class="mui-chip chip-filled-success chip-sm">Approved</span></td>
-                      <td data-label="Assigned">Maria C.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           25. COMBINATION PAGE — PARTICIPANT PORTAL
-      ============================================================ -->
-      <section class="ds-section" id="page-participant">
-        <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">25</span>
-          <h2>Participant Portal</h2>
-        </div>
-        <p class="ds-section-desc">The Participant portal is warm, simple, and focused. A participant should always know exactly where they stand and what to do next. Components: AppBar, Stepper, Card, Alert, Button, Chip, LinearProgress.</p>
-
-        <div class="app-shell">
-          <div class="app-topbar">
-            <div class="app-topbar-brand">
-              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:26px; width:auto;" />
-              <span style="color:#fff; font-weight:700; font-size:14px;">Neighborly Software</span>
-            </div>
-            <div class="app-topbar-actions">
-              <button class="mui-btn btn-text-primary mui-btn-sm">Sign Out</button>
-            </div>
-          </div>
-          <div class="app-content" style="padding:24px;">
-            <div class="app-page-title">Welcome back, Maria</div>
-            <div class="app-page-sub">Here's the status of your applications.</div>
-
-            <div class="mui-alert alert-info" style="margin-bottom:20px;">
-              <span class="mui-alert-icon material-icons">info</span>
-              <div class="mui-alert-content">
-                <strong>Action needed:</strong> Your Emergency Rental Assistance application is missing proof of income. Please upload a document to continue.
-                <div style="margin-top:8px;">
-                  <button class="mui-btn btn-contained-primary mui-btn-sm">Upload Now</button>
-                </div>
+              <div style="padding:10px 16px; font-size:13px; color:#5A6472; cursor:pointer; display:flex; align-items:center; gap:4px;">
+                <span class="material-icons" style="font-size:16px;">tune</span> Manage Views
               </div>
             </div>
 
-            <div class="mui-card" style="margin-bottom:16px;">
-              <div class="mui-card-header">
-                <div class="mui-card-header-text">
-                  <div class="mui-card-title">Emergency Rental Assistance</div>
-                  <div class="mui-card-subheader">Application #NBL-2026-04892 · Submitted April 3, 2026</div>
-                </div>
-                <span class="mui-chip chip-filled-primary chip-sm">Pending Documents</span>
-              </div>
-              <div class="mui-card-content">
-                <div class="mui-stepper" role="list" aria-label="Application progress" style="margin-bottom:12px;">
-                  <div class="mui-step completed" role="listitem">
-                    <div class="step-circle">✓</div>
-                    <div class="step-label">Submitted</div>
-                  </div>
-                  <div class="mui-step active" role="listitem">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">Documents</div>
-                  </div>
-                  <div class="mui-step" role="listitem">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Review</div>
-                  </div>
-                  <div class="mui-step" role="listitem">
-                    <div class="step-circle">4</div>
-                    <div class="step-label">Decision</div>
-                  </div>
-                </div>
-                <p style="font-size:14px;color:#5A6472;">We need one more document before we can review your application. Upload your most recent pay stub or bank statement.</p>
-              </div>
-              <div class="mui-card-actions">
-                <button class="mui-btn btn-contained-primary mui-btn-sm">Upload Document</button>
-                <button class="mui-btn btn-text-primary mui-btn-sm">View Details</button>
-              </div>
-            </div>
-
-            <div class="mui-card mui-card-outlined">
-              <div class="mui-card-header">
-                <div class="mui-card-header-text">
-                  <div class="mui-card-title">Utility Bill Relief</div>
-                  <div class="mui-card-subheader">Application #NBL-2026-04901 · Submitted April 7, 2026</div>
-                </div>
-                <span class="mui-chip chip-filled-info chip-sm">Submitted</span>
-              </div>
-              <div class="mui-card-content">We've received your application and will begin reviewing it within 3–5 business days. We'll email you when there's an update.</div>
-              <div class="mui-card-actions">
-                <button class="mui-btn btn-text-primary mui-btn-sm">View Details</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           26. COMBINATION PAGE — APPLICATION REVIEW
-      ============================================================ -->
-      <section class="ds-section" id="page-review">
-        <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">26</span>
-          <h2>Application Review</h2>
-        </div>
-        <p class="ds-section-desc">The application review page is the core admin workflow. A caseworker sees all applicant information, documents, history, and takes action. Components: Tabs, Card, Chip, Alert, Button, Table, Dialog trigger.</p>
-
-        <div class="app-shell">
-          <div class="app-topbar">
-            <div class="app-topbar-brand">
-              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:26px; width:auto;" />
-              <span style="color:#fff; font-weight:700; font-size:14px;">Neighborly Software</span>
-            </div>
-            <div class="app-topbar-actions">
-              <button class="mui-btn btn-outlined-error mui-btn-sm" onclick="document.getElementById('dialog-confirm').classList.add('open')">Deny</button>
-              <button class="mui-btn btn-contained-primary mui-btn-sm">Approve</button>
-            </div>
-          </div>
-          <div class="app-content">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
-              <div class="app-page-title">Maria Santos</div>
-              <span class="mui-chip chip-filled-warning chip-sm">Under Review</span>
-            </div>
-            <div class="app-page-sub">Application #NBL-2026-04892 · Emergency Rental Assistance · Assigned to James R.</div>
-
-            <div class="mui-tabs" role="tablist" aria-label="Application details" style="margin-bottom:16px;">
-              <button class="mui-tab active" role="tab" aria-selected="true">Overview</button>
-              <button class="mui-tab" role="tab" aria-selected="false">Documents (3)</button>
-              <button class="mui-tab" role="tab" aria-selected="false">History</button>
-              <button class="mui-tab" role="tab" aria-selected="false">Notes</button>
-            </div>
-
-            <div class="two-col">
+            <!-- Filters row -->
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
               <div>
-                <div class="mui-card" style="margin-bottom:12px;">
-                  <div class="mui-card-content">
-                    <div class="subsection-title" style="margin-top:0;">Applicant Information</div>
-                    <table class="token-table" style="width:100%;">
-                      <tbody>
-                        <tr><td style="color:#5A6472;width:140px;">Full Name</td><td><strong>Maria Santos</strong></td></tr>
-                        <tr><td style="color:#5A6472;">Date of Birth</td><td>March 12, 1985</td></tr>
-                        <tr><td style="color:#5A6472;">Phone</td><td>(512) 555-0142</td></tr>
-                        <tr><td style="color:#5A6472;">Email</td><td>maria.santos@email.com</td></tr>
-                        <tr><td style="color:#5A6472;">Address</td><td>1204 Oak Street, Austin TX 78701</td></tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="mui-card">
-                  <div class="mui-card-content">
-                    <div class="subsection-title" style="margin-top:0;">Household &amp; Income</div>
-                    <table class="token-table" style="width:100%;">
-                      <tbody>
-                        <tr><td style="color:#5A6472;width:140px;">Household Size</td><td><strong>3</strong></td></tr>
-                        <tr><td style="color:#5A6472;">Monthly Income</td><td>$2,400</td></tr>
-                        <tr><td style="color:#5A6472;">AMI %</td><td>62% <span class="mui-chip chip-filled-success chip-sm" style="margin-left:6px;">Eligible</span></td></tr>
-                        <tr><td style="color:#5A6472;">Housing Status</td><td>Renting</td></tr>
-                        <tr><td style="color:#5A6472;">Months Behind</td><td>2</td></tr>
-                      </tbody>
-                    </table>
-                  </div>
+                <div style="font-size:11px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Application</div>
+                <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:6px; padding:6px 10px; font-size:13px; color:#3D4752; cursor:pointer; background:#fff;">
+                  All Applications <span class="material-icons" style="font-size:16px; color:#8A96A3;">expand_more</span>
                 </div>
               </div>
               <div>
-                <div class="mui-card" style="margin-bottom:12px;">
-                  <div class="mui-card-content">
-                    <div class="subsection-title" style="margin-top:0;">Documents</div>
-                    <div style="display:flex;flex-direction:column;gap:8px;">
-                      <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#F5F7FA;border-radius:4px;">
-                        <span class="material-icons" style="color:#188af4;">description</span>
-                        <span style="flex:1;font-size:13px;">proof_of_income.pdf</span>
-                        <span class="mui-chip chip-filled-success chip-sm">Verified</span>
-                      </div>
-                      <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#F5F7FA;border-radius:4px;">
-                        <span class="material-icons" style="color:#188af4;">description</span>
-                        <span style="flex:1;font-size:13px;">lease_agreement.pdf</span>
-                        <span class="mui-chip chip-filled-success chip-sm">Verified</span>
-                      </div>
-                      <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#FFF3E0;border-radius:4px;border:1px solid #FFE0B2;">
-                        <span class="material-icons" style="color:#ED6C02;">upload_file</span>
-                        <span style="flex:1;font-size:13px;">Government ID</span>
-                        <span class="mui-chip chip-filled-warning chip-sm">Pending</span>
-                      </div>
+                <div style="font-size:11px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Program Name</div>
+                <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:6px; padding:6px 10px; font-size:13px; color:#3D4752; cursor:pointer; background:#fff;">
+                  All Programs <span class="material-icons" style="font-size:16px; color:#8A96A3;">expand_more</span>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Year</div>
+                <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:6px; padding:6px 10px; font-size:13px; color:#3D4752; cursor:pointer; background:#fff;">
+                  All Years <span class="material-icons" style="font-size:16px; color:#8A96A3;">expand_more</span>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Status</div>
+                <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:6px; padding:6px 10px; font-size:13px; color:#3D4752; cursor:pointer; background:#fff;">
+                  All Statuses <span class="material-icons" style="font-size:16px; color:#8A96A3;">expand_more</span>
+                </div>
+              </div>
+              <div style="margin-left:auto; display:flex; align-items:flex-end; gap:12px;">
+                <div>
+                  <div style="font-size:11px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Group By</div>
+                  <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:6px; padding:6px 10px; font-size:13px; color:#3D4752; cursor:pointer; background:#fff;">
+                    No Grouping <span class="material-icons" style="font-size:16px; color:#8A96A3;">expand_more</span>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:11px; color:#5A6472; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Search</div>
+                  <div style="display:flex; align-items:center; gap:6px; border:1px solid #E2E6EA; border-radius:6px; padding:6px 10px; font-size:13px; color:#8A96A3; cursor:pointer; background:#fff; min-width:180px;">
+                    <span class="material-icons" style="font-size:16px;">search</span> Search
+                  </div>
+                </div>
+                <span class="material-icons" style="color:#8A96A3; font-size:20px; cursor:pointer; margin-bottom:6px;">more_vert</span>
+              </div>
+            </div>
+
+            <!-- DataGrid -->
+            <div style="border:1px solid #E2E6EA; border-radius:8px; overflow:hidden;">
+              <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                <thead>
+                  <tr style="background:#F5F7FA; border-bottom:1px solid #E2E6EA;">
+                    <th style="padding:10px 12px; width:40px;"><input type="checkbox" /></th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px; cursor:pointer;">Case Id <span class="material-icons" style="font-size:12px; vertical-align:middle;">unfold_more</span></th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Case Name</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Program</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Program Year</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">App Steps Complete</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Status</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Days in Status</th>
+                    <th style="padding:10px 12px; text-align:left; color:#5A6472; font-weight:600; font-size:12px;">Score</th>
+                    <th style="padding:10px 12px; text-align:right; color:#5A6472; font-weight:600; font-size:12px;">Budget</th>
+                    <th style="padding:10px 12px; text-align:right; color:#5A6472; font-weight:600; font-size:12px;">Disbursed</th>
+                    <th style="padding:10px 12px; text-align:right; color:#5A6472; font-weight:600; font-size:12px;">Remaining</th>
+                    <th style="padding:10px 12px; width:32px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 12px;"><input type="checkbox" /></td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:600;">30005</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:500; cursor:pointer;">XYZ</td>
+                    <td style="padding:12px 12px; color:#3D4752;">Housing Rehabilitation &amp; Repair</td>
+                    <td style="padding:12px 12px; color:#3D4752;">2025</td>
+                    <td style="padding:12px 12px; color:#3D4752;">6 of 19</td>
+                    <td style="padding:12px 12px;"><span class="mui-chip" style="background:#E8F5E9; color:#2E7D32; border-radius:12px; font-size:11px; font-weight:600; padding:3px 10px;">Open</span></td>
+                    <td style="padding:12px 12px; color:#3D4752;">6</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">67</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$1,000,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$500,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$500,000</td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; font-size:18px; cursor:pointer;">more_horiz</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 12px;"><input type="checkbox" /></td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:600;">30006</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:500; cursor:pointer;">ABC Construction</td>
+                    <td style="padding:12px 12px; color:#3D4752;">Infrastructure Improvements</td>
+                    <td style="padding:12px 12px; color:#3D4752;">2024</td>
+                    <td style="padding:12px 12px; color:#3D4752;">12 of 19</td>
+                    <td style="padding:12px 12px;"><span class="mui-chip" style="background:#E3F2FD; color:#1565C0; border-radius:12px; font-size:11px; font-weight:600; padding:3px 10px;">In Progress</span></td>
+                    <td style="padding:12px 12px; color:#3D4752;">23</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">82</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$750,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$600,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$150,000</td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; font-size:18px; cursor:pointer;">more_horiz</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 12px;"><input type="checkbox" /></td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:600;">30007</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:500; cursor:pointer;">Urban Renewal LLC</td>
+                    <td style="padding:12px 12px; color:#3D4752;">Homeownership Assistance</td>
+                    <td style="padding:12px 12px; color:#3D4752;">2024</td>
+                    <td style="padding:12px 12px; color:#3D4752;">19 of 19</td>
+                    <td style="padding:12px 12px;"><span class="mui-chip" style="background:#E8F5E9; color:#1B5E20; border-radius:12px; font-size:11px; font-weight:600; padding:3px 10px;">Complete</span></td>
+                    <td style="padding:12px 12px; color:#3D4752;">2</td>
+                    <td style="padding:12px 12px; color:#8A96A3;">—</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$2,500,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$2,500,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$0</td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; font-size:18px; cursor:pointer;">more_horiz</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #F5F7FA;">
+                    <td style="padding:12px 12px;"><input type="checkbox" /></td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:600;">30008</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:500; cursor:pointer;">Green Building Co</td>
+                    <td style="padding:12px 12px; color:#3D4752;">Public Facilities &amp; Services</td>
+                    <td style="padding:12px 12px; color:#3D4752;">2025</td>
+                    <td style="padding:12px 12px; color:#3D4752;">3 of 19</td>
+                    <td style="padding:12px 12px;"><span class="mui-chip" style="background:#FFF3E0; color:#E65100; border-radius:12px; font-size:11px; font-weight:600; padding:3px 10px;">Pending</span></td>
+                    <td style="padding:12px 12px; color:#E65100; font-weight:600;">45</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">52</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$1,250,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$0</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$1,250,000</td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; font-size:18px; cursor:pointer;">more_horiz</span></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #E2E6EA;">
+                    <td style="padding:12px 12px;"><input type="checkbox" /></td>
+                    <td style="padding:12px 12px; color:#3D4752; font-weight:600;">30009</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:500; cursor:pointer;">Metro Development</td>
+                    <td style="padding:12px 12px; color:#3D4752;">Infrastructure Improvements</td>
+                    <td style="padding:12px 12px; color:#3D4752;">2024</td>
+                    <td style="padding:12px 12px; color:#3D4752;">8 of 19</td>
+                    <td style="padding:12px 12px;"><span class="mui-chip" style="background:#E8F5E9; color:#2E7D32; border-radius:12px; font-size:11px; font-weight:600; padding:3px 10px;">Open</span></td>
+                    <td style="padding:12px 12px; color:#3D4752;">12</td>
+                    <td style="padding:12px 12px; color:#188af4; font-weight:700;">71</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$850,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$300,000</td>
+                    <td style="padding:12px 12px; text-align:right; color:#3D4752;">$550,000</td>
+                    <td style="padding:12px 12px;"><span class="material-icons" style="color:#8A96A3; font-size:18px; cursor:pointer;">more_horiz</span></td>
+                  </tr>
+                  <!-- Totals row -->
+                  <tr style="background:#F5F7FA; border-top:2px solid #E2E6EA;">
+                    <td colspan="9" style="padding:12px 12px; font-weight:700; color:#1A2332; font-size:13px;">Total (5 cases)</td>
+                    <td style="padding:12px 12px; text-align:right; font-weight:700; color:#1A2332;">$6,350,000</td>
+                    <td style="padding:12px 12px; text-align:right; font-weight:700; color:#1A2332;">$3,900,000</td>
+                    <td style="padding:12px 12px; text-align:right; font-weight:700; color:#1A2332;">$2,450,000</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Pagination -->
+              <div style="padding:10px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid #E2E6EA;">
+                <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:#5A6472;">
+                  Rows per page:
+                  <div style="display:flex; align-items:center; gap:4px; border:1px solid #E2E6EA; border-radius:6px; padding:3px 8px; cursor:pointer;">
+                    100 <span class="material-icons" style="font-size:14px;">expand_more</span>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:#5A6472;">
+                  1–5 of 5
+                  <span class="material-icons" style="font-size:20px; color:#C8CDD2; cursor:not-allowed;">chevron_left</span>
+                  <span class="material-icons" style="font-size:20px; color:#C8CDD2; cursor:not-allowed;">chevron_right</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           COMBINATION PAGE 3: CASE VIEWER
+      ============================================================ -->
+      <section class="ds-section" id="page-case-viewer" aria-labelledby="page-case-viewer-heading">
+        <div class="ds-section-header">
+          <span class="section-num">26</span>
+          <h2 id="page-case-viewer-heading">Case Viewer</h2>
+        </div>
+        <p class="ds-section-desc">The detailed case record view. Left sidebar shows workflow steps with completion counts. Header shows program, case ID, status, warnings, and assigned staff. The main panel renders the active step's form. Components: <code>Stepper</code> (vertical), <code>Alert</code>, <code>TextField</code>, <code>Select</code>, <code>Button</code>, <code>Tooltip</code>.</p>
+
+        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
+          <!-- Top nav -->
+          <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:28px;" />
+            </div>
+            <div style="display:flex; align-items:center; gap:0; flex:1; height:100%;">
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Dashboard</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">DRGR <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Contractors</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Funding</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Write Ups</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Payments</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Reports <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-size:13px; font-weight:600; color:#3D4752;">30094</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">content_copy</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">search</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">person_outline</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">help_outline</span>
+            </div>
+          </div>
+
+          <div style="display:flex; height:600px;">
+            <!-- Left workflow nav -->
+            <div style="width:160px; background:#fff; border-right:1px solid #E2E6EA; padding:16px 0; overflow-y:auto; flex-shrink:0;">
+              <!-- Status + Audit Log tabs -->
+              <div style="display:flex; border-bottom:1px solid #E2E6EA; margin-bottom:12px;">
+                <div style="flex:1; text-align:center; padding:8px 4px; font-size:11px; font-weight:700; color:#188af4; border-bottom:2px solid #188af4; cursor:pointer;">
+                  <span class="material-icons" style="font-size:18px; display:block; margin:0 auto 2px;">assignment</span>
+                  STATUS
+                </div>
+                <div style="flex:1; text-align:center; padding:8px 4px; font-size:11px; font-weight:600; color:#8A96A3; cursor:pointer;">
+                  <span class="material-icons" style="font-size:18px; display:block; margin:0 auto 2px;">edit_note</span>
+                  AUDIT LOG
+                </div>
+              </div>
+              <!-- Workflow steps -->
+              <div style="padding:0 8px;">
+                <div style="padding:8px 10px; border-radius:6px; background:#F0F6FF; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#188af4;">info_outline</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:700; color:#188af4; text-transform:uppercase; letter-spacing:0.04em;">Application</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0 of 11)</div>
                     </div>
                   </div>
                 </div>
-                <div class="mui-card">
-                  <div class="mui-card-content">
-                    <div class="subsection-title" style="margin-top:0;">Caseworker Notes</div>
-                    <textarea class="mui-input" rows="4" placeholder="Add a note about this application..." style="resize:vertical;"></textarea>
-                    <div style="margin-top:8px;">
-                      <button class="mui-btn btn-outlined-primary mui-btn-sm">Save Note</button>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">rate_review</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Intake Review</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0 of 2)</div>
                     </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">fact_check</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Eligibility Review</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0 of 6)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">content_copy</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Duplication of Benefits</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0 of 7)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">home_work</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Pre-Construction</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0 of 5)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">construction</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Construction</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0 of 1)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">folder_open</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Documents</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">emoji_events</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Accomplishments</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">account_balance</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">DRGR</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px; margin-bottom:2px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">description</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Work Write Ups</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0)</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:8px 10px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-icons" style="font-size:18px; color:#8A96A3;">search</span>
+                    <div>
+                      <div style="font-size:11px; font-weight:600; color:#3D4752; text-transform:uppercase; letter-spacing:0.04em;">Inspections</div>
+                      <div style="font-size:10px; color:#8A96A3;">(0)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main content -->
+            <div style="flex:1; overflow-y:auto;">
+              <!-- Case header -->
+              <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:16px 24px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+                  <div>
+                    <div style="display:flex; gap:16px; font-size:13px; color:#3D4752; margin-bottom:4px;">
+                      <span><strong>Program</strong> &nbsp; Single-Family Homeowner Reconstruction Program</span>
+                    </div>
+                    <div style="display:flex; gap:16px; font-size:13px; color:#3D4752; margin-bottom:4px;">
+                      <span><strong>Id</strong> &nbsp; 30094</span>
+                    </div>
+                    <div style="display:flex; gap:16px; font-size:13px; color:#3D4752; margin-bottom:4px;">
+                      <span><strong>Status</strong> &nbsp; Application in Progress</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                      <span style="color:#D32F2F; font-weight:600;">Warning</span>
+                      <span style="color:#D32F2F;">Duplicate SSN identified in Case Id </span>
+                      <a style="color:#188af4; cursor:pointer;">30001</a>
+                      <a style="color:#188af4; cursor:pointer;">30040</a>
+                      <a style="color:#188af4; cursor:pointer;">30078</a>
+                      <a style="color:#188af4; cursor:pointer;">30093</a>
+                      <a style="color:#188af4; cursor:pointer; font-size:12px;">Add Notes</a>
+                    </div>
+                  </div>
+                  <div style="text-align:right; font-size:13px; color:#3D4752;">
+                    <div style="margin-bottom:3px;"><span style="color:#8A96A3;">Name</span> &nbsp; Matt Test</div>
+                    <div style="margin-bottom:3px;"><span style="color:#8A96A3;">Address</span> &nbsp; <span style="color:#D32F2F; font-style:italic;">No Property Address</span></div>
+                    <div style="margin-bottom:3px;"><span style="color:#8A96A3;">Intake Reviewer</span> &nbsp; <span style="color:#8A96A3;">Not Assigned</span></div>
+                    <div style="margin-bottom:3px;"><span style="color:#8A96A3;">Case Manager</span> &nbsp; <span style="color:#8A96A3;">Not Assigned</span></div>
+                    <div style="margin-bottom:3px;"><span style="color:#8A96A3;">QA Reviewer</span> &nbsp; <span style="color:#8A96A3;">Not Assigned</span></div>
+                    <div><span style="color:#8A96A3;">Construction Manager</span> &nbsp; <span style="color:#8A96A3;">Not Assigned</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status form panel -->
+              <div style="padding:24px; background:#F5F7FA;">
+                <div style="background:#fff; border:1px solid #E2E6EA; border-radius:8px; overflow:hidden;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid #E2E6EA;">
+                    <h3 style="margin:0; font-size:18px; font-weight:700; color:#1A2332;">Status</h3>
+                    <span class="material-icons" style="color:#D32F2F; cursor:pointer;">delete_outline</span>
+                  </div>
+                  <div style="padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+                    <div>
+                      <div class="mui-input-wrap">
+                        <label class="mui-label mui-label-float">Case Name</label>
+                        <input class="mui-input" type="text" value="Matt Test" />
+                      </div>
+                      <div class="mui-input-wrap" style="margin-top:16px;">
+                        <label class="mui-label mui-label-float">Program Year</label>
+                        <select class="mui-input" style="appearance:none;">
+                          <option>2021</option>
+                        </select>
+                      </div>
+                      <div style="margin-top:16px; font-size:13px; color:#3D4752;">
+                        <strong>Application Submission Date</strong>
+                        <span class="material-icons" style="font-size:14px; vertical-align:middle; color:#8A96A3;">help_outline</span>
+                        &nbsp; <span style="color:#8A96A3;">Not Complete</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="mui-input-wrap">
+                        <label class="mui-label mui-label-float">Status</label>
+                        <select class="mui-input" style="appearance:none;">
+                          <option>Application in Progress</option>
+                        </select>
+                      </div>
+                      <div class="mui-input-wrap" style="margin-top:16px;">
+                        <label class="mui-label mui-label-float">Status Details</label>
+                        <textarea class="mui-input" rows="3" style="resize:vertical;"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="padding:16px 24px; border-top:1px solid #E2E6EA; display:flex; align-items:center; justify-content:space-between;">
+                    <span style="font-size:12px; color:#8A96A3;">Last updated by matt.green@neighborlysoftware.com on 3/6/2026 2:33:06 PM</span>
+                    <button class="btn btn-contained-primary">Update</button>
                   </div>
                 </div>
               </div>
@@ -2427,6 +2788,143 @@
       </section>
 
       <!-- ============================================================
+           COMBINATION PAGE 4: MESSAGES
+      ============================================================ -->
+      <section class="ds-section" id="page-messages" aria-labelledby="page-messages-heading">
+        <div class="ds-section-header">
+          <span class="section-num">27</span>
+          <h2 id="page-messages-heading">Messages</h2>
+        </div>
+        <p class="ds-section-desc">The in-app messaging interface for Admin-to-Participant communication. Split-pane layout: conversation list on the left, active thread on the right. Each conversation is linked to a case. Components: <code>List</code>, <code>ListItem</code>, <code>Badge</code>, <code>TextField</code>, <code>IconButton</code>, <code>Divider</code>.</p>
+
+        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#fff;">
+          <!-- Top nav -->
+          <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:28px;" />
+            </div>
+            <div style="display:flex; align-items:center; gap:0; flex:1; height:100%;">
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none;">Dashboard</a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Planning <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Cases <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; color:#5A6472; text-decoration:none; gap:3px;">Reports <span class="material-icons" style="font-size:14px;">expand_more</span></a>
+              <a style="padding:0 14px; height:100%; display:flex; align-items:center; font-size:13px; font-weight:600; color:#188af4; border-bottom:2px solid #188af4; text-decoration:none; gap:4px;">
+                Messages
+                <span style="background:#D32F2F; color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:1px 6px; min-width:18px; text-align:center;">2</span>
+              </a>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">search</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">person_outline</span>
+              <span class="material-icons" style="color:#5A6472; font-size:20px;">help_outline</span>
+            </div>
+          </div>
+
+          <div style="padding:24px;">
+            <h1 style="font-size:24px; font-weight:700; color:#1A2332; margin:0 0 4px;">Messages</h1>
+            <p style="font-size:13px; color:#5A6472; margin:0 0 20px;">Communicate with participants about their applications</p>
+
+            <div style="display:flex; gap:0; border:1px solid #E2E6EA; border-radius:8px; overflow:hidden; height:480px;">
+              <!-- Conversation list -->
+              <div style="width:320px; border-right:1px solid #E2E6EA; display:flex; flex-direction:column; flex-shrink:0;">
+                <div style="padding:12px 16px; border-bottom:1px solid #E2E6EA;">
+                  <div style="display:flex; align-items:center; gap:8px; border:1px solid #E2E6EA; border-radius:20px; padding:8px 14px;">
+                    <span class="material-icons" style="font-size:16px; color:#8A96A3;">search</span>
+                    <span style="font-size:13px; color:#8A96A3;">Search conversations...</span>
+                  </div>
+                </div>
+                <!-- Active conversation -->
+                <div style="padding:14px 16px; background:#F0F6FF; border-bottom:1px solid #E2E6EA; cursor:pointer;">
+                  <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span style="font-size:14px; font-weight:700; color:#1A2332;">John Smith</span>
+                      <span style="background:#188af4; color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:1px 6px;">2</span>
+                    </div>
+                    <span style="font-size:11px; color:#8A96A3;">2 hours ago</span>
+                  </div>
+                  <div style="font-size:12px; color:#5A6472; margin-bottom:3px;">#10962 - TBRA - Subrecipient</div>
+                  <div style="font-size:12px; color:#8A96A3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Thank you for the update on my application.</div>
+                </div>
+                <!-- Other conversation -->
+                <div style="padding:14px 16px; border-bottom:1px solid #E2E6EA; cursor:pointer;">
+                  <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:4px;">
+                    <span style="font-size:14px; font-weight:700; color:#1A2332;">Sarah Johnson</span>
+                    <span style="font-size:11px; color:#8A96A3;">1 day ago</span>
+                  </div>
+                  <div style="font-size:12px; color:#5A6472; margin-bottom:3px;">#11005 - Housing Rehab/Repair</div>
+                  <div style="font-size:12px; color:#8A96A3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">I have uploaded the required documents.</div>
+                </div>
+              </div>
+
+              <!-- Chat thread -->
+              <div style="flex:1; display:flex; flex-direction:column;">
+                <!-- Thread header -->
+                <div style="padding:14px 20px; border-bottom:1px solid #E2E6EA; display:flex; align-items:center; justify-content:space-between;">
+                  <div>
+                    <div style="font-size:15px; font-weight:700; color:#1A2332;">John Smith</div>
+                    <div style="font-size:12px; color:#5A6472;">#10962 - TBRA - Subrecipient</div>
+                  </div>
+                  <a style="color:#188af4; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:4px; text-decoration:none;">
+                    <span class="material-icons" style="font-size:16px;">open_in_new</span> View Case
+                  </a>
+                </div>
+
+                <!-- Messages -->
+                <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px;">
+                  <!-- Admin message (right) -->
+                  <div style="display:flex; justify-content:flex-end;">
+                    <div style="max-width:70%;">
+                      <div style="background:#188af4; color:#fff; border-radius:16px 16px 4px 16px; padding:12px 16px; font-size:13px; line-height:1.5;">
+                        Hello John, we have reviewed your TBRA application and need some additional documentation.
+                      </div>
+                      <div style="font-size:11px; color:#8A96A3; text-align:right; margin-top:4px;">10:30 AM</div>
+                    </div>
+                  </div>
+                  <!-- Participant message (left) -->
+                  <div style="display:flex; justify-content:flex-start;">
+                    <div style="max-width:70%;">
+                      <div style="background:#F5F7FA; color:#3D4752; border-radius:16px 16px 16px 4px; padding:12px 16px; font-size:13px; line-height:1.5; border:1px solid #E2E6EA;">
+                        Hi, what documents do you need?
+                      </div>
+                      <div style="font-size:11px; color:#8A96A3; margin-top:4px;">10:45 AM</div>
+                    </div>
+                  </div>
+                  <!-- Admin message (right) -->
+                  <div style="display:flex; justify-content:flex-end;">
+                    <div style="max-width:70%;">
+                      <div style="background:#188af4; color:#fff; border-radius:16px 16px 4px 16px; padding:12px 16px; font-size:13px; line-height:1.5;">
+                        We need your updated proof of income and lease agreement.
+                      </div>
+                      <div style="font-size:11px; color:#8A96A3; text-align:right; margin-top:4px;">11:00 AM</div>
+                    </div>
+                  </div>
+                  <!-- Participant message (left) -->
+                  <div style="display:flex; justify-content:flex-start;">
+                    <div style="max-width:70%;">
+                      <div style="background:#F5F7FA; color:#3D4752; border-radius:16px 16px 16px 4px; padding:12px 16px; font-size:13px; line-height:1.5; border:1px solid #E2E6EA;">
+                        Thank you for the update on my application.
+                      </div>
+                      <div style="font-size:11px; color:#8A96A3; margin-top:4px;">2:15 PM</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Message input -->
+                <div style="padding:12px 20px; border-top:1px solid #E2E6EA; display:flex; align-items:center; gap:12px;">
+                  <div style="flex:1; border:1px solid #E2E6EA; border-radius:20px; padding:10px 16px; font-size:13px; color:#8A96A3; background:#fff;">
+                    Type a message...
+                  </div>
+                  <button style="background:#188af4; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                    <span class="material-icons" style="color:#fff; font-size:18px;">send</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <!-- ============================================================
            27. MUI THEME CONFIG
       ============================================================ -->
       <section class="ds-section" id="theme">
@@ -2454,7 +2952,7 @@
     error:   { main: <span class="str">'#D32F2F'</span> },
     warning: { main: <span class="str">'#ED6C02'</span> },
     info:    { main: <span class="str">'#0288D1'</span> },
-    success: { main: <span class="str">'#2E7D32'</span> },
+    success: { main: <span class="str">'#3aab5c'</span> } <span class="comment">// Neighborly Brand Green (PMS 7739 C)</span>,
     text: {
       primary:   <span class="str">'#181B1F'</span>,
       secondary: <span class="str">'#5A6472'</span>,
@@ -2544,7 +3042,7 @@
             <tbody>
               <tr><td><span class="token-swatch" style="background:#188af4;"></span><span class="token-name">--nbl-primary</span></td><td class="token-value">#188af4</td><td class="token-value">palette.primary.main</td></tr>
               <tr><td><span class="token-swatch" style="background:#00419D;"></span><span class="token-name">--nbl-secondary</span></td><td class="token-value">#00419D</td><td class="token-value">palette.secondary.main</td></tr>
-              <tr><td><span class="token-swatch" style="background:#2E7D32;"></span><span class="token-name">--nbl-success</span></td><td class="token-value">#2E7D32</td><td class="token-value">palette.success.main</td></tr>
+              <tr><td><span class="token-swatch" style="background:#3aab5c;"></span><span class="token-name">--nbl-success</span></td><td class="token-value">#3aab5c</td><td class="token-value">palette.success.main</td></tr>
               <tr><td><span class="token-swatch" style="background:#D32F2F;"></span><span class="token-name">--nbl-error</span></td><td class="token-value">#D32F2F</td><td class="token-value">palette.error.main</td></tr>
               <tr><td><span class="token-swatch" style="background:#ED6C02;"></span><span class="token-name">--nbl-warning</span></td><td class="token-value">#ED6C02</td><td class="token-value">palette.warning.main</td></tr>
               <tr><td><span class="token-swatch" style="background:#181B1F;"></span><span class="token-name">--nbl-text-primary</span></td><td class="token-value">#181B1F</td><td class="token-value">palette.text.primary</td></tr>
@@ -3091,9 +3589,359 @@
         </div>
       </section>
 
-      <footer style="border-top:2px solid #E5E9EF; padding-top:32px; margin-top:40px; text-align:center; color:#9AA4AD; font-size:13px;">
+<!-- ============================================================
+           NEW: AUTOCOMPLETE
+      ============================================================ -->
+      <section class="ds-section" id="autocomplete" aria-labelledby="autocomplete-heading">
+        <div class="ds-section-header">
+          <span class="section-num">39</span>
+          <h2 id="autocomplete-heading">Autocomplete</h2>
+        </div>
+        <p class="ds-section-desc">MUI <code>Autocomplete</code> wraps a <code>TextField</code> with a dropdown suggestion list. Use it for program search, case assignment, and any field where users select from a large or dynamic dataset.</p>
+
+        <div class="demo-row" style="gap:24px; flex-wrap:wrap; align-items:flex-start;">
+          <!-- Program search -->
+          <div style="flex:1; min-width:280px;">
+            <p class="demo-label">Program Search</p>
+            <div class="mui-input-wrap" style="position:relative;">
+              <label class="mui-label mui-label-float">Program</label>
+              <input class="mui-input" type="text" value="Housing Rehab" style="padding-right:36px;" />
+              <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">expand_more</span>
+            </div>
+            <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-top:2px; overflow:hidden;">
+              <div style="padding:8px 14px; font-size:13px; color:#3D4752; cursor:pointer; background:#F0F6FF;">Housing Rehabilitation &amp; Repair</div>
+              <div style="padding:8px 14px; font-size:13px; color:#3D4752; cursor:pointer;">Homeownership Assistance</div>
+              <div style="padding:8px 14px; font-size:13px; color:#3D4752; cursor:pointer;">Housing Choice Voucher</div>
+            </div>
+          </div>
+          <!-- Case manager assignment -->
+          <div style="flex:1; min-width:280px;">
+            <p class="demo-label">Case Manager Assignment (multiple)</p>
+            <div class="mui-input-wrap" style="min-height:48px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:8px 12px; border:1.5px solid #188af4; border-radius:8px; background:#fff;">
+              <span class="mui-chip chip-filled-primary chip-sm">Sarah Chen <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-left:2px;cursor:pointer;">close</span></span>
+              <span class="mui-chip chip-filled-primary chip-sm">Marcus Webb <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-left:2px;cursor:pointer;">close</span></span>
+              <input type="text" placeholder="Add reviewer..." style="border:none;outline:none;font-size:13px;min-width:120px;flex:1;" />
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="comment">// Single selection — program search</span>
+<span class="tag">import</span> { Autocomplete, TextField } <span class="tag">from</span> <span class="str">'@mui/material'</span>;
+
+<span class="tag">&lt;Autocomplete</span>
+  <span class="attr">options</span>={programs}
+  <span class="attr">getOptionLabel</span>={(option) =&gt; option.name}
+  <span class="attr">renderInput</span>={(params) =&gt; (
+    <span class="tag">&lt;TextField</span> {<span class="attr">...params</span>} <span class="attr">label</span>=<span class="str">"Program"</span> <span class="attr">size</span>=<span class="str">"small"</span> <span class="tag">/&gt;</span>
+  )}
+<span class="tag">/&gt;</span>
+
+<span class="comment">// Multiple selection — case manager assignment</span>
+<span class="tag">&lt;Autocomplete</span>
+  <span class="attr">multiple</span>
+  <span class="attr">options</span>={staff}
+  <span class="attr">getOptionLabel</span>={(option) =&gt; option.name}
+  <span class="attr">renderTags</span>={(value, getTagProps) =&gt;
+    value.map((option, index) =&gt; (
+      <span class="tag">&lt;Chip</span> <span class="attr">label</span>={option.name} {<span class="attr">...getTagProps</span>({ index })} <span class="attr">size</span>=<span class="str">"small"</span> <span class="tag">/&gt;</span>
+    ))
+  }
+  <span class="attr">renderInput</span>={(params) =&gt; (
+    <span class="tag">&lt;TextField</span> {<span class="attr">...params</span>} <span class="attr">label</span>=<span class="str">"Assign Reviewers"</span> <span class="tag">/&gt;</span>
+  )}
+<span class="tag">/&gt;</span>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           NEW: DATE PICKER
+      ============================================================ -->
+      <section class="ds-section" id="datepicker" aria-labelledby="datepicker-heading">
+        <div class="ds-section-header">
+          <span class="section-num">40</span>
+          <h2 id="datepicker-heading">Date Picker</h2>
+        </div>
+        <p class="ds-section-desc">MUI <code>DatePicker</code> from <code>@mui/x-date-pickers</code>. Use for application deadlines, program year selection, inspection scheduling, and any date input. Always pair with <code>LocalizationProvider</code> using <code>AdapterDayjs</code>.</p>
+
+        <div class="demo-row" style="gap:24px; flex-wrap:wrap; align-items:flex-start;">
+          <div style="flex:1; min-width:220px;">
+            <p class="demo-label">Application Deadline</p>
+            <div class="mui-input-wrap" style="position:relative;">
+              <label class="mui-label mui-label-float">Application Deadline</label>
+              <input class="mui-input" type="text" value="04/30/2025" style="padding-right:40px;" />
+              <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
+            </div>
+          </div>
+          <div style="flex:1; min-width:220px;">
+            <p class="demo-label">Date Range (Start – End)</p>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="mui-input-wrap" style="position:relative;flex:1;">
+                <label class="mui-label mui-label-float">Start Date</label>
+                <input class="mui-input" type="text" value="01/01/2025" style="padding-right:40px;" />
+                <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
+              </div>
+              <span style="color:#8A96A3;font-size:18px;">–</span>
+              <div class="mui-input-wrap" style="position:relative;flex:1;">
+                <label class="mui-label mui-label-float">End Date</label>
+                <input class="mui-input" type="text" value="12/31/2025" style="padding-right:40px;" />
+                <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="tag">import</span> { LocalizationProvider, DatePicker } <span class="tag">from</span> <span class="str">'@mui/x-date-pickers'</span>;
+<span class="tag">import</span> { AdapterDayjs } <span class="tag">from</span> <span class="str">'@mui/x-date-pickers/AdapterDayjs'</span>;
+<span class="tag">import</span> dayjs <span class="tag">from</span> <span class="str">'dayjs'</span>;
+
+<span class="tag">&lt;LocalizationProvider</span> <span class="attr">dateAdapter</span>={AdapterDayjs}<span class="tag">&gt;</span>
+  <span class="tag">&lt;DatePicker</span>
+    <span class="attr">label</span>=<span class="str">"Application Deadline"</span>
+    <span class="attr">value</span>={deadline}
+    <span class="attr">onChange</span>={(newValue) =&gt; setDeadline(newValue)}
+    <span class="attr">slotProps</span>={{ textField: { size: <span class="str">'small'</span>, fullWidth: <span class="attr">true</span> } }}
+    <span class="attr">minDate</span>={dayjs()}
+  <span class="tag">/&gt;</span>
+<span class="tag">&lt;/LocalizationProvider&gt;</span>
+
+<span class="comment">// Install: npm install @mui/x-date-pickers dayjs</span>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           NEW: DRAWER
+      ============================================================ -->
+      <section class="ds-section" id="drawer" aria-labelledby="drawer-heading">
+        <div class="ds-section-header">
+          <span class="section-num">41</span>
+          <h2 id="drawer-heading">Drawer</h2>
+        </div>
+        <p class="ds-section-desc">MUI <code>Drawer</code> slides in from the right (or left) for contextual detail panels — case notes, document previews, filter panels, and mobile navigation. Prefer right-anchored drawers for detail views; left-anchored for navigation.</p>
+
+        <div class="demo-row" style="gap:16px; flex-wrap:wrap;">
+          <!-- Right detail drawer mockup -->
+          <div style="flex:1; min-width:300px; border:1px solid #E2E6EA; border-radius:8px; overflow:hidden; background:#F5F7FA; height:280px; position:relative;">
+            <div style="background:#fff; padding:12px 16px; border-bottom:1px solid #E2E6EA; font-size:13px; color:#8A96A3;">Main content area</div>
+            <!-- Drawer panel -->
+            <div style="position:absolute; right:0; top:0; bottom:0; width:320px; background:#fff; box-shadow:-4px 0 16px rgba(0,0,0,0.12); display:flex; flex-direction:column;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #E2E6EA;">
+                <span style="font-weight:700; font-size:15px; color:#1A2332;">Case Notes — CS-2024-1847</span>
+                <span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:20px;">close</span>
+              </div>
+              <div style="padding:16px 20px; flex:1; overflow:auto;">
+                <div style="font-size:12px; color:#8A96A3; margin-bottom:4px;">Apr 8, 2026 · Sarah Chen</div>
+                <p style="font-size:13px; color:#3D4752; margin:0 0 12px;">Reviewed income documentation. AMI calculation confirmed at 62%. Proceeding to eligibility review.</p>
+                <div style="font-size:12px; color:#8A96A3; margin-bottom:4px;">Apr 5, 2026 · Marcus Webb</div>
+                <p style="font-size:13px; color:#3D4752; margin:0;">Initial intake complete. Awaiting proof of residency from applicant.</p>
+              </div>
+              <div style="padding:12px 20px; border-top:1px solid #E2E6EA;">
+                <button class="btn btn-contained-primary" style="width:100%;">Add Note</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="tag">import</span> { Drawer, Box, Typography, IconButton } <span class="tag">from</span> <span class="str">'@mui/material'</span>;
+<span class="tag">import</span> CloseIcon <span class="tag">from</span> <span class="str">'@mui/icons-material/Close'</span>;
+
+<span class="tag">&lt;Drawer</span>
+  <span class="attr">anchor</span>=<span class="str">"right"</span>
+  <span class="attr">open</span>={drawerOpen}
+  <span class="attr">onClose</span>={() =&gt; setDrawerOpen(<span class="attr">false</span>)}
+  <span class="attr">PaperProps</span>={{ sx: { width: 360 } }}
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;Box</span> <span class="attr">sx</span>={{ display: <span class="str">'flex'</span>, alignItems: <span class="str">'center'</span>, justifyContent: <span class="str">'space-between'</span>, p: 2, borderBottom: <span class="str">'1px solid'</span>, borderColor: <span class="str">'divider'</span> }}<span class="tag">&gt;</span>
+    <span class="tag">&lt;Typography</span> <span class="attr">variant</span>=<span class="str">"h6"</span><span class="tag">&gt;</span>Case Notes<span class="tag">&lt;/Typography&gt;</span>
+    <span class="tag">&lt;IconButton</span> <span class="attr">onClick</span>={() =&gt; setDrawerOpen(<span class="attr">false</span>)}<span class="tag">&gt;</span><span class="tag">&lt;CloseIcon /&gt;</span><span class="tag">&lt;/IconButton&gt;</span>
+  <span class="tag">&lt;/Box&gt;</span>
+  <span class="comment">{/* Drawer content */}</span>
+<span class="tag">&lt;/Drawer&gt;</span>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           NEW: MENU
+      ============================================================ -->
+      <section class="ds-section" id="menu" aria-labelledby="menu-heading">
+        <div class="ds-section-header">
+          <span class="section-num">42</span>
+          <h2 id="menu-heading">Menu &amp; MenuItem</h2>
+        </div>
+        <p class="ds-section-desc">MUI <code>Menu</code> and <code>MenuItem</code> for contextual action menus — the "⋯" row actions in DataGrids, navigation dropdowns, and bulk action menus. Always anchor to the trigger element using <code>anchorEl</code>.</p>
+
+        <div class="demo-row" style="gap:32px; flex-wrap:wrap; align-items:flex-start;">
+          <!-- Row action menu -->
+          <div>
+            <p class="demo-label">Row Action Menu (⋯)</p>
+            <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; overflow:hidden; width:260px;">
+              <div style="padding:10px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F5F7FA;">
+                <span style="font-size:13px; color:#3D4752;">CS-2024-1847 · Martinez, Sofia</span>
+                <span class="material-icons" style="color:#8A96A3; font-size:20px; cursor:pointer;">more_vert</span>
+              </div>
+              <!-- Simulated open menu -->
+              <div style="padding:4px 0;">
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer; background:#F0F6FF;">
+                  <span class="material-icons" style="font-size:16px; color:#188af4;">visibility</span> View Case
+                </div>
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                  <span class="material-icons" style="font-size:16px; color:#8A96A3;">person_add</span> Assign Case Manager
+                </div>
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                  <span class="material-icons" style="font-size:16px; color:#8A96A3;">flag</span> Flag for Review
+                </div>
+                <div style="height:1px; background:#E2E6EA; margin:4px 0;"></div>
+                <div style="padding:8px 16px; font-size:13px; color:#D32F2F; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                  <span class="material-icons" style="font-size:16px; color:#D32F2F;">archive</span> Archive Case
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nav dropdown menu -->
+          <div>
+            <p class="demo-label">Navigation Dropdown</p>
+            <div style="width:200px;">
+              <div style="display:flex; align-items:center; gap:6px; padding:8px 14px; background:#188af4; color:#fff; border-radius:20px; cursor:pointer; font-size:14px; font-weight:600; width:fit-content; margin-bottom:4px;">
+                Cases <span class="material-icons" style="font-size:16px;">expand_more</span>
+              </div>
+              <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer; background:#F0F6FF;">All Cases</div>
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer;">My Cases</div>
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer;">Eligibility Review</div>
+                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer;">Appeals</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="tag">import</span> { Menu, MenuItem, IconButton, ListItemIcon, ListItemText, Divider } <span class="tag">from</span> <span class="str">'@mui/material'</span>;
+<span class="tag">import</span> MoreVertIcon <span class="tag">from</span> <span class="str">'@mui/icons-material/MoreVert'</span>;
+
+<span class="comment">// In your component:</span>
+<span class="tag">const</span> [anchorEl, setAnchorEl] = useState(<span class="attr">null</span>);
+<span class="tag">const</span> open = Boolean(anchorEl);
+
+<span class="tag">&lt;IconButton</span> <span class="attr">onClick</span>={(e) =&gt; setAnchorEl(e.currentTarget)} <span class="attr">aria-label</span>=<span class="str">"Case actions"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;MoreVertIcon /&gt;</span>
+<span class="tag">&lt;/IconButton&gt;</span>
+
+<span class="tag">&lt;Menu</span>
+  <span class="attr">anchorEl</span>={anchorEl}
+  <span class="attr">open</span>={open}
+  <span class="attr">onClose</span>={() =&gt; setAnchorEl(<span class="attr">null</span>)}
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;MenuItem</span> <span class="attr">onClick</span>={handleView}<span class="tag">&gt;</span>
+    <span class="tag">&lt;ListItemIcon&gt;&lt;VisibilityIcon /&gt;&lt;/ListItemIcon&gt;</span>
+    <span class="tag">&lt;ListItemText&gt;</span>View Case<span class="tag">&lt;/ListItemText&gt;</span>
+  <span class="tag">&lt;/MenuItem&gt;</span>
+  <span class="tag">&lt;Divider /&gt;</span>
+  <span class="tag">&lt;MenuItem</span> <span class="attr">onClick</span>={handleArchive} <span class="attr">sx</span>={{ color: <span class="str">'error.main'</span> }}<span class="tag">&gt;</span>
+    <span class="tag">&lt;ListItemIcon&gt;&lt;ArchiveIcon</span> <span class="attr">color</span>=<span class="str">"error"</span> <span class="tag">/&gt;&lt;/ListItemIcon&gt;</span>
+    <span class="tag">&lt;ListItemText&gt;</span>Archive Case<span class="tag">&lt;/ListItemText&gt;</span>
+  <span class="tag">&lt;/MenuItem&gt;</span>
+<span class="tag">&lt;/Menu&gt;</span>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           NEW: SX vs STYLED GUIDE
+      ============================================================ -->
+      <section class="ds-section" id="sx-styled" aria-labelledby="sx-styled-heading">
+        <div class="ds-section-header">
+          <span class="section-num">43</span>
+          <h2 id="sx-styled-heading">Styling: <code>sx</code> vs <code>styled()</code> vs Theme</h2>
+        </div>
+        <p class="ds-section-desc">MUI provides three styling approaches. Choosing the right one keeps the codebase consistent and avoids specificity conflicts. Use this decision guide for every new component.</p>
+
+        <table class="mui-table" style="margin-bottom:24px;">
+          <thead>
+            <tr>
+              <th>Approach</th>
+              <th>When to use</th>
+              <th>When NOT to use</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>sx</code> prop</td>
+              <td>One-off layout tweaks, spacing overrides, responsive breakpoints on a single instance</td>
+              <td>Styles that repeat across multiple components; complex pseudo-selectors</td>
+              <td><code>&lt;Box sx={{ mt: 2, display: 'flex' }}&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>styled()</code></td>
+              <td>Reusable styled variants of MUI components; complex selectors; animations</td>
+              <td>Simple one-off spacing; anything that belongs in the theme</td>
+              <td><code>const PipelineChip = styled(Chip)(({ theme }) =&gt; ({...}))</code></td>
+            </tr>
+            <tr>
+              <td><code>theme.components</code></td>
+              <td>Global default overrides for a component (e.g. all Buttons pill-shaped); shared across the entire app</td>
+              <td>Instance-specific overrides; anything that varies by context</td>
+              <td><code>MuiButton: { styleOverrides: { root: { borderRadius: 20 } } }</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="do-dont-grid">
+          <div class="do-box">
+            <div class="do-header">DO — Use <code>sx</code> for layout, spacing, and responsive</div>
+            <div class="do-dont-body">
+              <div class="code-block" style="margin:0; border-radius:0; border:none;">
+<span class="comment">// One-off layout on a single instance</span>
+<span class="tag">&lt;Card</span> <span class="attr">sx</span>={{ mt: 3, mb: 1, p: 2 }}<span class="tag">&gt;</span>
+  <span class="tag">&lt;CardContent</span> <span class="attr">sx</span>={{ display: <span class="str">'flex'</span>, gap: 2 }}<span class="tag">&gt;</span>
+    ...
+  <span class="tag">&lt;/CardContent&gt;</span>
+<span class="tag">&lt;/Card&gt;</span>
+              </div>
+            </div>
+          </div>
+          <div class="dont-box">
+            <div class="dont-header">DON'T — Repeat <code>sx</code> for shared styles</div>
+            <div class="do-dont-body">
+              <div class="code-block" style="margin:0; border-radius:0; border:none;">
+<span class="comment">// Don't repeat this on every pipeline chip</span>
+<span class="tag">&lt;Chip</span> <span class="attr">sx</span>={{ borderRadius: <span class="str">'4px'</span>, fontWeight: 700, fontSize: <span class="str">'11px'</span> }} <span class="tag">/&gt;</span>
+<span class="tag">&lt;Chip</span> <span class="attr">sx</span>={{ borderRadius: <span class="str">'4px'</span>, fontWeight: 700, fontSize: <span class="str">'11px'</span> }} <span class="tag">/&gt;</span>
+<span class="comment">// Use styled() instead ↑</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top:20px;">
+<span class="comment">// CORRECT: Reusable pipeline status chip via styled()</span>
+<span class="tag">import</span> { styled } <span class="tag">from</span> <span class="str">'@mui/material/styles'</span>;
+<span class="tag">import</span> { Chip } <span class="tag">from</span> <span class="str">'@mui/material'</span>;
+
+<span class="tag">const</span> StatusChip = styled(Chip)(({ theme, status }) =&gt; ({
+  borderRadius: <span class="str">'4px'</span>,
+  fontWeight: 700,
+  fontSize: <span class="str">'11px'</span>,
+  ...(status === <span class="str">'approved'</span> &amp;&amp; {
+    backgroundColor: theme.palette.success.light,
+    color: theme.palette.success.dark,
+  }),
+  ...(status === <span class="str">'pending'</span> &amp;&amp; {
+    backgroundColor: theme.palette.warning.light,
+    color: theme.palette.warning.dark,
+  }),
+}));
+
+<span class="comment">// Usage:</span>
+<span class="tag">&lt;StatusChip</span> <span class="attr">label</span>=<span class="str">"Approved"</span> <span class="attr">status</span>=<span class="str">"approved"</span> <span class="attr">size</span>=<span class="str">"small"</span> <span class="tag">/&gt;</span>
+        </div>
+      </section>
+
+            <footer style="border-top:2px solid #E5E9EF; padding-top:32px; margin-top:40px; text-align:center; color:#9AA4AD; font-size:13px;">
         <img src="assets/logo.svg" alt="Neighborly Software" style="height:24px; opacity:0.5; display:block; margin:0 auto 12px;" />
-        <strong style="color:#5A6472;">Neighborly Software Design System</strong> — Version 2.1<br>
+        <strong style="color:#5A6472;">Neighborly Software Design System</strong> — Version 2.3<br>
         Built with MUI v5 · Helping Communities Help People
       </footer>
 
@@ -3215,7 +4063,7 @@
     // SNACKBAR / TOAST
     // ============================================================
     const toastColors = {
-      success: { bg: '#2E7D32', icon: 'check_circle' },
+      success: { bg: '#3aab5c', icon: 'check_circle' },
       error:   { bg: '#D32F2F', icon: 'error' },
       warning: { bg: '#ED6C02', icon: 'warning' },
       info:    { bg: '#0288D1', icon: 'info' },
