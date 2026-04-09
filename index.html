@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neighborly Software — Design System v2.0</title>
+  <title>Neighborly Software — Design System v2.1</title>
   <meta name="description" content="Neighborly Software Design System — MUI-based component library and patterns for grant management applications." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
     /* ============================================================
@@ -15,7 +16,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     body {
-      font-family: 'Avenir Next LT Pro', 'Avenir Next', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Nunito Sans', 'Avenir Next LT Pro', 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: #F5F7FA;
       color: #181B1F;
       line-height: 1.6;
@@ -41,8 +42,8 @@
     ============================================================ */
     .layout { display: flex; min-height: 100vh; }
     .sidebar {
-      width: 256px; min-width: 256px; background: #fff;
-      border-right: 1px solid #E5E9EF; position: sticky; top: 0;
+      width: 256px; min-width: 256px; background: #00419D;
+      border-right: none; position: sticky; top: 0;
       height: 100vh; overflow-y: auto; padding-bottom: 40px; flex-shrink: 0;
     }
     .main { flex: 1; padding: 40px 52px; max-width: 1080px; }
@@ -56,26 +57,26 @@
        SIDEBAR
     ============================================================ */
     .sidebar-logo {
-      padding: 18px 18px 14px; border-bottom: 1px solid #E5E9EF;
+      padding: 18px 18px 14px; border-bottom: 1px solid rgba(255,255,255,0.15);
       display: flex; align-items: center; gap: 8px;
     }
-    .sidebar-logo img { height: 30px; width: auto; }
+    .sidebar-logo img { height: 30px; width: auto; filter: brightness(0) invert(1); }
     .sidebar-version {
       margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
-      color: #fff; background: #188af4; border-radius: 4px; padding: 2px 7px;
+      color: #00419D; background: #fff; border-radius: 20px; padding: 2px 8px;
     }
     .nav-group-label {
       display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #9AA4AD; padding: 14px 18px 4px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); padding: 14px 18px 4px;
     }
     .sidebar nav a {
       display: block; padding: 6px 18px; font-size: 13px; font-weight: 500;
-      color: #3D4752; text-decoration: none; border-left: 3px solid transparent;
+      color: rgba(255,255,255,0.75); text-decoration: none; border-left: 3px solid transparent;
       transition: background 0.12s, color 0.12s;
     }
-    .sidebar nav a:hover { background: #F0F6FF; color: #188af4; }
-    .sidebar nav a.active { background: #EBF4FF; color: #188af4; border-left-color: #188af4; font-weight: 600; }
-    .sidebar nav a:focus-visible { outline: 2px solid #188af4; outline-offset: -2px; }
+    .sidebar nav a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .sidebar nav a.active { background: rgba(24,138,244,0.3); color: #fff; border-left-color: #188af4; font-weight: 600; }
+    .sidebar nav a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
 
     /* ============================================================
        PAGE HERO
@@ -201,10 +202,10 @@
     ============================================================ */
     .mui-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      gap: 6px; border-radius: 4px; font-weight: 600; cursor: pointer;
+      gap: 6px; border-radius: 20px; font-weight: 600; cursor: pointer;
       transition: all 0.15s; text-decoration: none; border: none;
-      font-family: inherit; letter-spacing: 0.02em; white-space: nowrap;
-      font-size: 14px; padding: 8px 22px; min-height: 36px;
+      font-family: inherit; letter-spacing: 0.01em; white-space: nowrap;
+      font-size: 14px; padding: 8px 22px; min-height: 36px; text-transform: none;
     }
     .mui-btn:focus-visible { outline: 3px solid #188af4; outline-offset: 2px; }
     .mui-btn-sm { padding: 4px 12px; font-size: 13px; min-height: 30px; }
@@ -217,8 +218,8 @@
     .btn-contained-secondary:hover { background: #003080; }
     .btn-contained-error { background: #D32F2F; color: #fff; }
     .btn-contained-error:hover { background: #B71C1C; }
-    .btn-contained-success { background: #2E7D32; color: #fff; }
-    .btn-contained-success:hover { background: #1B5E20; }
+    .btn-contained-success { background: #3aab5c; color: #fff; }
+    .btn-contained-success:hover { background: #2d8a49; }
     .btn-contained-warning { background: #ED6C02; color: #fff; }
     .btn-contained-warning:hover { background: #C55A00; }
 
@@ -277,7 +278,7 @@
     .mui-field-label.required::after { content: ' *'; color: #D32F2F; }
     .mui-input {
       width: 100%; padding: 10px 14px; font-size: 14px; font-family: inherit;
-      border: 1px solid #C8CDD4; border-radius: 4px; background: #fff;
+      border: 1px solid #C8CDD4; border-radius: 8px; background: #fff;
       color: #181B1F; transition: border-color 0.15s, box-shadow 0.15s; outline: none;
     }
     .mui-input:hover { border-color: #181B1F; }
@@ -291,7 +292,7 @@
     .mui-helper.success { color: #2E7D32; }
     .mui-select {
       width: 100%; padding: 10px 36px 10px 14px; font-size: 14px; font-family: inherit;
-      border: 1px solid #C8CDD4; border-radius: 4px; background: #fff;
+      border: 1px solid #C8CDD4; border-radius: 8px; background: #fff;
       color: #181B1F; appearance: none; cursor: pointer; outline: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%235A6472'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 10px center;
@@ -328,7 +329,7 @@
     .chip-filled-default { background: rgba(0,0,0,0.08); color: #181B1F; }
     .chip-filled-primary { background: #188af4; color: #fff; }
     .chip-filled-secondary { background: #00419D; color: #fff; }
-    .chip-filled-success { background: #2E7D32; color: #fff; }
+    .chip-filled-success { background: #3aab5c; color: #fff; }
     .chip-filled-error { background: #D32F2F; color: #fff; }
     .chip-filled-warning { background: #ED6C02; color: #fff; }
     .chip-filled-info { background: #0288D1; color: #fff; }
@@ -341,15 +342,15 @@
     ============================================================ */
     .mui-alert {
       display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px;
-      border-radius: 4px; font-size: 14px; margin-bottom: 10px; border: 1px solid transparent;
+      border-radius: 8px; font-size: 14px; margin-bottom: 10px; border: 1px solid transparent;
     }
     .mui-alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
     .mui-alert-content { flex: 1; }
     .mui-alert-title { font-weight: 600; margin-bottom: 2px; font-size: 14px; }
     .alert-info { background: #E3F2FD; color: #0D47A1; border-color: #BBDEFB; }
     .alert-info .mui-alert-icon { color: #0288D1; }
-    .alert-success { background: #E8F5E9; color: #1B5E20; border-color: #C8E6C9; }
-    .alert-success .mui-alert-icon { color: #2E7D32; }
+    .alert-success { background: #E8F5E9; color: #1a6636; border-color: #b2dfbd; }
+    .alert-success .mui-alert-icon { color: #3aab5c; }
     .alert-warning { background: #FFF3E0; color: #E65100; border-color: #FFE0B2; }
     .alert-warning .mui-alert-icon { color: #ED6C02; }
     .alert-error { background: #FFEBEE; color: #B71C1C; border-color: #FFCDD2; }
@@ -449,7 +450,7 @@
        MUI SNACKBAR
     ============================================================ */
     .snackbar-container { position: fixed; bottom: 24px; right: 24px; z-index: 1400; display: flex; flex-direction: column; gap: 8px; max-width: 400px; }
-    .mui-snackbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 4px; font-size: 14px; box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14); animation: slideIn 0.2s ease-out; background: #323232; color: #fff; min-width: 280px; }
+    .mui-snackbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; font-size: 14px; box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14); animation: slideIn 0.2s ease-out; background: #323232; color: #fff; min-width: 280px; }
     @keyframes slideIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .snackbar-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 18px; padding: 0 4px; }
     .snackbar-close:hover { color: #fff; }
@@ -467,7 +468,7 @@
     /* ============================================================
        SKELETON
     ============================================================ */
-    .mui-skeleton { background: linear-gradient(90deg, #E5E9EF 25%, #F5F7FA 50%, #E5E9EF 75%); background-size: 200% 100%; animation: shimmer 1.5s ease-in-out infinite; border-radius: 4px; }
+    .mui-skeleton { background: linear-gradient(90deg, #E5E9EF 25%, #F5F7FA 50%, #E5E9EF 75%); background-size: 200% 100%; animation: shimmer 1.5s ease-in-out infinite; border-radius: 8px; }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     @media (prefers-reduced-motion: reduce) { .mui-skeleton { animation: none; background: #E5E9EF; } }
 
@@ -475,7 +476,7 @@
        TOOLTIP
     ============================================================ */
     .tooltip-wrap { position: relative; display: inline-flex; }
-    .mui-tooltip { position: absolute; background: rgba(24,28,36,0.92); color: #fff; font-size: 12px; padding: 6px 10px; border-radius: 4px; white-space: nowrap; pointer-events: none; z-index: 1500; opacity: 0; transition: opacity 0.15s; }
+    .mui-tooltip { position: absolute; background: rgba(24,28,36,0.92); color: #fff; font-size: 12px; padding: 6px 10px; border-radius: 6px; white-space: nowrap; pointer-events: none; z-index: 1500; opacity: 0; transition: opacity 0.15s; }
     .tooltip-wrap:hover .mui-tooltip, .tooltip-wrap:focus-within .mui-tooltip { opacity: 1; }
     .mui-tooltip.top { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
     .mui-tooltip.bottom { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
@@ -509,11 +510,11 @@
     .pipeline-stage:not(:last-child)::after { content: ''; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); border: 10px solid transparent; border-left-color: #F5F7FA; z-index: 1; }
     .pipeline-stage.active { background: #188af4; color: #fff; }
     .pipeline-stage.active::after { border-left-color: #188af4; }
-    .pipeline-stage.done { background: #E8F5E9; color: #2E7D32; }
+    .pipeline-stage.done { background: #E8F5E9; color: #3aab5c; }
     .pipeline-stage.done::after { border-left-color: #E8F5E9; }
     .pipeline-stage.denied { background: #FFEBEE; color: #D32F2F; }
-    .pipeline-stage:first-child { border-radius: 4px 0 0 4px; }
-    .pipeline-stage:last-child { border-radius: 0 4px 4px 0; }
+    .pipeline-stage:first-child { border-radius: 8px 0 0 8px; }
+    .pipeline-stage:last-child { border-radius: 0 8px 8px 0; }
     .pipeline-stage:last-child::after { display: none; }
 
     /* ============================================================
@@ -529,9 +530,9 @@
     ============================================================ */
     .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 640px) { .do-dont-grid { grid-template-columns: 1fr; } }
-    .do-box { border: 2px solid #2E7D32; border-radius: 8px; overflow: hidden; }
+    .do-box { border: 2px solid #3aab5c; border-radius: 8px; overflow: hidden; }
     .dont-box { border: 2px solid #D32F2F; border-radius: 8px; overflow: hidden; }
-    .do-header { background: #2E7D32; color: #fff; padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
+    .do-header { background: #3aab5c; color: #fff; padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
     .dont-header { background: #D32F2F; color: #fff; padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
     .do-dont-body { padding: 16px; background: #fff; font-size: 14px; color: #181B1F; line-height: 1.6; }
 
@@ -539,15 +540,15 @@
        APP SHELL (COMBINATION PAGES)
     ============================================================ */
     .app-shell { border: 1px solid #E5E9EF; border-radius: 12px; overflow: hidden; background: #F5F7FA; min-height: 580px; }
-    .app-topbar { background: #fff; border-bottom: 1px solid #E5E9EF; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .app-topbar { background: #00419D; border-bottom: none; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .app-topbar-brand { display: flex; align-items: center; gap: 10px; }
-    .app-topbar-brand img { height: 26px; }
+    .app-topbar-brand img { height: 26px; filter: brightness(0) invert(1); }
     .app-topbar-actions { display: flex; align-items: center; gap: 8px; }
     .app-body { display: flex; min-height: calc(580px - 56px); }
-    .app-sidenav { width: 210px; background: #fff; border-right: 1px solid #E5E9EF; padding: 12px 0; flex-shrink: 0; }
-    .app-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: #5A6472; cursor: pointer; border-left: 3px solid transparent; transition: all 0.12s; }
-    .app-nav-item:hover { background: #F0F6FF; color: #188af4; }
-    .app-nav-item.active { background: #EBF4FF; color: #188af4; border-left-color: #188af4; font-weight: 600; }
+    .app-sidenav { width: 210px; background: #00419D; border-right: none; padding: 12px 0; flex-shrink: 0; }
+    .app-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); cursor: pointer; border-left: 3px solid transparent; transition: all 0.12s; }
+    .app-nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .app-nav-item.active { background: rgba(24,138,244,0.3); color: #fff; border-left-color: #188af4; font-weight: 600; }
     .app-nav-item .material-icons { font-size: 18px; }
     .app-content { flex: 1; padding: 24px; overflow: auto; }
     .app-page-title { font-size: 20px; font-weight: 700; color: #181B1F; margin-bottom: 4px; }
@@ -558,7 +559,7 @@
     .stat-label { font-size: 11px; font-weight: 600; color: #5A6472; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
     .stat-value { font-size: 28px; font-weight: 700; color: #181B1F; line-height: 1; margin-bottom: 4px; }
     .stat-delta { font-size: 12px; font-weight: 500; }
-    .stat-delta.up { color: #2E7D32; }
+    .stat-delta.up { color: #3aab5c; }
     .stat-delta.down { color: #D32F2F; }
     .stat-delta.neutral { color: #5A6472; }
 
@@ -613,7 +614,7 @@
     <nav class="sidebar" aria-label="Design system navigation">
       <div class="sidebar-logo">
         <img src="assets/logo.svg" alt="Neighborly Software" />
-        <span class="sidebar-version">v2.0</span>
+        <span class="sidebar-version">v2.1</span>
       </div>
       <nav>
         <span class="nav-group-label">Foundation</span>
@@ -668,7 +669,7 @@
         <img src="assets/logo.svg" alt="Neighborly Software" />
         <h1>Neighborly Software Design System</h1>
         <p>The MUI-based component library and pattern guide for building grant management applications. Shared across Participant, Contractor, and Admin experiences.</p>
-        <span class="hero-version">Version 2.0 — MUI v5</span>
+        <span class="hero-version">Version 2.1 — MUI v5</span>
       </div>
 
       <!-- ============================================================
