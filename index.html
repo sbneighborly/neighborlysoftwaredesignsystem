@@ -542,7 +542,7 @@
     .app-shell { border: 1px solid #E5E9EF; border-radius: 12px; overflow: hidden; background: #F5F7FA; min-height: 580px; }
     .app-topbar { background: #00419D; border-bottom: none; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .app-topbar-brand { display: flex; align-items: center; gap: 10px; }
-    .app-topbar-brand img { height: 26px; }
+    .app-topbar-brand img { height: 26px; width: auto; flex-shrink: 0; }
     .app-topbar-actions { display: flex; align-items: center; gap: 8px; }
     .app-body { display: flex; min-height: calc(580px - 56px); }
     .app-sidenav { width: 210px; background: #00419D; border-right: none; padding: 12px 0; flex-shrink: 0; }
@@ -613,7 +613,8 @@
     ============================================================ -->
     <nav class="sidebar" aria-label="Design system navigation">
       <div class="sidebar-logo">
-        <img src="assets/logo-white.svg" alt="Neighborly Software" />
+        <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:30px; width:auto; flex-shrink:0;" />
+        <span style="color:#fff; font-weight:700; font-size:14px; line-height:1.2;">Neighborly<br>Software</span>
         <span class="sidebar-version">v2.1</span>
       </div>
       <nav>
@@ -666,7 +667,10 @@
 
       <!-- HERO -->
       <div class="page-hero">
-        <img src="assets/logo-white.svg" alt="Neighborly Software" />
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:4px;">
+          <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:40px; width:auto;" />
+          <span style="color:#fff; font-weight:700; font-size:18px;">Neighborly Software</span>
+        </div>
         <h1>Neighborly Software Design System</h1>
         <p>The MUI-based component library and pattern guide for building grant management applications. Shared across Participant, Contractor, and Admin experiences.</p>
         <span class="hero-version">Version 2.1 — MUI v5</span>
@@ -690,7 +694,10 @@
           </div>
           <div class="demo-box demo-box-dark">
             <span class="demo-label" style="color:#9AA4AD;">Primary Logo — Reversed</span>
-            <img src="assets/logo-white.svg" alt="Neighborly Software logo reversed" style="height:48px;" />
+            <div style="display:flex; align-items:center; gap:12px;">
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:48px; width:auto;" />
+              <span style="color:#fff; font-weight:700; font-size:22px; font-family:inherit;">Neighborly Software</span>
+            </div>
             <p style="color:#9AA4AD; font-size:13px; margin-top:12px;">Use on dark or brand-colored backgrounds only.</p>
           </div>
         </div>
@@ -711,7 +718,10 @@
               <span class="text-muted">Icon Only</span>
             </div>
             <div style="text-align:center; background:#00419D; padding:12px; border-radius:8px;">
-              <img src="assets/logo-white.svg" alt="White reversed logo" style="height:40px; display:block; margin:0 auto 8px;" />
+              <div style="display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:8px;">
+                <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:40px; width:auto;" />
+                <span style="color:#fff; font-weight:700; font-size:16px;">Neighborly Software</span>
+              </div>
               <span style="color:rgba(255,255,255,0.7); font-size:12px;">Reversed (on dark)</span>
             </div>
           </div>
@@ -2231,7 +2241,8 @@
         <div class="app-shell">
           <div class="app-topbar">
             <div class="app-topbar-brand">
-              <img src="assets/logo-white.svg" alt="Neighborly Software" />
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:26px; width:auto;" />
+              <span style="color:#fff; font-weight:700; font-size:14px;">Neighborly Software</span>
             </div>
             <div class="app-topbar-actions">
               <button class="mui-btn btn-text-primary mui-btn-sm">Sign Out</button>
@@ -2316,7 +2327,8 @@
         <div class="app-shell">
           <div class="app-topbar">
             <div class="app-topbar-brand">
-              <img src="assets/logo-white.svg" alt="Neighborly Software" />
+              <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:26px; width:auto;" />
+              <span style="color:#fff; font-weight:700; font-size:14px;">Neighborly Software</span>
             </div>
             <div class="app-topbar-actions">
               <button class="mui-btn btn-outlined-error mui-btn-sm" onclick="document.getElementById('dialog-confirm').classList.add('open')">Deny</button>
