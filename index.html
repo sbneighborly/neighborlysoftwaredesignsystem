@@ -532,9 +532,12 @@
     /* ============================================================
        DO / DON'T
     ============================================================ */
-    .combo-frame { overflow-x: auto; border-radius: 12px; }
+    .combo-frame { overflow-x: auto; border-radius: 12px; -webkit-overflow-scrolling: touch; }
     .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 640px) { .do-dont-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) {
+      .demo-box[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    }
     .do-box { border: 2px solid #3aab5c; border-radius: 8px; overflow: hidden; }
     .dont-box { border: 2px solid #D32F2F; border-radius: 8px; overflow: hidden; }
     .do-header { background: #3aab5c; color: #fff; padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
@@ -692,7 +695,7 @@
         </div>
         <h1>Neighborly Software Design System</h1>
         <p>The MUI-based component library and pattern guide for building grant management applications. Shared across Participant, Contractor, and Admin experiences.</p>
-        <span class="hero-version">Version 2.1 — MUI v5</span>
+        <span class="hero-version">Version 2.3 — MUI v5</span>
       </div>
 
       <!-- ============================================================
@@ -2929,7 +2932,7 @@
       ============================================================ -->
       <section class="ds-section" id="theme">
         <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">27</span>
+          <span class="section-num" aria-hidden="true">28</span>
           <h2>MUI Theme Config</h2>
         </div>
         <p class="ds-section-desc">The Neighborly theme is created with <code>createTheme()</code> and passed to <code>&lt;ThemeProvider&gt;</code> at the app root. All palette values, typography, shape, and component overrides are defined here — never hardcoded in components.</p>
@@ -3019,7 +3022,7 @@
       ============================================================ -->
       <section class="ds-section" id="tokens">
         <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">28</span>
+          <span class="section-num" aria-hidden="true">29</span>
           <h2>Design Tokens</h2>
         </div>
         <p class="ds-section-desc">Design tokens are available as CSS Custom Properties via <code>tokens.css</code> for non-React contexts (emails, PDFs, static pages). In React, always use the MUI theme — not raw CSS variables.</p>
@@ -3059,7 +3062,7 @@
       ============================================================ -->
       <section class="ds-section" id="a11y">
         <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">29</span>
+          <span class="section-num" aria-hidden="true">30</span>
           <h2>Accessibility</h2>
         </div>
         <p class="ds-section-desc">Neighborly serves communities that may include users with disabilities, low digital literacy, and assistive technology users. WCAG 2.1 AA compliance is a baseline requirement — not a nice-to-have. MUI provides strong a11y defaults; our job is to not break them.</p>
@@ -3107,7 +3110,7 @@
       ============================================================ -->
       <section class="ds-section" id="governance">
         <div class="ds-section-header">
-          <span class="section-num" aria-hidden="true">30</span>
+          <span class="section-num" aria-hidden="true">31</span>
           <h2>Governance</h2>
         </div>
         <p class="ds-section-desc">The design system is a living product. Changes are versioned, reviewed, and documented. All team members are responsible for maintaining consistency — and for raising issues when the system doesn't serve a real need.</p>
@@ -3180,7 +3183,7 @@
       <!-- ══ §31 ICONS ══ -->
       <section class="ds-section" id="icons" aria-labelledby="icons-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">31</div>
+          <div class="section-num" aria-hidden="true">32</div>
           <h2 id="icons-heading">Icons</h2>
         </div>
         <p class="ds-section-desc">Neighborly uses <strong>Material Icons</strong> — the same icon library bundled with MUI. Import via <code>@mui/icons-material</code>. All icons are available as individual React components. Use <code>SvgIcon</code> for custom SVGs that need to match the MUI icon API.</p>
@@ -3240,7 +3243,7 @@
       <!-- ══ §32 NOTIFICATIONS ══ -->
       <section class="ds-section" id="notifications" aria-labelledby="notif-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">32</div>
+          <div class="section-num" aria-hidden="true">33</div>
           <h2 id="notif-heading">Notifications &amp; Snackbar</h2>
         </div>
         <p class="ds-section-desc">Use MUI <code>Snackbar</code> + <code>Alert</code> for all transient notifications. Snackbars appear at the bottom-right, auto-dismiss after 5 seconds, and are announced to screen readers via <code>role="alert"</code> or <code>role="status"</code>. Never use browser <code>alert()</code>.</p>
@@ -3289,7 +3292,7 @@
       <!-- ══ §33 RESPONSIVE TABLES ══ -->
       <section class="ds-section" id="responsive-tables" aria-labelledby="resp-tables-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">33</div>
+          <div class="section-num" aria-hidden="true">34</div>
           <h2 id="resp-tables-heading">Responsive Tables</h2>
         </div>
         <p class="ds-section-desc">MUI <code>DataGrid</code> handles responsive behavior automatically on large datasets. For standard <code>Table</code> components, apply the card-stacking pattern below at <code>640px</code> breakpoint. This is critical for caseworkers on tablets reviewing application lists.</p>
@@ -3370,7 +3373,7 @@
       <!-- ══ §34 DARK MODE TOKENS ══ -->
       <section class="ds-section" id="dark-mode" aria-labelledby="dark-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">34</div>
+          <div class="section-num" aria-hidden="true">35</div>
           <h2 id="dark-heading">Dark Mode Token Map</h2>
         </div>
         <p class="ds-section-desc">Dark mode is not yet shipped but the token mapping is defined here to prevent a painful retrofit. When dark mode is implemented, all color references in components must use the CSS custom properties below — never hard-coded hex values. The <code>@media (prefers-color-scheme: dark)</code> block in <code>tokens.css</code> overrides the root tokens automatically.</p>
@@ -3428,7 +3431,7 @@
       <!-- ══ §35 READABILITY ══ -->
       <section class="ds-section" id="readability" aria-labelledby="readability-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">35</div>
+          <div class="section-num" aria-hidden="true">36</div>
           <h2 id="readability-heading">Readability &amp; Measure</h2>
         </div>
         <p class="ds-section-desc"><strong>Measure</strong> is the typographic term for line length. Research consistently shows that lines between 45 and 75 characters produce the best reading speed and comprehension. Neighborly targets <strong>60–75 characters</strong> for body text, enforced via <code>max-width: 65ch</code> on all long-form text containers. This is especially important for participants who may have lower literacy levels.</p>
@@ -3460,7 +3463,7 @@
       <!-- ══ §36 BRAND VOICE (FULL) ══ -->
       <section class="ds-section" id="brand-voice-expanded" aria-labelledby="bv-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">36</div>
+          <div class="section-num" aria-hidden="true">37</div>
           <h2 id="bv-heading">Brand Voice — Full Guide</h2>
         </div>
         <p class="ds-section-desc">Neighborly's voice is <strong>warm, direct, empowering, honest, and inclusive</strong>. Every string in the product — button labels, error messages, empty states, confirmation dialogs — is an opportunity to reinforce this voice. The Do/Don't examples below cover the four highest-stakes moments in the grant application experience.</p>
@@ -3531,7 +3534,7 @@
       <!-- ══ §37 WCAG / VPAT ══ -->
       <section class="ds-section" id="vpat" aria-labelledby="vpat-heading">
         <div class="ds-section-header">
-          <div class="section-num" aria-hidden="true">37</div>
+          <div class="section-num" aria-hidden="true">38</div>
           <h2 id="vpat-heading">WCAG 2.1 AA &amp; VPAT</h2>
         </div>
         <p class="ds-section-desc">Neighborly Software is committed to WCAG 2.1 Level AA conformance. The table below documents how each criterion is implemented in the design system. This serves as the basis for the Voluntary Product Accessibility Template (VPAT 2.4) submitted to enterprise clients.</p>
@@ -3599,29 +3602,31 @@
         </div>
         <p class="ds-section-desc">MUI <code>Autocomplete</code> wraps a <code>TextField</code> with a dropdown suggestion list. Use it for program search, case assignment, and any field where users select from a large or dynamic dataset.</p>
 
-        <div class="demo-row" style="gap:24px; flex-wrap:wrap; align-items:flex-start;">
+        <div class="demo-box" style="display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;">
           <!-- Program search -->
-          <div style="flex:1; min-width:280px;">
-            <p class="demo-label">Program Search</p>
-            <div class="mui-input-wrap" style="position:relative;">
-              <label class="mui-label mui-label-float">Program</label>
-              <input class="mui-input" type="text" value="Housing Rehab" style="padding-right:36px;" />
-              <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">expand_more</span>
+          <div>
+            <span class="demo-label">Program Search</span>
+            <div style="position:relative; margin-bottom:4px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#5A6472; margin-bottom:4px;">Program</label>
+              <input class="mui-input" type="text" value="Housing Rehab" style="padding-right:36px; width:100%;" />
+              <span class="material-icons" style="position:absolute;right:10px;top:calc(50% + 10px);transform:translateY(-50%);color:#8A96A3;font-size:20px;">expand_more</span>
             </div>
-            <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-top:2px; overflow:hidden;">
-              <div style="padding:8px 14px; font-size:13px; color:#3D4752; cursor:pointer; background:#F0F6FF;">Housing Rehabilitation &amp; Repair</div>
-              <div style="padding:8px 14px; font-size:13px; color:#3D4752; cursor:pointer;">Homeownership Assistance</div>
-              <div style="padding:8px 14px; font-size:13px; color:#3D4752; cursor:pointer;">Housing Choice Voucher</div>
+            <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
+              <div style="padding:10px 14px; font-size:13px; color:#3D4752; cursor:pointer; background:#F0F6FF;">Housing Rehabilitation &amp; Repair</div>
+              <div style="padding:10px 14px; font-size:13px; color:#3D4752; cursor:pointer;">Homeownership Assistance</div>
+              <div style="padding:10px 14px; font-size:13px; color:#3D4752; cursor:pointer;">Housing Choice Voucher</div>
             </div>
           </div>
           <!-- Case manager assignment -->
-          <div style="flex:1; min-width:280px;">
-            <p class="demo-label">Case Manager Assignment (multiple)</p>
-            <div class="mui-input-wrap" style="min-height:48px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:8px 12px; border:1.5px solid #188af4; border-radius:8px; background:#fff;">
+          <div>
+            <span class="demo-label">Case Manager Assignment (multiple)</span>
+            <label style="display:block; font-size:12px; font-weight:600; color:#5A6472; margin-bottom:4px;">Assign Reviewers</label>
+            <div style="min-height:48px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:8px 12px; border:1.5px solid #188af4; border-radius:8px; background:#fff;">
               <span class="mui-chip chip-filled-primary chip-sm">Sarah Chen <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-left:2px;cursor:pointer;">close</span></span>
               <span class="mui-chip chip-filled-primary chip-sm">Marcus Webb <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-left:2px;cursor:pointer;">close</span></span>
               <input type="text" placeholder="Add reviewer..." style="border:none;outline:none;font-size:13px;min-width:120px;flex:1;" />
             </div>
+            <p style="font-size:12px; color:#5A6472; margin-top:6px;">Select one or more case managers to assign to this case.</p>
           </div>
         </div>
 
@@ -3664,28 +3669,30 @@
         </div>
         <p class="ds-section-desc">MUI <code>DatePicker</code> from <code>@mui/x-date-pickers</code>. Use for application deadlines, program year selection, inspection scheduling, and any date input. Always pair with <code>LocalizationProvider</code> using <code>AdapterDayjs</code>.</p>
 
-        <div class="demo-row" style="gap:24px; flex-wrap:wrap; align-items:flex-start;">
-          <div style="flex:1; min-width:220px;">
-            <p class="demo-label">Application Deadline</p>
-            <div class="mui-input-wrap" style="position:relative;">
-              <label class="mui-label mui-label-float">Application Deadline</label>
-              <input class="mui-input" type="text" value="04/30/2025" style="padding-right:40px;" />
-              <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
+        <div class="demo-box" style="display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;">
+          <!-- Single date picker -->
+          <div>
+            <span class="demo-label">Application Deadline</span>
+            <div style="position:relative;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#5A6472; margin-bottom:4px;">Application Deadline</label>
+              <input class="mui-input" type="text" value="04/30/2025" style="padding-right:40px; width:100%;" />
+              <span class="material-icons" style="position:absolute;right:10px;top:calc(50% + 10px);transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
             </div>
           </div>
-          <div style="flex:1; min-width:220px;">
-            <p class="demo-label">Date Range (Start – End)</p>
-            <div style="display:flex;gap:12px;align-items:center;">
-              <div class="mui-input-wrap" style="position:relative;flex:1;">
-                <label class="mui-label mui-label-float">Start Date</label>
-                <input class="mui-input" type="text" value="01/01/2025" style="padding-right:40px;" />
-                <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
+          <!-- Date range picker -->
+          <div>
+            <span class="demo-label">Date Range (Start – End)</span>
+            <div style="display:flex; gap:12px; align-items:flex-end;">
+              <div style="flex:1; position:relative;">
+                <label style="display:block; font-size:12px; font-weight:600; color:#5A6472; margin-bottom:4px;">Start Date</label>
+                <input class="mui-input" type="text" value="01/01/2025" style="padding-right:40px; width:100%;" />
+                <span class="material-icons" style="position:absolute;right:10px;top:calc(50% + 10px);transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
               </div>
-              <span style="color:#8A96A3;font-size:18px;">–</span>
-              <div class="mui-input-wrap" style="position:relative;flex:1;">
-                <label class="mui-label mui-label-float">End Date</label>
-                <input class="mui-input" type="text" value="12/31/2025" style="padding-right:40px;" />
-                <span class="material-icons" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
+              <span style="color:#8A96A3; font-size:18px; padding-bottom:10px;">–</span>
+              <div style="flex:1; position:relative;">
+                <label style="display:block; font-size:12px; font-weight:600; color:#5A6472; margin-bottom:4px;">End Date</label>
+                <input class="mui-input" type="text" value="12/31/2025" style="padding-right:40px; width:100%;" />
+                <span class="material-icons" style="position:absolute;right:10px;top:calc(50% + 10px);transform:translateY(-50%);color:#8A96A3;font-size:20px;">calendar_today</span>
               </div>
             </div>
           </div>
@@ -3720,25 +3727,39 @@
         </div>
         <p class="ds-section-desc">MUI <code>Drawer</code> slides in from the right (or left) for contextual detail panels — case notes, document previews, filter panels, and mobile navigation. Prefer right-anchored drawers for detail views; left-anchored for navigation.</p>
 
-        <div class="demo-row" style="gap:16px; flex-wrap:wrap;">
-          <!-- Right detail drawer mockup -->
-          <div style="flex:1; min-width:300px; border:1px solid #E2E6EA; border-radius:8px; overflow:hidden; background:#F5F7FA; height:280px; position:relative;">
-            <div style="background:#fff; padding:12px 16px; border-bottom:1px solid #E2E6EA; font-size:13px; color:#8A96A3;">Main content area</div>
-            <!-- Drawer panel -->
-            <div style="position:absolute; right:0; top:0; bottom:0; width:320px; background:#fff; box-shadow:-4px 0 16px rgba(0,0,0,0.12); display:flex; flex-direction:column;">
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #E2E6EA;">
-                <span style="font-weight:700; font-size:15px; color:#1A2332;">Case Notes — CS-2024-1847</span>
-                <span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:20px;">close</span>
+        <div class="demo-box" style="padding:0; overflow:hidden; position:relative; height:360px; background:#F5F7FA;">
+          <!-- Main content area (dimmed) -->
+          <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:flex-start; padding:32px; color:#B0BAC5; font-size:14px;">
+            Main content area
+          </div>
+          <!-- Drawer panel (right-anchored) -->
+          <div style="position:absolute; right:0; top:0; bottom:0; width:340px; background:#fff; box-shadow:-4px 0 20px rgba(0,0,0,0.12); display:flex; flex-direction:column;">
+            <!-- Drawer header -->
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #E5E9EF;">
+              <span style="font-weight:700; font-size:15px; color:#181B1F;">Case Notes — CS-2024-1847</span>
+              <span class="material-icons" style="color:#8A96A3; cursor:pointer; font-size:20px;">close</span>
+            </div>
+            <!-- Drawer content -->
+            <div style="padding:20px; flex:1; overflow:auto; display:flex; flex-direction:column; gap:16px;">
+              <div>
+                <div style="font-size:11px; font-weight:600; color:#9AA4AD; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Apr 8, 2026 · Sarah Chen</div>
+                <p style="font-size:13px; color:#3D4752; margin:0; line-height:1.6;">Reviewed income documentation. AMI calculation confirmed at 62%. Proceeding to eligibility review.</p>
               </div>
-              <div style="padding:16px 20px; flex:1; overflow:auto;">
-                <div style="font-size:12px; color:#8A96A3; margin-bottom:4px;">Apr 8, 2026 · Sarah Chen</div>
-                <p style="font-size:13px; color:#3D4752; margin:0 0 12px;">Reviewed income documentation. AMI calculation confirmed at 62%. Proceeding to eligibility review.</p>
-                <div style="font-size:12px; color:#8A96A3; margin-bottom:4px;">Apr 5, 2026 · Marcus Webb</div>
-                <p style="font-size:13px; color:#3D4752; margin:0;">Initial intake complete. Awaiting proof of residency from applicant.</p>
+              <div style="height:1px; background:#F0F2F5;"></div>
+              <div>
+                <div style="font-size:11px; font-weight:600; color:#9AA4AD; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Apr 5, 2026 · Marcus Webb</div>
+                <p style="font-size:13px; color:#3D4752; margin:0; line-height:1.6;">Initial intake complete. Awaiting proof of residency from applicant.</p>
               </div>
-              <div style="padding:12px 20px; border-top:1px solid #E2E6EA;">
-                <button class="btn btn-contained-primary" style="width:100%;">Add Note</button>
+              <div style="height:1px; background:#F0F2F5;"></div>
+              <div>
+                <div style="font-size:11px; font-weight:600; color:#9AA4AD; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Apr 2, 2026 · Sarah Chen</div>
+                <p style="font-size:13px; color:#3D4752; margin:0; line-height:1.6;">Application received. Assigned to intake queue.</p>
               </div>
+            </div>
+            <!-- Drawer footer -->
+            <div style="padding:14px 20px; border-top:1px solid #E5E9EF; display:flex; gap:10px;">
+              <input class="mui-input" type="text" placeholder="Add a note..." style="flex:1; font-size:13px;" />
+              <button class="mui-btn btn-contained-primary" style="padding:8px 16px; font-size:13px;">Add</button>
             </div>
           </div>
         </div>
@@ -3772,28 +3793,28 @@
         </div>
         <p class="ds-section-desc">MUI <code>Menu</code> and <code>MenuItem</code> for contextual action menus — the "⋯" row actions in DataGrids, navigation dropdowns, and bulk action menus. Always anchor to the trigger element using <code>anchorEl</code>.</p>
 
-        <div class="demo-row" style="gap:32px; flex-wrap:wrap; align-items:flex-start;">
+        <div class="demo-box" style="display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;">
           <!-- Row action menu -->
           <div>
-            <p class="demo-label">Row Action Menu (⋯)</p>
-            <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; overflow:hidden; width:260px;">
-              <div style="padding:10px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F5F7FA;">
-                <span style="font-size:13px; color:#3D4752;">CS-2024-1847 · Martinez, Sofia</span>
+            <span class="demo-label">Row Action Menu (⋯)</span>
+            <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; overflow:hidden; max-width:280px; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div style="padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F5F7FA; background:#F8FAFC;">
+                <span style="font-size:13px; color:#3D4752; font-weight:500;">CS-2024-1847 · Martinez, Sofia</span>
                 <span class="material-icons" style="color:#8A96A3; font-size:20px; cursor:pointer;">more_vert</span>
               </div>
               <!-- Simulated open menu -->
               <div style="padding:4px 0;">
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer; background:#F0F6FF;">
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer; background:#F0F6FF;">
                   <span class="material-icons" style="font-size:16px; color:#188af4;">visibility</span> View Case
                 </div>
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer;">
                   <span class="material-icons" style="font-size:16px; color:#8A96A3;">person_add</span> Assign Case Manager
                 </div>
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; display:flex; align-items:center; gap:10px; cursor:pointer;">
                   <span class="material-icons" style="font-size:16px; color:#8A96A3;">flag</span> Flag for Review
                 </div>
                 <div style="height:1px; background:#E2E6EA; margin:4px 0;"></div>
-                <div style="padding:8px 16px; font-size:13px; color:#D32F2F; display:flex; align-items:center; gap:10px; cursor:pointer;">
+                <div style="padding:10px 16px; font-size:13px; color:#D32F2F; display:flex; align-items:center; gap:10px; cursor:pointer;">
                   <span class="material-icons" style="font-size:16px; color:#D32F2F;">archive</span> Archive Case
                 </div>
               </div>
@@ -3802,16 +3823,16 @@
 
           <!-- Nav dropdown menu -->
           <div>
-            <p class="demo-label">Navigation Dropdown</p>
-            <div style="width:200px;">
-              <div style="display:flex; align-items:center; gap:6px; padding:8px 14px; background:#188af4; color:#fff; border-radius:20px; cursor:pointer; font-size:14px; font-weight:600; width:fit-content; margin-bottom:4px;">
+            <span class="demo-label">Navigation Dropdown</span>
+            <div style="max-width:220px;">
+              <div style="display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:#188af4; color:#fff; border-radius:20px; cursor:pointer; font-size:14px; font-weight:600; margin-bottom:6px;">
                 Cases <span class="material-icons" style="font-size:16px;">expand_more</span>
               </div>
-              <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer; background:#F0F6FF;">All Cases</div>
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer;">My Cases</div>
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer;">Eligibility Review</div>
-                <div style="padding:8px 16px; font-size:13px; color:#3D4752; cursor:pointer;">Appeals</div>
+              <div style="border:1px solid #E2E6EA; border-radius:8px; background:#fff; box-shadow:0 4px 16px rgba(0,0,0,0.12); overflow:hidden;">
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; cursor:pointer; background:#F0F6FF; font-weight:500;">All Cases</div>
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; cursor:pointer;">My Cases</div>
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; cursor:pointer;">Eligibility Review</div>
+                <div style="padding:10px 16px; font-size:13px; color:#3D4752; cursor:pointer;">Appeals</div>
               </div>
             </div>
           </div>
@@ -3891,8 +3912,8 @@
         <div class="do-dont-grid">
           <div class="do-box">
             <div class="do-header">DO — Use <code>sx</code> for layout, spacing, and responsive</div>
-            <div class="do-dont-body">
-              <div class="code-block" style="margin:0; border-radius:0; border:none;">
+            <div class="do-dont-body" style="padding:0;">
+              <div class="code-block" style="margin:0; border-radius:0; border:none; min-height:140px;">
 <span class="comment">// One-off layout on a single instance</span>
 <span class="tag">&lt;Card</span> <span class="attr">sx</span>={{ mt: 3, mb: 1, p: 2 }}<span class="tag">&gt;</span>
   <span class="tag">&lt;CardContent</span> <span class="attr">sx</span>={{ display: <span class="str">'flex'</span>, gap: 2 }}<span class="tag">&gt;</span>
@@ -3904,8 +3925,8 @@
           </div>
           <div class="dont-box">
             <div class="dont-header">DON'T — Repeat <code>sx</code> for shared styles</div>
-            <div class="do-dont-body">
-              <div class="code-block" style="margin:0; border-radius:0; border:none;">
+            <div class="do-dont-body" style="padding:0;">
+              <div class="code-block" style="margin:0; border-radius:0; border:none; min-height:140px;">
 <span class="comment">// Don't repeat this on every pipeline chip</span>
 <span class="tag">&lt;Chip</span> <span class="attr">sx</span>={{ borderRadius: <span class="str">'4px'</span>, fontWeight: 700, fontSize: <span class="str">'11px'</span> }} <span class="tag">/&gt;</span>
 <span class="tag">&lt;Chip</span> <span class="attr">sx</span>={{ borderRadius: <span class="str">'4px'</span>, fontWeight: 700, fontSize: <span class="str">'11px'</span> }} <span class="tag">/&gt;</span>
@@ -3939,7 +3960,7 @@
         </div>
       </section>
 
-            <footer style="border-top:2px solid #E5E9EF; padding-top:32px; margin-top:40px; text-align:center; color:#9AA4AD; font-size:13px;">
+            <footer style="border-top:2px solid #E5E9EF; padding-top:32px; margin-top:56px; text-align:center; color:#9AA4AD; font-size:13px;">
         <img src="assets/logo.svg" alt="Neighborly Software" style="height:24px; opacity:0.5; display:block; margin:0 auto 12px;" />
         <strong style="color:#5A6472;">Neighborly Software Design System</strong> — Version 2.3<br>
         Built with MUI v5 · Helping Communities Help People
