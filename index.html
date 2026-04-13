@@ -4267,6 +4267,59 @@
       container.appendChild(toast);
       setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
     }
+
+    // fireToast(severity, iconChar, title, body)
+    // Used by the Notifications section demo buttons
+    function fireToast(severity, iconChar, title, body) {
+      const container = document.getElementById('snackbar-container');
+      const bgMap = {
+        success: '#3aab5c',
+        error:   '#D32F2F',
+        warning: '#ED6C02',
+        info:    '#0288D1'
+      };
+      const bg = bgMap[severity] || bgMap.info;
+      const toast = document.createElement('div');
+      toast.className = 'mui-snackbar';
+      toast.style.background = bg;
+      toast.style.alignItems = 'flex-start';
+      toast.setAttribute('role', 'alert');
+
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'display:flex;align-items:flex-start;gap:12px;width:100%;';
+
+      const iconEl = document.createElement('span');
+      iconEl.style.cssText = 'font-size:18px;flex-shrink:0;margin-top:1px;';
+      iconEl.textContent = iconChar;
+
+      const textEl = document.createElement('div');
+      textEl.style.cssText = 'flex:1;min-width:0;';
+
+      const titleEl = document.createElement('div');
+      titleEl.style.cssText = 'font-weight:700;font-size:14px;margin-bottom:2px;';
+      titleEl.textContent = title;
+
+      const bodyEl = document.createElement('div');
+      bodyEl.style.cssText = 'font-size:13px;opacity:0.9;line-height:1.4;';
+      bodyEl.textContent = body;
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'snackbar-close';
+      closeBtn.setAttribute('aria-label', 'Dismiss notification');
+      closeBtn.style.marginTop = '2px';
+      closeBtn.innerHTML = '&times;';
+      closeBtn.addEventListener('click', () => toast.remove());
+
+      textEl.appendChild(titleEl);
+      textEl.appendChild(bodyEl);
+      wrapper.appendChild(iconEl);
+      wrapper.appendChild(textEl);
+      wrapper.appendChild(closeBtn);
+      toast.appendChild(wrapper);
+
+      container.appendChild(toast);
+      setTimeout(() => { if (toast.parentNode) toast.remove(); }, 6000);
+    }
   </script>
 </body>
 </html>
