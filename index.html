@@ -454,10 +454,10 @@
        MUI SNACKBAR
     ============================================================ */
     .snackbar-container { position: fixed; bottom: 24px; right: 24px; z-index: 1400; display: flex; flex-direction: column; gap: 8px; max-width: 400px; }
-    .mui-snackbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; font-size: 14px; box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14); animation: slideIn 0.2s ease-out; background: #323232; color: #fff; min-width: 280px; }
+    .mui-snackbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 4px; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08); animation: slideIn 0.2s ease-out; min-width: 300px; max-width: 400px; }
     @keyframes slideIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .snackbar-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 18px; padding: 0 4px; }
-    .snackbar-close:hover { color: #fff; }
+    .snackbar-close { margin-left: auto; background: none; border: none; color: inherit; cursor: pointer; font-size: 18px; padding: 0 4px; opacity: 0.6; }
+    .snackbar-close:hover { opacity: 1; }
 
     /* ============================================================
        PROGRESS
@@ -4245,23 +4245,24 @@
     // SNACKBAR / TOAST
     // ============================================================
     const toastColors = {
-      success: { bg: '#3aab5c', icon: 'check_circle' },
-      error:   { bg: '#D32F2F', icon: 'error' },
-      warning: { bg: '#ED6C02', icon: 'warning' },
-      info:    { bg: '#0288D1', icon: 'info' },
+      success: { bg: '#edf7ed', border: '#2e7d32', iconColor: '#2e7d32', textColor: '#1e4620', icon: 'check_circle' },
+      error:   { bg: '#fdeded', border: '#d32f2f', iconColor: '#d32f2f', textColor: '#5f2120', icon: 'error' },
+      warning: { bg: '#fff4e5', border: '#ed6c02', iconColor: '#ed6c02', textColor: '#663c00', icon: 'warning' },
+      info:    { bg: '#e5f6fd', border: '#0288D1', iconColor: '#0288D1', textColor: '#014361', icon: 'info' },
     };
-
     function showToast(message, severity = 'info') {
       const container = document.getElementById('snackbar-container');
-      const { bg, icon } = toastColors[severity] || toastColors.info;
+      const { bg, border, iconColor, textColor, icon } = toastColors[severity] || toastColors.info;
       const toast = document.createElement('div');
       toast.className = 'mui-snackbar';
       toast.style.background = bg;
+      toast.style.borderLeft = '4px solid ' + border;
+      toast.style.color = textColor;
       toast.setAttribute('role', 'alert');
       toast.innerHTML = `
-        <span class="material-icons" style="font-size:20px;">${icon}</span>
+        <span class="material-icons" style="font-size:20px;color:${iconColor};">${icon}</span>
         <span style="flex:1;">${message}</span>
-        <button class="snackbar-close" aria-label="Dismiss notification">&times;</button>
+        <button class="snackbar-close" aria-label="Dismiss notification" style="color:${textColor};opacity:0.6;">&times;</button>
       `;
       toast.querySelector('.snackbar-close').addEventListener('click', () => toast.remove());
       container.appendChild(toast);
@@ -4272,16 +4273,18 @@
     // Used by the Notifications section demo buttons
     function fireToast(severity, iconChar, title, body) {
       const container = document.getElementById('snackbar-container');
-      const bgMap = {
-        success: '#3aab5c',
-        error:   '#D32F2F',
-        warning: '#ED6C02',
-        info:    '#0288D1'
+      const palette = {
+        success: { bg: '#edf7ed', border: '#2e7d32', iconColor: '#2e7d32', textColor: '#1e4620' },
+        error:   { bg: '#fdeded', border: '#d32f2f', iconColor: '#d32f2f', textColor: '#5f2120' },
+        warning: { bg: '#fff4e5', border: '#ed6c02', iconColor: '#ed6c02', textColor: '#663c00' },
+        info:    { bg: '#e5f6fd', border: '#0288D1', iconColor: '#0288D1', textColor: '#014361' },
       };
-      const bg = bgMap[severity] || bgMap.info;
+      const { bg, border, iconColor, textColor } = palette[severity] || palette.info;
       const toast = document.createElement('div');
       toast.className = 'mui-snackbar';
       toast.style.background = bg;
+      toast.style.borderLeft = '4px solid ' + border;
+      toast.style.color = textColor;
       toast.style.alignItems = 'flex-start';
       toast.setAttribute('role', 'alert');
 
@@ -4289,7 +4292,7 @@
       wrapper.style.cssText = 'display:flex;align-items:flex-start;gap:12px;width:100%;';
 
       const iconEl = document.createElement('span');
-      iconEl.style.cssText = 'font-size:18px;flex-shrink:0;margin-top:1px;';
+      iconEl.style.cssText = 'font-size:18px;flex-shrink:0;margin-top:1px;color:' + iconColor + ';';
       iconEl.textContent = iconChar;
 
       const textEl = document.createElement('div');
@@ -4307,6 +4310,8 @@
       closeBtn.className = 'snackbar-close';
       closeBtn.setAttribute('aria-label', 'Dismiss notification');
       closeBtn.style.marginTop = '2px';
+      closeBtn.style.color = textColor;
+      closeBtn.style.opacity = '0.6';
       closeBtn.innerHTML = '&times;';
       closeBtn.addEventListener('click', () => toast.remove());
 
