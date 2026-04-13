@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neighborly Software — Design System v2.3</title>
+  <title>Neighborly Software — Design System v2.5</title>
   <meta name="description" content="Neighborly Software Design System — MUI-based component library and patterns for grant management applications." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -98,6 +98,45 @@
     .sidebar nav a:hover { background: rgba(255,255,255,0.1); color: #fff; }
     .sidebar nav a.active { background: rgba(24,138,244,0.3); color: #fff; border-left-color: #188af4; font-weight: 600; }
     .sidebar nav a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+    /* Collapse/expand nav groups */
+    .nav-group-label {
+      cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-group-label::after {
+      content: '▾'; font-size: 10px; color: rgba(255,255,255,0.4); transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .nav-group-label.collapsed::after { transform: rotate(-90deg); }
+    .nav-group-links { overflow: hidden; transition: max-height 0.25s ease; }
+    .nav-group-links.collapsed { max-height: 0 !important; }
+    /* Back to top button */
+    #back-to-top {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: #188af4; color: #fff; border: none; border-radius: 50%;
+      width: 40px; height: 40px; font-size: 20px; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(24,138,244,0.4);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    #back-to-top.visible { opacity: 1; pointer-events: auto; }
+    #back-to-top:hover { background: #1278d8; }
+    /* Section separator */
+    .ds-section { border-top: 1px solid #E4EAF2; }
+    .ds-section:first-of-type { border-top: none; }
+    /* Mobile sidebar toggle */
+    #sidebar-toggle {
+      display: none; position: fixed; top: 14px; left: 14px; z-index: 1100;
+      background: #0a2a5e; color: #fff; border: none; border-radius: 6px;
+      width: 36px; height: 36px; font-size: 20px; cursor: pointer;
+      align-items: center; justify-content: center;
+    }
+    @media (max-width: 900px) {
+      #sidebar-toggle { display: flex; }
+      .sidebar { transform: translateX(-100%); transition: transform 0.25s; position: fixed; z-index: 1050; height: 100vh; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0 !important; padding: 16px; }
+      .layout { grid-template-columns: 1fr; }
+    }
 
     /* ============================================================
        PAGE HERO
@@ -654,10 +693,92 @@
       :focus-visible { outline: 3px solid Highlight !important; }
     }
     @media print { .sidebar { display: none; } .main { padding: 20px; } }
+
+    /* ============================================================
+       CMD+K SPOTLIGHT SEARCH
+    ============================================================ */
+    #spotlight-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(10,42,94,0.55); backdrop-filter: blur(4px);
+      align-items: flex-start; justify-content: center; padding-top: 80px;
+    }
+    #spotlight-overlay.open { display: flex; }
+    #spotlight-box {
+      background: #fff; border-radius: 12px; width: 100%; max-width: 560px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.25); overflow: hidden;
+    }
+    #spotlight-input-wrap {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px; border-bottom: 1px solid #E5E9EF;
+    }
+    #spotlight-input-wrap .material-icons { color: #9AA4AD; font-size: 20px; }
+    #spotlight-input {
+      flex: 1; border: none; outline: none; font-size: 16px; font-family: inherit;
+      color: #181B1F; background: transparent;
+    }
+    #spotlight-input::placeholder { color: #B0BAC4; }
+    #spotlight-kbd {
+      font-size: 11px; color: #9AA4AD; background: #F5F7FA; border: 1px solid #E5E9EF;
+      border-radius: 4px; padding: 2px 6px; font-family: monospace; cursor: pointer;
+    }
+    #spotlight-results {
+      max-height: 380px; overflow-y: auto; padding: 8px 0;
+    }
+    .spotlight-result {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 18px; cursor: pointer; transition: background 0.1s;
+    }
+    .spotlight-result:hover, .spotlight-result.focused {
+      background: #EBF4FF;
+    }
+    .spotlight-result-num {
+      min-width: 24px; height: 24px; border-radius: 4px;
+      background: linear-gradient(135deg, #1278d8, #188af4);
+      color: #fff; font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .spotlight-result-text { flex: 1; }
+    .spotlight-result-title { font-size: 14px; font-weight: 600; color: #181B1F; }
+    .spotlight-result-group { font-size: 11px; color: #9AA4AD; }
+    .spotlight-result-arrow { color: #C8D0D8; font-size: 16px; }
+    #spotlight-empty {
+      padding: 32px 18px; text-align: center; color: #9AA4AD; font-size: 14px;
+    }
+    #spotlight-footer {
+      padding: 8px 18px; border-top: 1px solid #F0F3F7;
+      display: flex; gap: 16px; font-size: 11px; color: #B0BAC4;
+    }
+    #spotlight-footer kbd {
+      background: #F5F7FA; border: 1px solid #E5E9EF; border-radius: 3px;
+      padding: 1px 5px; font-family: monospace; font-size: 10px; color: #5A6472;
+    }
+
+    /* ============================================================
+       COMPONENT STATUS BADGES
+    ============================================================ */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+      border-radius: 20px; padding: 2px 8px; text-transform: uppercase;
+    }
+    .status-stable { background: #E8F5E9; color: #1B5E20; }
+    .status-beta { background: #E3F2FD; color: #1565C0; }
+    .status-deprecated { background: #FFF3E0; color: #E65100; }
+    .status-planned { background: #F5F5F5; color: #757575; }
+    .ds-section-header { position: relative; }
+    .ds-section-header .status-badge { margin-left: auto; flex-shrink: 0; }
   </style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
+  <!-- Back to top -->
+  <button id="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-icons" style="font-size:20px;">arrow_upward</span>
+  </button>
+  <!-- Mobile sidebar toggle -->
+  <button id="sidebar-toggle" aria-label="Toggle navigation" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+    <span class="material-icons" style="font-size:20px;">menu</span>
+  </button>
 
   <div class="layout">
     <!-- ============================================================
@@ -682,6 +803,8 @@
       </div>
       <nav id="sidebar-nav">
         <span class="nav-group-label" data-group="Foundation">Foundation</span>
+        <div class="nav-group-links">
+        <a href="#getting-started">Getting Started</a>
         <a href="#brand">Brand Identity</a>
         <a href="#colors">Color System</a>
         <a href="#typography">Typography</a>
@@ -689,7 +812,9 @@
         <a href="#elevation">Elevation</a>
         <a href="#motion">Motion</a>
 
+        </div>
         <span class="nav-group-label" data-group="MUI Components">MUI Components</span>
+        <div class="nav-group-links">
         <a href="#buttons">Button</a>
         <a href="#inputs">TextField &amp; Inputs</a>
         <a href="#form-validation">Form Validation</a>
@@ -709,26 +834,34 @@
         <a href="#menu">Menu</a>
         <a href="#sx-styled">sx vs styled()</a>
 
+        </div>
         <span class="nav-group-label" data-group="Product Patterns">Product Patterns</span>
+        <div class="nav-group-links">
         <a href="#user-types">User Types</a>
         <a href="#grant-pipeline">Grant Pipeline</a>
         <a href="#empty-states">Empty States</a>
         <a href="#loading-states">Loading States</a>
         <a href="#brand-voice">Brand Voice</a>
 
+        </div>
         <span class="nav-group-label" data-group="Combination Pages">Combination Pages</span>
+        <div class="nav-group-links">
         <a href="#page-dashboard">Admin Dashboard</a>
         <a href="#page-cases">Cases List</a>
         <a href="#page-case-viewer">Case Viewer</a>
         <a href="#page-messages">Messages</a>
         <a href="#page-participant-portal">Participant Portal</a>
 
+        </div>
         <span class="nav-group-label" data-group="Developer Reference">Developer Reference</span>
+        <div class="nav-group-links">
         <a href="#theme">MUI Theme Config</a>
         <a href="#tokens">Design Tokens</a>
         <a href="#a11y">Accessibility</a>
         <a href="#governance">Governance</a>
+        </div>
         <span class="nav-group-label" data-group="Additional Patterns">Additional Patterns</span>
+        <div class="nav-group-links">
         <a href="#icons">Icons</a>
         <a href="#notifications">Notifications</a>
         <a href="#responsive-tables">Responsive Tables</a>
@@ -742,6 +875,7 @@
         <a href="#print-export">Print &amp; Export</a>
         <a href="#content-copy">Content &amp; Copy</a>
         <a href="#qa-testing">QA &amp; Testing</a>
+        </div>
       </nav>
     </nav><!-- end .sidebar -->
 
@@ -758,8 +892,119 @@
         </div>
         <h1>Neighborly Software Design System</h1>
         <p>The MUI-based component library and pattern guide for building grant management applications. Shared across Participant, Contractor, and Admin experiences.</p>
-        <span class="hero-version">Version 2.4 — MUI v5</span>
+        <span class="hero-version">Version 2.5 — MUI v5</span>
       </div>
+
+      <!-- ============================================================
+           0. GETTING STARTED
+      ============================================================ -->
+      <section class="ds-section" id="getting-started">
+        <div class="ds-section-header">
+          <span class="section-num" aria-hidden="true">0</span>
+          <h2>Getting Started</h2>
+        </div>
+        <p class="ds-section-desc">Everything a new developer needs to install, configure, and start building with the Neighborly design system. This section covers installation, theme setup, token import, folder structure, and where to get help.</p>
+
+        <h3 class="subsection-title">Installation</h3>
+        <div class="code-block">
+<span class="cm"># 1. Install MUI and dependencies</span>
+npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
+
+<span class="cm"># 2. Install extended component packages</span>
+npm install @mui/x-data-grid @mui/x-date-pickers
+
+<span class="cm"># 3. Install dayjs (required by DatePicker)</span>
+npm install dayjs
+
+<span class="cm"># 4. Install Nunito Sans (or load via Google Fonts — see Typography section)</span>
+npm install @fontsource/nunito-sans
+        </div>
+
+        <h3 class="subsection-title">Theme Setup</h3>
+        <div class="code-block">
+<span class="cm">// src/theme/index.ts</span>
+<span class="kw">import</span> { createTheme } <span class="kw">from</span> <span class="str">'@mui/material/styles'</span>;
+
+<span class="kw">const</span> theme = createTheme({
+  palette: {
+    primary:   { main: <span class="str">'#188af4'</span>, dark: <span class="str">'#1278d8'</span>, contrastText: <span class="str">'#fff'</span> },
+    secondary: { main: <span class="str">'#00419D'</span> },
+    error:     { main: <span class="str">'#D32F2F'</span> },
+    warning:   { main: <span class="str">'#ED6C02'</span> },
+    success:   { main: <span class="str">'#3aab5c'</span> },
+  },
+  typography: {
+    fontFamily: <span class="str">"'Nunito Sans', 'Avenir Next LT Pro', -apple-system, sans-serif"</span>,
+    button: { textTransform: <span class="str">'none'</span>, fontWeight: 600 },
+  },
+  shape: { borderRadius: 6 },
+  components: {
+    MuiButton: { styleOverrides: { root: { textTransform: <span class="str">'none'</span>, fontWeight: 600 } } },
+    MuiChip:   { styleOverrides: { root: { fontWeight: 600 } } },
+  },
+});
+
+<span class="kw">export default</span> theme;
+        </div>
+
+        <h3 class="subsection-title">Wrap Your App</h3>
+        <div class="code-block">
+<span class="cm">// src/main.tsx (or index.tsx)</span>
+<span class="kw">import</span> { ThemeProvider, CssBaseline } <span class="kw">from</span> <span class="str">'@mui/material'</span>;
+<span class="kw">import</span> theme <span class="kw">from</span> <span class="str">'./theme'</span>;
+
+<span class="tag">&lt;ThemeProvider</span> <span class="attr">theme</span>={theme}<span class="tag">&gt;</span>
+  <span class="tag">&lt;CssBaseline /&gt;</span>
+  <span class="tag">&lt;App /&gt;</span>
+<span class="tag">&lt;/ThemeProvider&gt;</span>
+        </div>
+
+        <h3 class="subsection-title">Import Design Tokens</h3>
+        <div class="code-block">
+<span class="cm">/* In your global CSS or index.css */</span>
+<span class="kw">@import</span> url(<span class="str">'https://sbneighborly.github.io/neighborlysoftwarebrandguidelines/tokens.css'</span>);
+
+<span class="cm">/* Then use tokens in your CSS */</span>
+.my-component {
+  color: <span class="kw">var</span>(<span class="str">--nbl-primary</span>);
+  background: <span class="kw">var</span>(<span class="str">--nbl-surface</span>);
+  border-radius: <span class="kw">var</span>(<span class="str">--nbl-radius-md</span>);
+}
+        </div>
+
+        <h3 class="subsection-title">Folder Structure</h3>
+        <div class="demo-box">
+          <div style="font-family:'SF Mono','Fira Code',monospace;font-size:13px;line-height:2;color:#181B1F;">
+            <div>src/</div>
+            <div style="padding-left:20px;">├── <strong>components/</strong> &nbsp;<span style="color:#9AA4AD;">— Shared UI components (wrap MUI)</span></div>
+            <div style="padding-left:40px;">├── Button/</div>
+            <div style="padding-left:40px;">├── DataGrid/</div>
+            <div style="padding-left:40px;">└── …</div>
+            <div style="padding-left:20px;">├── <strong>theme/</strong> &nbsp;<span style="color:#9AA4AD;">— MUI theme config</span></div>
+            <div style="padding-left:40px;">├── index.ts &nbsp;<span style="color:#9AA4AD;">— createTheme()</span></div>
+            <div style="padding-left:40px;">├── palette.ts &nbsp;<span style="color:#9AA4AD;">— color tokens</span></div>
+            <div style="padding-left:40px;">└── typography.ts</div>
+            <div style="padding-left:20px;">├── <strong>pages/</strong> &nbsp;<span style="color:#9AA4AD;">— Route-level page components</span></div>
+            <div style="padding-left:20px;">├── <strong>hooks/</strong> &nbsp;<span style="color:#9AA4AD;">— Custom React hooks</span></div>
+            <div style="padding-left:20px;">├── <strong>utils/</strong> &nbsp;<span style="color:#9AA4AD;">— Helpers, formatters</span></div>
+            <div style="padding-left:20px;">└── <strong>index.css</strong> &nbsp;<span style="color:#9AA4AD;">— @import tokens.css here</span></div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Where to Get Help</h3>
+        <div class="demo-box">
+          <table class="token-table" style="width:100%;">
+            <thead><tr><th>Resource</th><th>Where</th><th>Use for</th></tr></thead>
+            <tbody>
+              <tr><td><strong>This document</strong></td><td>You're here</td><td>Component patterns, usage rules, code snippets</td></tr>
+              <tr><td><strong>Brand Guidelines</strong></td><td><a href="https://sbneighborly.github.io/neighborlysoftwarebrandguidelines/" target="_blank">neighborlysoftwarebrandguidelines</a></td><td>Logos, color tokens, typography assets</td></tr>
+              <tr><td><strong>MUI Docs</strong></td><td><a href="https://mui.com/material-ui/" target="_blank">mui.com/material-ui</a></td><td>Full component API reference</td></tr>
+              <tr><td><strong>File an issue</strong></td><td><a href="https://github.com/sbneighborly/neighborlysoftwaredesignsystem/issues" target="_blank">GitHub Issues</a></td><td>Report bugs, request new patterns</td></tr>
+              <tr><td><strong>Propose a change</strong></td><td>Open a PR against <code>main</code></td><td>New components, token updates, doc fixes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <!-- ============================================================
            1. BRAND IDENTITY
@@ -1517,6 +1762,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num" aria-hidden="true">9</span>
           <h2 id="form-validation-heading">Form Validation</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">Validation is the highest-stakes interaction in Neighborly — participants are often anxious, low-literacy, or on mobile. Every validation decision has a direct impact on application completion rates. These patterns are mandatory, not optional.</p>
 
@@ -2094,6 +2340,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num" aria-hidden="true">16</span>
           <h2>Tabs</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>&lt;Tabs&gt;</code> organizes related content within a single view. Use for switching between views of the same data — not for navigation between pages.</p>
 
@@ -2137,6 +2384,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num" aria-hidden="true">17</span>
           <h2>Snackbar</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>&lt;Snackbar&gt;</code> provides brief, non-blocking feedback. Pair with <code>&lt;Alert&gt;</code> for severity. Auto-dismiss after 5 seconds. Always include a dismiss button for accessibility.</p>
 
@@ -2164,6 +2412,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num" aria-hidden="true">18</span>
           <h2>Progress</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">Use <code>&lt;LinearProgress&gt;</code> for file uploads, form saves, and page loads. Use <code>&lt;CircularProgress&gt;</code> for inline loading states. Always include <code>aria-label</code> and <code>role="progressbar"</code>.</p>
 
@@ -2204,6 +2453,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num" aria-hidden="true">19</span>
           <h2>Tooltip</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>&lt;Tooltip&gt;</code> provides supplementary context for icons, truncated text, and technical terms. Never put essential information only in a tooltip — it must also be accessible without hover.</p>
 
@@ -2243,6 +2493,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num">19</span>
           <h2 id="autocomplete-heading">Autocomplete</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>Autocomplete</code> wraps a <code>TextField</code> with a dropdown suggestion list. Use it for program search, case assignment, and any field where users select from a large or dynamic dataset.</p>
 
@@ -2386,6 +2637,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num">20</span>
           <h2 id="datepicker-heading">Date Picker</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>DatePicker</code> from <code>@mui/x-date-pickers</code>. Use for application deadlines, program year selection, inspection scheduling, and any date input. Always pair with <code>LocalizationProvider</code> using <code>AdapterDayjs</code>.</p>
 
@@ -2472,6 +2724,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num">21</span>
           <h2 id="drawer-heading">Drawer</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>Drawer</code> slides in from the right (or left) for contextual detail panels — case notes, document previews, filter panels, and mobile navigation. Prefer right-anchored drawers for detail views; left-anchored for navigation.</p>
 
@@ -2580,6 +2833,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num">22</span>
           <h2 id="menu-heading">Menu &amp; MenuItem</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI <code>Menu</code> and <code>MenuItem</code> for contextual action menus — the "⋯" row actions in DataGrids, navigation dropdowns, and bulk action menus. Always anchor to the trigger element using <code>anchorEl</code>.</p>
 
@@ -2665,6 +2919,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <span class="section-num">23</span>
           <h2 id="sx-styled-heading">Styling: <code>sx</code> vs <code>styled()</code> vs Theme</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">MUI provides three styling approaches. Choosing the right one keeps the codebase consistent and avoids specificity conflicts. Use this decision guide for every new component.</p>
 
@@ -3164,7 +3419,18 @@ sx={{ transition: theme.transitions.create(
             <span style="font-size:12px; color:#5A6472;">Dark</span>
           </div>
         </div>
-        <div class="combo-frame" id="dashboard-combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
+                <div style="background:#F0F7FF;border:1px solid #BBDEFB;border-radius:8px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:#1565C0;">
+          <strong style="display:block;margin-bottom:8px;">&#128204; Component Annotations</strong>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;">
+            <div><span style="font-weight:600;">Stat cards</span> — <code>Card</code> + <code>Typography</code> variant=h4</div>
+            <div><span style="font-weight:600;">Priority queue</span> — <code>DataGrid</code> density=compact</div>
+            <div><span style="font-weight:600;">Work tabs</span> — <code>Tabs</code> + <code>Tab</code> with badge</div>
+            <div><span style="font-weight:600;">Status chips</span> — <code>Chip</code> size=small color=semantic</div>
+            <div><span style="font-weight:600;">Action buttons</span> — <code>Button</code> size=small variant=outlined</div>
+            <div><span style="font-weight:600;">Top nav</span> — <code>AppBar</code> + <code>Toolbar</code> + <code>IconButton</code></div>
+          </div>
+        </div>
+<div class="combo-frame" id="dashboard-combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
           <!-- Top nav -->
           <div data-dm-topnav style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
             <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
@@ -3385,7 +3651,18 @@ sx={{ transition: theme.transitions.create(
           </div>
         </div>
 
-        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#fff;">
+                <div style="background:#F0F7FF;border:1px solid #BBDEFB;border-radius:8px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:#1565C0;">
+          <strong style="display:block;margin-bottom:8px;">&#128204; Component Annotations</strong>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;">
+            <div><span style="font-weight:600;">View tabs</span> — <code>Tabs</code> scrollable variant</div>
+            <div><span style="font-weight:600;">Cases grid</span> — <code>DataGrid</code> with checkboxSelection</div>
+            <div><span style="font-weight:600;">Status chips</span> — <code>Chip</code> color=semantic size=small</div>
+            <div><span style="font-weight:600;">Filter row</span> — <code>Select</code> size=small + <code>TextField</code></div>
+            <div><span style="font-weight:600;">Bulk actions</span> — <code>Button</code> group, shown on selection</div>
+            <div><span style="font-weight:600;">Pagination</span> — <code>DataGrid</code> built-in pagination</div>
+          </div>
+        </div>
+<div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#fff;">
           <!-- Top nav (same as dashboard) -->
           <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
             <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
@@ -3642,7 +3919,18 @@ sx={{ transition: theme.transitions.create(
           </div>
         </div>
 
-        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
+                <div style="background:#F0F7FF;border:1px solid #BBDEFB;border-radius:8px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:#1565C0;">
+          <strong style="display:block;margin-bottom:8px;">&#128204; Component Annotations</strong>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;">
+            <div><span style="font-weight:600;">Workflow stepper</span> — <code>Stepper</code> orientation=vertical</div>
+            <div><span style="font-weight:600;">Case header</span> — <code>Paper</code> + <code>Chip</code> + <code>Typography</code></div>
+            <div><span style="font-weight:600;">Warning banner</span> — <code>Alert</code> severity=warning</div>
+            <div><span style="font-weight:600;">Form fields</span> — <code>TextField</code> + <code>Select</code> fullWidth</div>
+            <div><span style="font-weight:600;">Notes drawer</span> — <code>Drawer</code> anchor=right</div>
+            <div><span style="font-weight:600;">Action buttons</span> — <code>Button</code> contained + outlined pair</div>
+          </div>
+        </div>
+<div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
           <!-- Top nav -->
           <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
             <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
@@ -3891,7 +4179,18 @@ sx={{ transition: theme.transitions.create(
           </div>
         </div>
 
-        <div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#fff;">
+                <div style="background:#F0F7FF;border:1px solid #BBDEFB;border-radius:8px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:#1565C0;">
+          <strong style="display:block;margin-bottom:8px;">&#128204; Component Annotations</strong>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;">
+            <div><span style="font-weight:600;">Thread list</span> — <code>List</code> + <code>ListItem</code> + <code>Badge</code></div>
+            <div><span style="font-weight:600;">Message bubbles</span> — <code>Paper</code> with conditional alignment</div>
+            <div><span style="font-weight:600;">Unread badges</span> — <code>Badge</code> color=error</div>
+            <div><span style="font-weight:600;">Compose input</span> — <code>TextField</code> multiline + <code>IconButton</code></div>
+            <div><span style="font-weight:600;">Split layout</span> — CSS Grid 280px + 1fr</div>
+            <div><span style="font-weight:600;">Timestamps</span> — <code>Typography</code> variant=caption color=text.secondary</div>
+          </div>
+        </div>
+<div class="combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#fff;">
           <!-- Top nav -->
           <div style="background:#fff; border-bottom:1px solid #E2E6EA; padding:0 20px; display:flex; align-items:center; gap:0; height:52px;">
             <div style="display:flex; align-items:center; gap:8px; margin-right:24px;">
@@ -4250,6 +4549,10 @@ sx={{ transition: theme.transitions.create(
           <strong>&#x2713; Source of Truth Resolution (v2.4)</strong><br>
           As of v2.4, the MUI theme values in this design system are the canonical source of truth. <code>tokens.css</code> in the brand guidelines repo has been updated to match. The three-way conflict between <code>tokens.css</code>, <code>index.html</code>, and Storybook stories (documented in the v2.4 changelog) has been resolved. Going forward: <strong>change the MUI theme first, then regenerate <code>tokens.css</code> from it</strong>. Never update <code>tokens.css</code> independently.
         </div>
+        <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1B5E20;">
+          <strong>&#x2713; Source of Truth Resolution (v2.4)</strong><br>
+          As of v2.4, the MUI theme values in this design system are the canonical source of truth. <code>tokens.css</code> in the brand guidelines repo has been updated to match. The three-way conflict between <code>tokens.css</code>, <code>index.html</code>, and Storybook stories (documented in the v2.4 changelog) has been resolved. Going forward: <strong>change the MUI theme first, then regenerate <code>tokens.css</code> from it</strong>. Never update <code>tokens.css</code> independently.
+        </div>
         <h3 class="subsection-title">Figma &#8596; Token Sync</h3>
         <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">The single biggest organizational risk is a designer updating a color in Figma that never makes it to <code>--nbl-primary</code>. The table below maps every Figma token name to its CSS variable and MUI palette key &mdash; this is the single source of truth for the sync pipeline.</p>
         <div class="demo-box">
@@ -4274,6 +4577,75 @@ sx={{ transition: theme.transitions.create(
         </div>
         <div style="background:#FFF8E1;border:1px solid #FFD54F;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px;color:#5D4037;">
           <strong>Pipeline status:</strong> Token export via <a href="https://amzn.github.io/style-dictionary/" target="_blank" rel="noopener" style="color:#188af4;">Style Dictionary</a> is the recommended path. The <code>tokens.css</code> file is currently maintained manually &mdash; the next engineering sprint should wire up a Style Dictionary config that auto-generates <code>tokens.css</code> from the Figma Tokens Studio JSON export. Until then, any Figma color change requires a manual PR to <a href="https://github.com/sbneighborly/neighborlysoftwarebrandguidelines" target="_blank" rel="noopener" style="color:#188af4;">neighborlysoftwarebrandguidelines</a>.
+        </div>
+
+        <h3 class="subsection-title">Complete Token Inventory</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">Every CSS custom property defined in <code>tokens.css</code>, grouped by category. These are the only values you should ever hard-code in a component — always reference the token, never the raw hex.</p>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+            <tbody>
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Brand Colors</td></tr>
+              <tr><td><span class="token-swatch" style="background:#188af4;"></span><code>--nbl-primary</code></td><td>#188af4</td><td>Buttons, links, active states</td></tr>
+              <tr><td><span class="token-swatch" style="background:#1278d8;"></span><code>--nbl-primary-dark</code></td><td>#1278d8</td><td>Hover states on primary</td></tr>
+              <tr><td><span class="token-swatch" style="background:#00419D;"></span><code>--nbl-secondary</code></td><td>#00419D</td><td>Sidebar, nav, secondary actions</td></tr>
+              <tr><td><span class="token-swatch" style="background:#0a2a5e;"></span><code>--nbl-navy</code></td><td>#0a2a5e</td><td>Headings, hero backgrounds</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Semantic Colors</td></tr>
+              <tr><td><span class="token-swatch" style="background:#3aab5c;"></span><code>--nbl-success</code></td><td>#3aab5c</td><td>Approved, complete, positive</td></tr>
+              <tr><td><span class="token-swatch" style="background:#D32F2F;"></span><code>--nbl-error</code></td><td>#D32F2F</td><td>Errors, denied, destructive</td></tr>
+              <tr><td><span class="token-swatch" style="background:#ED6C02;"></span><code>--nbl-warning</code></td><td>#ED6C02</td><td>Warnings, expiring, attention</td></tr>
+              <tr><td><span class="token-swatch" style="background:#0288D1;"></span><code>--nbl-info</code></td><td>#0288D1</td><td>Informational, neutral alerts</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Text</td></tr>
+              <tr><td><span class="token-swatch" style="background:#181B1F;"></span><code>--nbl-text-primary</code></td><td>#181B1F</td><td>Body text, headings</td></tr>
+              <tr><td><span class="token-swatch" style="background:#5A6472;"></span><code>--nbl-text-secondary</code></td><td>#5A6472</td><td>Descriptions, captions, labels</td></tr>
+              <tr><td><span class="token-swatch" style="background:#9AA4AD;"></span><code>--nbl-text-disabled</code></td><td>#9AA4AD</td><td>Disabled inputs, placeholder</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Surfaces &amp; Borders</td></tr>
+              <tr><td><span class="token-swatch" style="background:#FFFFFF;border:1px solid #E5E9EF;"></span><code>--nbl-bg-paper</code></td><td>#FFFFFF</td><td>Cards, dialogs, inputs</td></tr>
+              <tr><td><span class="token-swatch" style="background:#F5F7FA;border:1px solid #E5E9EF;"></span><code>--nbl-bg-default</code></td><td>#F5F7FA</td><td>Page background</td></tr>
+              <tr><td><span class="token-swatch" style="background:#EBF4FF;"></span><code>--nbl-bg-selected</code></td><td>#EBF4FF</td><td>Selected rows, active items</td></tr>
+              <tr><td><span class="token-swatch" style="background:#E5E9EF;"></span><code>--nbl-divider</code></td><td>#E5E9EF</td><td>Dividers, borders, separators</td></tr>
+              <tr><td><span class="token-swatch" style="background:#C8D0D8;"></span><code>--nbl-border</code></td><td>#C8D0D8</td><td>Input borders (default)</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Spacing</td></tr>
+              <tr><td><code>--nbl-spacing</code></td><td>8px</td><td>Base unit — theme.spacing(1)</td></tr>
+              <tr><td><code>--nbl-spacing-xs</code></td><td>4px</td><td>theme.spacing(0.5)</td></tr>
+              <tr><td><code>--nbl-spacing-sm</code></td><td>8px</td><td>theme.spacing(1)</td></tr>
+              <tr><td><code>--nbl-spacing-md</code></td><td>16px</td><td>theme.spacing(2)</td></tr>
+              <tr><td><code>--nbl-spacing-lg</code></td><td>24px</td><td>theme.spacing(3)</td></tr>
+              <tr><td><code>--nbl-spacing-xl</code></td><td>32px</td><td>theme.spacing(4)</td></tr>
+              <tr><td><code>--nbl-spacing-2xl</code></td><td>48px</td><td>theme.spacing(6)</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Shape &amp; Elevation</td></tr>
+              <tr><td><code>--nbl-radius-sm</code></td><td>4px</td><td>Chips, badges, small elements</td></tr>
+              <tr><td><code>--nbl-radius-md</code></td><td>6px</td><td>Buttons, inputs (default)</td></tr>
+              <tr><td><code>--nbl-radius-lg</code></td><td>8px</td><td>Cards, dialogs</td></tr>
+              <tr><td><code>--nbl-radius-xl</code></td><td>12px</td><td>Hero sections, large panels</td></tr>
+              <tr><td><code>--nbl-shadow-sm</code></td><td>0 1px 4px rgba(0,0,0,0.08)</td><td>Cards (resting)</td></tr>
+              <tr><td><code>--nbl-shadow-md</code></td><td>0 4px 16px rgba(0,0,0,0.12)</td><td>Dropdowns, popovers</td></tr>
+              <tr><td><code>--nbl-shadow-lg</code></td><td>0 12px 40px rgba(0,0,0,0.18)</td><td>Dialogs, drawers</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Motion</td></tr>
+              <tr><td><code>--nbl-duration-fast</code></td><td>150ms</td><td>Hover, focus, ripple</td></tr>
+              <tr><td><code>--nbl-duration-standard</code></td><td>250ms</td><td>Expand, collapse, enter</td></tr>
+              <tr><td><code>--nbl-duration-slow</code></td><td>350ms</td><td>Page transitions, large panels</td></tr>
+              <tr><td><code>--nbl-easing-standard</code></td><td>cubic-bezier(0.4,0,0.2,1)</td><td>Most transitions</td></tr>
+              <tr><td><code>--nbl-easing-enter</code></td><td>cubic-bezier(0,0,0.2,1)</td><td>Elements entering viewport</td></tr>
+              <tr><td><code>--nbl-easing-exit</code></td><td>cubic-bezier(0.4,0,1,1)</td><td>Elements leaving viewport</td></tr>
+
+              <tr style="background:#F5F7FA;"><td colspan="3" style="font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5A6472;padding:8px 16px;">Typography</td></tr>
+              <tr><td><code>--nbl-font-family</code></td><td>'Nunito Sans', 'Avenir Next LT Pro', sans-serif</td><td>All text</td></tr>
+              <tr><td><code>--nbl-font-size-xs</code></td><td>11px</td><td>Labels, captions, badges</td></tr>
+              <tr><td><code>--nbl-font-size-sm</code></td><td>13px</td><td>Secondary text, table cells</td></tr>
+              <tr><td><code>--nbl-font-size-md</code></td><td>14px</td><td>Body text (default)</td></tr>
+              <tr><td><code>--nbl-font-size-lg</code></td><td>16px</td><td>Emphasized body, input text</td></tr>
+              <tr><td><code>--nbl-font-size-xl</code></td><td>20px</td><td>Section subheadings</td></tr>
+              <tr><td><code>--nbl-font-size-2xl</code></td><td>24px</td><td>Page titles</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -4390,6 +4762,7 @@ sx={{ transition: theme.transitions.create(
             <thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead>
             <tbody>
               <tr><td><strong>2.4.0</strong></td><td>Apr 2026</td><td>Color/font source-of-truth resolution; form validation; nav search/filter; Figma token sync; motion enforcement; dark mode toggle; file upload, multi-page form, role-based access, print/export patterns; DataGrid interaction specs; content/copy patterns; QA/testing integration</td></tr>
+              <tr><td><strong>2.4.0</strong></td><td>Apr 2026</td><td>Color/font source-of-truth resolution; form validation; nav search/filter; Figma token sync; motion enforcement; dark mode toggle; file upload, multi-page form, role-based access, print/export patterns; DataGrid interaction specs; content/copy patterns; QA/testing integration</td></tr>
               <tr><td><strong>2.3.0</strong></td><td>Apr 2026</td><td>New MUI components (Autocomplete, DatePicker, Drawer, Menu), 4 real-product combination pages (Admin Dashboard, Cases List, Case Viewer, Messages, Participant Portal), sx vs styled() guide. Brand green corrected to #3aab5c.</td></tr>
               <tr><td>2.2.0</td><td>Feb 2026</td><td>Full accessibility sprint — WCAG 2.1 AA criterion table, VPAT framing, Windows High Contrast Mode, prefers-reduced-motion. Icons, Notifications, Responsive Tables, Readability, Brand Voice (Full) sections added.</td></tr>
               <tr><td>2.1.0</td><td>Nov 2025</td><td>Dark mode token mapping, additional pattern sections (User Types, Grant Pipeline, Empty States, Loading States, Brand Voice). Governance workflow with CI gates.</td></tr>
@@ -4409,6 +4782,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">39</div>
           <h2 id="icons-heading">Icons</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">Neighborly uses <strong>Material Icons</strong> — the same icon library bundled with MUI. Import via <code>@mui/icons-material</code>. All icons are available as individual React components. Use <code>SvgIcon</code> for custom SVGs that need to match the MUI icon API.</p>
         <h3 class="subsection-title">Import Pattern</h3>
@@ -4469,6 +4843,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">40</div>
           <h2 id="notif-heading">Notifications &amp; Snackbar</h2>
+          <span class="status-badge status-stable">● Stable</span>
         </div>
         <p class="ds-section-desc">Use MUI <code>Snackbar</code> + <code>Alert</code> for all transient notifications. Snackbars appear at the bottom-right, auto-dismiss after 5 seconds, and are announced to screen readers via <code>role="alert"</code> or <code>role="status"</code>. Never use browser <code>alert()</code>.</p>
         <h3 class="subsection-title">Live Demo</h3>
@@ -4817,6 +5192,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">46</div>
           <h2 id="file-upload-heading">File Upload</h2>
+          <span class="status-badge status-beta">◐ Beta</span>
         </div>
         <p class="ds-section-desc">Document upload is a critical interaction in Neighborly — participants submit proof of income, residency, and identity. The upload pattern must handle progress, errors, accepted formats, and file size limits clearly. Never use a plain <code>&lt;input type="file"&gt;</code> — always wrap it in a styled drop zone.</p>
 
@@ -4917,6 +5293,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">47</div>
           <h2 id="multi-page-form-heading">Multi-Page Form</h2>
+          <span class="status-badge status-beta">◐ Beta</span>
         </div>
         <p class="ds-section-desc">Grant applications in Neighborly span multiple pages — household info, income verification, property details, document upload, and review. The multi-page form pattern defines navigation, progress indication, validation gating, and save behavior across steps.</p>
 
@@ -4997,6 +5374,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">48</div>
           <h2 id="role-access-heading">Role-Based Access Visual Cues</h2>
+          <span class="status-badge status-beta">◐ Beta</span>
         </div>
         <p class="ds-section-desc">Neighborly has three user roles with different permissions: <strong>Admin</strong> (full access), <strong>Caseworker</strong> (edit assigned cases), and <strong>Participant</strong> (view own applications). The UI must communicate read-only vs. editable state clearly without relying on color alone.</p>
 
@@ -5096,6 +5474,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">49</div>
           <h2 id="print-export-heading">Print &amp; Export</h2>
+          <span class="status-badge status-beta">◐ Beta</span>
         </div>
         <p class="ds-section-desc">Caseworkers frequently print case summaries, award letters, and inspection reports. Participants may print their application confirmation. The print stylesheet ensures these documents are clean, readable, and free of navigation chrome.</p>
 
@@ -5170,6 +5549,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">50</div>
           <h2 id="content-copy-heading">Content &amp; Copy Patterns</h2>
+          <span class="status-badge status-beta">◐ Beta</span>
         </div>
         <p class="ds-section-desc">Writing conventions for UI text in Neighborly — button labels, error messages, empty states, confirmation dialogs, and status labels. Consistent copy reduces cognitive load and builds trust with applicants.</p>
 
@@ -5260,6 +5640,7 @@ sx={{ transition: theme.transitions.create(
         <div class="ds-section-header">
           <div class="section-num" aria-hidden="true">51</div>
           <h2 id="qa-testing-heading">QA &amp; Testing Integration</h2>
+          <span class="status-badge status-beta">◐ Beta</span>
         </div>
         <p class="ds-section-desc">How the design system integrates with automated testing. Every component demo in this system is built with <code>data-testid</code> attributes and ARIA roles that map directly to the testing patterns below.</p>
 
@@ -5478,22 +5859,86 @@ it(<span class="str">'has no accessibility violations'</span>, <span class="kw">
     }
 
     // ============================================================
-    // SIDEBAR ACTIVE STATE
+    // SIDEBAR ACTIVE STATE (improved scroll-spy)
     // ============================================================
     const navLinks = document.querySelectorAll('.sidebar nav a');
     const sections = document.querySelectorAll('.ds-section');
+    const sidebarEl = document.querySelector('.sidebar');
+    let scrollTicking = false;
+
+    function setActiveLink(id) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sidebar nav a[href="#${id}"]`);
+      if (active) {
+        active.classList.add('active');
+        // Auto-scroll sidebar to keep active link visible
+        if (sidebarEl) {
+          const navRect = active.getBoundingClientRect();
+          const sidebarRect = sidebarEl.getBoundingClientRect();
+          if (navRect.top < sidebarRect.top + 80 || navRect.bottom > sidebarRect.bottom - 40) {
+            active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+        // Auto-expand the group containing the active link
+        const groupLinks = active.closest('.nav-group-links');
+        if (groupLinks && groupLinks.classList.contains('collapsed')) {
+          groupLinks.classList.remove('collapsed');
+          const label = groupLinks.previousElementSibling;
+          if (label) label.classList.remove('collapsed');
+          groupLinks.style.maxHeight = groupLinks.scrollHeight + 'px';
+        }
+      }
+    }
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          navLinks.forEach(l => l.classList.remove('active'));
-          const active = document.querySelector(`.sidebar nav a[href="#${entry.target.id}"]`);
-          if (active) active.classList.add('active');
+          setActiveLink(entry.target.id);
         }
       });
-    }, { rootMargin: '-20% 0px -70% 0px' });
+    }, { rootMargin: '-10% 0px -75% 0px' });
 
     sections.forEach(s => observer.observe(s));
+
+    // ============================================================
+    // NAV GROUP COLLAPSE / EXPAND
+    // ============================================================
+    document.querySelectorAll('.nav-group-label').forEach(label => {
+      const links = label.nextElementSibling;
+      if (links && links.classList.contains('nav-group-links')) {
+        links.style.maxHeight = links.scrollHeight + 'px';
+      }
+      label.addEventListener('click', () => {
+        const links = label.nextElementSibling;
+        if (!links || !links.classList.contains('nav-group-links')) return;
+        const isCollapsed = links.classList.contains('collapsed');
+        if (isCollapsed) {
+          links.classList.remove('collapsed');
+          label.classList.remove('collapsed');
+          links.style.maxHeight = links.scrollHeight + 'px';
+        } else {
+          links.style.maxHeight = links.scrollHeight + 'px';
+          requestAnimationFrame(() => {
+            links.classList.add('collapsed');
+            label.classList.add('collapsed');
+          });
+        }
+      });
+    });
+
+    // ============================================================
+    // BACK TO TOP
+    // ============================================================
+    const backToTop = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(() => {
+          if (backToTop) backToTop.classList.toggle('visible', window.scrollY > 400);
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    });
 
     // ============================================================
     // TABS
@@ -5661,6 +6106,162 @@ it(<span class="str">'has no accessibility violations'</span>, <span class="kw">
       });
     });
 
+    // ============================================================
+    // CMD+K SPOTLIGHT SEARCH
+    // ============================================================
+    (function() {
+      // Build index from all sections
+      const sectionIndex = [];
+      document.querySelectorAll('.ds-section').forEach(section => {
+        const id = section.id;
+        const heading = section.querySelector('h2');
+        const desc = section.querySelector('.ds-section-desc');
+        const numEl = section.querySelector('.section-num');
+        const groupLabel = (() => {
+          const navLink = document.querySelector('.sidebar nav a[href="#' + id + '"]');
+          if (!navLink) return 'Other';
+          const groupLinks = navLink.closest('.nav-group-links');
+          if (!groupLinks) return 'Other';
+          const label = groupLinks.previousElementSibling;
+          return label ? label.textContent.replace('\u25be','').trim() : 'Other';
+        })();
+        if (heading) {
+          sectionIndex.push({
+            id,
+            title: heading.textContent.trim(),
+            desc: desc ? desc.textContent.trim().substring(0, 80) + '\u2026' : '',
+            group: groupLabel,
+            num: numEl ? numEl.textContent.trim() : '',
+          });
+        }
+      });
+
+      const overlay = document.getElementById('spotlight-overlay');
+      const input = document.getElementById('spotlight-input');
+      const results = document.getElementById('spotlight-results');
+      let focusedIndex = -1;
+
+      function openSpotlight() {
+        if (!overlay) return;
+        overlay.classList.add('open');
+        if (input) { input.value = ''; input.focus(); }
+        renderResults('');
+        document.body.style.overflow = 'hidden';
+      }
+      window.closeSpotlight = function() {
+        if (!overlay) return;
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        focusedIndex = -1;
+      };
+
+      function renderResults(query) {
+        if (!results) return;
+        const q = query.toLowerCase().trim();
+        const filtered = q
+          ? sectionIndex.filter(s =>
+              s.title.toLowerCase().includes(q) ||
+              s.group.toLowerCase().includes(q) ||
+              s.desc.toLowerCase().includes(q)
+            )
+          : sectionIndex.slice(0, 14);
+
+        if (filtered.length === 0) {
+          results.innerHTML = '<div id="spotlight-empty">No sections found for "' + query + '"</div>';
+          return;
+        }
+        results.innerHTML = filtered.map((s, i) =>
+          '<div class="spotlight-result" role="option" data-id="' + s.id + '" tabindex="-1">' +
+          '<div class="spotlight-result-num">' + s.num + '</div>' +
+          '<div class="spotlight-result-text">' +
+          '<div class="spotlight-result-title">' + s.title + '</div>' +
+          '<div class="spotlight-result-group">' + s.group + '</div>' +
+          '</div>' +
+          '<span class="material-icons spotlight-result-arrow">chevron_right</span>' +
+          '</div>'
+        ).join('');
+        focusedIndex = -1;
+        results.querySelectorAll('.spotlight-result').forEach(function(el) {
+          el.addEventListener('click', function() {
+            var id = el.dataset.id;
+            closeSpotlight();
+            setTimeout(function() {
+              var target = document.getElementById(id);
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+          });
+        });
+      }
+
+      if (input) {
+        input.addEventListener('input', function() { renderResults(input.value); });
+        input.addEventListener('keydown', function(e) {
+          var items = results ? results.querySelectorAll('.spotlight-result') : [];
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            focusedIndex = Math.min(focusedIndex + 1, items.length - 1);
+            items.forEach(function(el, i) { el.classList.toggle('focused', i === focusedIndex); });
+            if (items[focusedIndex]) items[focusedIndex].scrollIntoView({ block: 'nearest' });
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            focusedIndex = Math.max(focusedIndex - 1, 0);
+            items.forEach(function(el, i) { el.classList.toggle('focused', i === focusedIndex); });
+            if (items[focusedIndex]) items[focusedIndex].scrollIntoView({ block: 'nearest' });
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            var focused = results.querySelector('.spotlight-result.focused') || results.querySelector('.spotlight-result');
+            if (focused) focused.click();
+          }
+        });
+      }
+
+      // Keyboard shortcut: Cmd+K / Ctrl+K
+      document.addEventListener('keydown', function(e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          if (overlay && overlay.classList.contains('open')) {
+            closeSpotlight();
+          } else {
+            openSpotlight();
+          }
+        }
+        if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) {
+          closeSpotlight();
+        }
+      });
+
+      // Wire up nav search input to open spotlight
+      var navSearchInput = document.getElementById('nav-search');
+      if (navSearchInput) {
+        navSearchInput.addEventListener('focus', function(e) {
+          navSearchInput.blur();
+          openSpotlight();
+        });
+        navSearchInput.setAttribute('placeholder', '\u2318K  Search sections\u2026');
+        navSearchInput.setAttribute('readonly', 'readonly');
+        navSearchInput.style.cursor = 'pointer';
+      }
+    })();
+
   </script>
+
+  <!-- ============================================================
+       CMD+K SPOTLIGHT SEARCH OVERLAY
+  ============================================================ -->
+  <div id="spotlight-overlay" role="dialog" aria-modal="true" aria-label="Search design system" onclick="if(event.target===this)closeSpotlight()">
+    <div id="spotlight-box">
+      <div id="spotlight-input-wrap">
+        <span class="material-icons">search</span>
+        <input id="spotlight-input" type="search" placeholder="Search sections, components, tokens…" autocomplete="off" aria-label="Search design system" />
+        <span id="spotlight-kbd" onclick="closeSpotlight()">Esc</span>
+      </div>
+      <div id="spotlight-results" role="listbox"></div>
+      <div id="spotlight-footer">
+        <span><kbd>↑↓</kbd> Navigate</span>
+        <span><kbd>↵</kbd> Go to section</span>
+        <span><kbd>Esc</kbd> Close</span>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
