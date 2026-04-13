@@ -1,6 +1,6 @@
 /**
  * Neighborly Software — Design Tokens
- * Version 1.2.0 · April 2026
+ * Version 1.3.0 · April 2026
  *
  * Usage:
  *   @import url('https://sbneighborly.github.io/neighborlysoftwarebrandguidelines/tokens.css');
@@ -22,8 +22,8 @@
   --nbl-blue-50:  #EEF6FF;
   --nbl-blue-100: #DBEAFE;
   --nbl-blue-400: #4EABFF;
-  --nbl-blue-500: #1389FD;   /* Primary */
-  --nbl-blue-600: #0F74DF;   /* Primary hover */
+  --nbl-blue-500: #188af4;   /* Primary */
+  --nbl-blue-600: #1278d8;   /* Primary hover */
   --nbl-blue-900: #00419D;   /* Deep navy */
 
   /* Semantic Colors */
@@ -44,17 +44,17 @@
   --nbl-gray-900: #181B1F;
 
   /* Status Colors */
-  --nbl-success-bg:   #D1FAE5;
-  --nbl-success:      #10B981;
-  --nbl-success-dark: #065F46;
+  --nbl-success-bg:   #E8F5E9;
+  --nbl-success:      #3aab5c;
+  --nbl-success-dark: #1B5E20;
   --nbl-warning-bg:   #FEF3C7;
   --nbl-warning:      #F59E0B;
   --nbl-warning-dark: #92400E;
-  --nbl-error-bg:     #FEE2E2;
-  --nbl-error:        #EF4444;
-  --nbl-error-dark:   #991B1B;
+  --nbl-error-bg:     #FFEBEE;
+  --nbl-error:        #D32F2F;
+  --nbl-error-dark:   #B71C1C;
   --nbl-info-bg:      #DBEAFE;
-  --nbl-info:         #1389FD;
+  --nbl-info:         #188af4;
   --nbl-info-dark:    #1E40AF;
 
   /* Surface & Background */
@@ -72,7 +72,7 @@
   --nbl-text-link:      var(--nbl-blue-600);
 
   /* Typography */
-  --nbl-font-family:    'Nunito', 'Avenir Next LT Pro', 'Avenir Next', 'Segoe UI', sans-serif;
+  --nbl-font-family:    'Nunito Sans', 'Avenir Next LT Pro', 'Avenir Next', 'Segoe UI', sans-serif;
   --nbl-font-mono:      'Courier New', 'Consolas', monospace;
 
   --nbl-text-xs:   11px;
