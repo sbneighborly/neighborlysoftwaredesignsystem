@@ -788,7 +788,7 @@
       <div class="sidebar-logo">
         <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:30px; width:auto; flex-shrink:0;" />
         <span style="color:#fff; font-weight:700; font-size:14px; line-height:1.2;">Neighborly<br>Software</span>
-        <span class="sidebar-version">v2.5</span>
+        <span class="sidebar-version">v2.6</span>
       </div>
       <div class="nav-search-wrap">
         <input type="search" id="nav-search" class="nav-search-input" placeholder="Search sections…" aria-label="Search design system sections" autocomplete="off" />
@@ -1742,6 +1742,64 @@ sx={{ transition: theme.transitions.create(
   <span class="tag">&lt;AddIcon</span> <span class="tag">/&gt;</span>
 <span class="tag">&lt;/Fab&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>Solid fill (#188af4), white label, 6px radius, elevation 2</td>
+                <td><span class="state-badge css-only">CSS</span> Default MUI contained style</td>
+              </tr>
+              <tr>
+                <td><strong>Hover</strong></td>
+                <td>Mouse over / touch start</td>
+                <td>Background darkens to #1278d8, elevation lifts to 4</td>
+                <td><span class="state-badge css-only">CSS</span> :hover — MUI handles automatically via theme.palette.primary.dark</td>
+              </tr>
+              <tr>
+                <td><strong>Focus</strong></td>
+                <td>Tab key / programmatic focus</td>
+                <td>3px offset ring: #188af4 at 50% opacity</td>
+                <td><span class="state-badge css-only">CSS</span> :focus-visible — override with MuiButton.styleOverrides.root[":focus-visible"]</td>
+              </tr>
+              <tr>
+                <td><strong>Active / Pressed</strong></td>
+                <td>Mouse down / touch</td>
+                <td>Background darkens further, elevation drops to 0</td>
+                <td><span class="state-badge css-only">CSS</span> :active — MUI ripple effect handles visually</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>disabled prop</td>
+                <td>Muted gray (#bdbdbd), no hover/active states, cursor: not-allowed</td>
+                <td><span class="state-badge prop">Prop</span> &lt;Button disabled&gt; — never disable without a visible reason nearby</td>
+              </tr>
+              <tr>
+                <td><strong>Loading</strong></td>
+                <td>loading prop (LoadingButton)</td>
+                <td>Label replaced with spinner + "Submitting…", pointer-events: none</td>
+                <td><span class="state-badge prop">Prop</span> &lt;LoadingButton loading loadingIndicator="Submitting…"&gt; from @mui/lab</td>
+              </tr>
+              <tr>
+                <td><strong>Icon-only</strong></td>
+                <td>No text label</td>
+                <td>Square aspect ratio, tooltip required</td>
+                <td><span class="state-badge aria">ARIA</span> aria-label="[action]" required on every icon-only button</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -1829,6 +1887,134 @@ sx={{ transition: theme.transitions.create(
     <span class="tag">&lt;MenuItem</span> <span class="attr">value</span>=<span class="str">"era"</span><span class="tag">&gt;</span>Emergency Rental Assistance<span class="tag">&lt;/MenuItem&gt;</span>
   <span class="tag">&lt;/Select&gt;</span>
 <span class="tag">&lt;/FormControl&gt;</span>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>Light border (#c4c4c4), floating label at top-left, no shadow</td>
+                <td><span class="state-badge css-only">CSS</span> MUI outlined variant default</td>
+              </tr>
+              <tr>
+                <td><strong>Hover</strong></td>
+                <td>Mouse over input</td>
+                <td>Border darkens to #181B1F</td>
+                <td><span class="state-badge css-only">CSS</span> :hover — MUI handles automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Focus</strong></td>
+                <td>Click / Tab into field</td>
+                <td>Border becomes 2px #188af4, label floats up and turns blue</td>
+                <td><span class="state-badge css-only">CSS</span> :focus-within — MUI handles; label animation is built-in</td>
+              </tr>
+              <tr>
+                <td><strong>Filled (has value)</strong></td>
+                <td>User has typed</td>
+                <td>Label stays floated, value text in #181B1F</td>
+                <td><span class="state-badge css-only">CSS</span> MUI shrinks label automatically when value is present</td>
+              </tr>
+              <tr>
+                <td><strong>Error</strong></td>
+                <td>Validation failure</td>
+                <td>Border turns #D32F2F, label turns red, helper text turns red</td>
+                <td><span class="state-badge prop">Prop</span> error helperText="[message]" — always pair error with helperText</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>disabled prop</td>
+                <td>Muted background (#f5f5f5), label and value grayed, no interaction</td>
+                <td><span class="state-badge prop">Prop</span> disabled — never disable a required field without explanation</td>
+              </tr>
+              <tr>
+                <td><strong>Read-only</strong></td>
+                <td>InputProps.readOnly</td>
+                <td>Looks filled but cursor is default, no focus ring</td>
+                <td><span class="state-badge prop">Prop</span> InputProps={{ readOnly: true }} — use for role-based view-only fields</td>
+              </tr>
+              <tr>
+                <td><strong>Loading / Async</strong></td>
+                <td>Async validation in progress</td>
+                <td>Spinner in end adornment, border stays blue</td>
+                <td><span class="state-badge prop">Prop</span> InputProps={{ endAdornment: &lt;CircularProgress size={20}/&gt; }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>Light border (#c4c4c4), floating label at top-left, no shadow</td>
+                <td><span class="state-badge css-only">CSS</span> MUI outlined variant default</td>
+              </tr>
+              <tr>
+                <td><strong>Hover</strong></td>
+                <td>Mouse over input</td>
+                <td>Border darkens to #181B1F</td>
+                <td><span class="state-badge css-only">CSS</span> :hover — MUI handles automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Focus</strong></td>
+                <td>Click / Tab into field</td>
+                <td>Border becomes 2px #188af4, label floats up and turns blue</td>
+                <td><span class="state-badge css-only">CSS</span> :focus-within — MUI handles; label animation is built-in</td>
+              </tr>
+              <tr>
+                <td><strong>Filled (has value)</strong></td>
+                <td>User has typed</td>
+                <td>Label stays floated, value text in #181B1F</td>
+                <td><span class="state-badge css-only">CSS</span> MUI shrinks label automatically when value is present</td>
+              </tr>
+              <tr>
+                <td><strong>Error</strong></td>
+                <td>Validation failure</td>
+                <td>Border turns #D32F2F, label turns red, helper text turns red</td>
+                <td><span class="state-badge prop">Prop</span> error helperText="[message]" — always pair error with helperText</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>disabled prop</td>
+                <td>Muted background (#f5f5f5), label and value grayed, no interaction</td>
+                <td><span class="state-badge prop">Prop</span> disabled — never disable a required field without explanation</td>
+              </tr>
+              <tr>
+                <td><strong>Read-only</strong></td>
+                <td>InputProps.readOnly</td>
+                <td>Looks filled but cursor is default, no focus ring</td>
+                <td><span class="state-badge prop">Prop</span> InputProps={{ readOnly: true }} — use for role-based view-only fields</td>
+              </tr>
+              <tr>
+                <td><strong>Loading / Async</strong></td>
+                <td>Async validation in progress</td>
+                <td>Spinner in end adornment, border stays blue</td>
+                <td><span class="state-badge prop">Prop</span> InputProps={{ endAdornment: &lt;CircularProgress size={20}/&gt; }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -2020,6 +2206,64 @@ sx={{ transition: theme.transitions.create(
 <span class="tag">&lt;Chip</span> <span class="attr">label</span>=<span class="str">"Under Review"</span> <span class="attr">color</span>=<span class="str">"warning"</span> <span class="attr">variant</span>=<span class="str">"filled"</span> <span class="tag">/&gt;</span>
 <span class="tag">&lt;Chip</span> <span class="attr">label</span>=<span class="str">"Emergency Rental"</span> <span class="attr">variant</span>=<span class="str">"outlined"</span> <span class="attr">onClick</span>=<span class="str">{handleFilter}</span> <span class="tag">/&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>Filled or outlined, label + optional icon, 16px height</td>
+                <td><span class="state-badge css-only">CSS</span> MUI Chip default</td>
+              </tr>
+              <tr>
+                <td><strong>Hover (clickable)</strong></td>
+                <td>Mouse over clickable chip</td>
+                <td>Background lightens/darkens by ~8%, cursor: pointer</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic when onClick is provided</td>
+              </tr>
+              <tr>
+                <td><strong>Focus (clickable)</strong></td>
+                <td>Tab to chip</td>
+                <td>3px focus ring matching chip color</td>
+                <td><span class="state-badge css-only">CSS</span> :focus-visible — MUI handles</td>
+              </tr>
+              <tr>
+                <td><strong>Selected</strong></td>
+                <td>User clicks to toggle</td>
+                <td>Background becomes solid color, checkmark icon appears</td>
+                <td><span class="state-badge prop">Prop</span> Use controlled selected state + onClick toggle</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>disabled prop</td>
+                <td>Muted gray, no hover, cursor: default</td>
+                <td><span class="state-badge prop">Prop</span> disabled — avoid on filter chips; prefer hiding inapplicable options</td>
+              </tr>
+              <tr>
+                <td><strong>Delete hover</strong></td>
+                <td>Mouse over x icon</td>
+                <td>x icon background darkens, cursor: pointer</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic when onDelete is provided</td>
+              </tr>
+              <tr>
+                <td><strong>Loading (custom)</strong></td>
+                <td>Async filter applying</td>
+                <td>Replace icon with CircularProgress size={12}</td>
+                <td><span class="state-badge prop">Prop</span> icon={&lt;CircularProgress size={12}/&gt;} while loading</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2084,6 +2328,64 @@ sx={{ transition: theme.transitions.create(
   <span class="tag">&lt;/CardActions&gt;</span>
 <span class="tag">&lt;/Card&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>White background, elevation 1 (2px shadow), 6px radius</td>
+                <td><span class="state-badge css-only">CSS</span> MUI Card default</td>
+              </tr>
+              <tr>
+                <td><strong>Hover (clickable)</strong></td>
+                <td>Mouse over CardActionArea</td>
+                <td>Elevation lifts to 4, subtle ripple overlay</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic with CardActionArea — use for navigable cards only</td>
+              </tr>
+              <tr>
+                <td><strong>Focus (clickable)</strong></td>
+                <td>Tab to CardActionArea</td>
+                <td>3px focus ring on card boundary</td>
+                <td><span class="state-badge css-only">CSS</span> :focus-visible — MUI handles</td>
+              </tr>
+              <tr>
+                <td><strong>Selected / Active</strong></td>
+                <td>User selects card (e.g., filter)</td>
+                <td>Left border 4px #188af4, background #f0f4ff</td>
+                <td><span class="state-badge css-only">CSS</span> Add selected class: sx={{ borderLeft: "4px solid", borderColor: "primary.main", bgcolor: "#f0f4ff" }}</td>
+              </tr>
+              <tr>
+                <td><strong>Loading skeleton</strong></td>
+                <td>Data not yet available</td>
+                <td>Card shape preserved, content replaced with Skeleton</td>
+                <td><span class="state-badge prop">Prop</span> &lt;Skeleton variant="rectangular" height={120}/&gt; inside card</td>
+              </tr>
+              <tr>
+                <td><strong>Error state</strong></td>
+                <td>API failure</td>
+                <td>Card shows error Alert inside, no content</td>
+                <td><span class="state-badge prop">Prop</span> Render &lt;Alert severity="error"&gt; as card content</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled (non-interactive)</strong></td>
+                <td>Feature not available to role</td>
+                <td>Muted opacity (0.5), pointer-events: none</td>
+                <td><span class="state-badge css-only">CSS</span> sx={{ opacity: 0.5, pointerEvents: "none" }} + aria-disabled="true"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2132,6 +2434,64 @@ sx={{ transition: theme.transitions.create(
   Funds will be disbursed within 5-7 business days.
 <span class="tag">&lt;/Alert&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Info</strong></td>
+                <td>System notification, neutral</td>
+                <td>Pale blue bg (#e5f6fd), blue icon, blue left border</td>
+                <td><span class="state-badge prop">Prop</span> severity="info"</td>
+              </tr>
+              <tr>
+                <td><strong>Success</strong></td>
+                <td>Action completed</td>
+                <td>Pale green bg (#edf7ed), green checkmark, green left border</td>
+                <td><span class="state-badge prop">Prop</span> severity="success"</td>
+              </tr>
+              <tr>
+                <td><strong>Warning</strong></td>
+                <td>Attention needed, not broken</td>
+                <td>Pale amber bg (#fff4e5), orange icon, orange left border</td>
+                <td><span class="state-badge prop">Prop</span> severity="warning"</td>
+              </tr>
+              <tr>
+                <td><strong>Error</strong></td>
+                <td>Action failed, user must act</td>
+                <td>Pale red bg (#fdeded), red icon, red left border</td>
+                <td><span class="state-badge prop">Prop</span> severity="error"</td>
+              </tr>
+              <tr>
+                <td><strong>Dismissible</strong></td>
+                <td>User closes alert</td>
+                <td>Close x button in top-right, alert unmounts on click</td>
+                <td><span class="state-badge prop">Prop</span> onClose={() =&gt; setOpen(false)} — always pair with aria-label="Close"</td>
+              </tr>
+              <tr>
+                <td><strong>With action</strong></td>
+                <td>Alert has a CTA</td>
+                <td>Action button inline with alert text</td>
+                <td><span class="state-badge prop">Prop</span> action={&lt;Button size="small"&gt;Undo&lt;/Button&gt;}</td>
+              </tr>
+              <tr>
+                <td><strong>Filled variant</strong></td>
+                <td>High-emphasis alert</td>
+                <td>Solid color background, white text</td>
+                <td><span class="state-badge prop">Prop</span> variant="filled" — use sparingly; only for critical errors</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2177,6 +2537,64 @@ sx={{ transition: theme.transitions.create(
     <span class="tag">&lt;Button</span> <span class="attr">color</span>=<span class="str">"error"</span> <span class="attr">variant</span>=<span class="str">"contained"</span> <span class="attr">onClick</span>=<span class="str">{handleDeny}</span><span class="tag">&gt;</span>Deny<span class="tag">&lt;/Button&gt;</span>
   <span class="tag">&lt;/DialogActions&gt;</span>
 <span class="tag">&lt;/Dialog&gt;</span>
+        </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Closed</strong></td>
+                <td>Default / after dismiss</td>
+                <td>Not rendered (open=false), focus returns to trigger</td>
+                <td><span class="state-badge prop">Prop</span> open={false} — always return focus to the element that opened the dialog</td>
+              </tr>
+              <tr>
+                <td><strong>Opening</strong></td>
+                <td>open prop becomes true</td>
+                <td>Fade + scale-up animation (200ms easeOut)</td>
+                <td><span class="state-badge css-only">CSS</span> MUI transition — customize with TransitionComponent prop</td>
+              </tr>
+              <tr>
+                <td><strong>Open / resting</strong></td>
+                <td>Dialog is visible</td>
+                <td>White card, scrim overlay (#00000080), focus trapped inside</td>
+                <td><span class="state-badge prop">Prop</span> open={true} — focus trap is automatic; first focusable element receives focus</td>
+              </tr>
+              <tr>
+                <td><strong>Scrollable content</strong></td>
+                <td>Content exceeds dialog height</td>
+                <td>Content area scrolls, title and actions stay fixed</td>
+                <td><span class="state-badge prop">Prop</span> scroll="paper" for content scroll; scroll="body" for full-page scroll</td>
+              </tr>
+              <tr>
+                <td><strong>Loading (async action)</strong></td>
+                <td>Submit button clicked, awaiting API</td>
+                <td>Submit button shows LoadingButton spinner, Cancel disabled</td>
+                <td><span class="state-badge prop">Prop</span> Replace Button with LoadingButton; disable Cancel during submission</td>
+              </tr>
+              <tr>
+                <td><strong>Error state</strong></td>
+                <td>API call failed</td>
+                <td>Error Alert appears inside dialog above action buttons</td>
+                <td><span class="state-badge prop">Prop</span> Render Alert inside DialogContent — do not close dialog on error</td>
+              </tr>
+              <tr>
+                <td><strong>Closing</strong></td>
+                <td>Esc / backdrop click / action</td>
+                <td>Fade + scale-down animation (150ms easeIn)</td>
+                <td><span class="state-badge css-only">CSS</span> onClose fires — always implement; never trap user in a dialog</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -2362,6 +2780,70 @@ sx={{ transition: theme.transitions.create(
             </tbody>
           </table>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Loading</strong></td>
+                <td>Data fetch in progress</td>
+                <td>Skeleton rows replace data rows, column headers remain</td>
+                <td><span class="state-badge prop">Prop</span> loading={true} — DataGrid renders LoadingOverlay automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Empty</strong></td>
+                <td>No rows match filter/query</td>
+                <td>Custom empty state component centered in grid body</td>
+                <td><span class="state-badge prop">Prop</span> slots={{ noRowsOverlay: CustomEmptyState }} — always provide a helpful message</td>
+              </tr>
+              <tr>
+                <td><strong>Row hover</strong></td>
+                <td>Mouse over row</td>
+                <td>Row background lightens to #f5f7fa</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — customize with sx={{ "& .MuiDataGrid-row:hover": { bgcolor: "#f5f7fa" } }}</td>
+              </tr>
+              <tr>
+                <td><strong>Row selected</strong></td>
+                <td>Checkbox checked or row clicked</td>
+                <td>Row background becomes #e8f0fe, checkbox checked</td>
+                <td><span class="state-badge prop">Prop</span> checkboxSelection — controlled with rowSelectionModel + onRowSelectionModelChange</td>
+              </tr>
+              <tr>
+                <td><strong>Cell editing</strong></td>
+                <td>Double-click or Enter on editable cell</td>
+                <td>Cell gets input border, edit mode active</td>
+                <td><span class="state-badge prop">Prop</span> editable column field — handle processRowUpdate for save</td>
+              </tr>
+              <tr>
+                <td><strong>Sort active</strong></td>
+                <td>Column header clicked</td>
+                <td>Sort arrow icon appears, column header bold</td>
+                <td><span class="state-badge prop">Prop</span> sortModel — 3-click cycle: asc to desc to none</td>
+              </tr>
+              <tr>
+                <td><strong>Filter active</strong></td>
+                <td>Filter applied</td>
+                <td>Filter icon in column header turns blue, row count updates</td>
+                <td><span class="state-badge prop">Prop</span> filterModel — persist in sessionStorage for caseworker workflows</td>
+              </tr>
+              <tr>
+                <td><strong>Error / API failure</strong></td>
+                <td>Data fetch fails</td>
+                <td>Error Alert above grid, retry button, empty grid body</td>
+                <td><span class="state-badge prop">Prop</span> Render Alert above DataGrid component — DataGrid has no built-in error state</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2408,6 +2890,58 @@ sx={{ transition: theme.transitions.create(
   <span class="tag">&lt;/Step&gt;</span>
 <span class="tag">&lt;/Stepper&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Upcoming</strong></td>
+                <td>Step not yet reached</td>
+                <td>Gray circle with step number, gray label</td>
+                <td><span class="state-badge css-only">CSS</span> Default MUI Stepper — no action needed</td>
+              </tr>
+              <tr>
+                <td><strong>Active</strong></td>
+                <td>Current step</td>
+                <td>Blue filled circle (#188af4), bold label, content expanded</td>
+                <td><span class="state-badge prop">Prop</span> activeStep={n} — MUI handles visual state automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Completed</strong></td>
+                <td>Step finished and validated</td>
+                <td>Blue circle with white checkmark, label normal weight</td>
+                <td><span class="state-badge prop">Prop</span> completed prop on StepLabel — set when user advances past step</td>
+              </tr>
+              <tr>
+                <td><strong>Error</strong></td>
+                <td>Step has validation failure</td>
+                <td>Red circle with x, label turns red, error message below</td>
+                <td><span class="state-badge prop">Prop</span> error prop on StepLabel + optional StepContent with error Alert</td>
+              </tr>
+              <tr>
+                <td><strong>Optional</strong></td>
+                <td>Step can be skipped</td>
+                <td>"Optional" subtitle below step label</td>
+                <td><span class="state-badge prop">Prop</span> optional={&lt;Typography variant="caption"&gt;Optional&lt;/Typography&gt;}</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>Step not accessible yet (gated)</td>
+                <td>Gray, no hover cursor, not clickable</td>
+                <td><span class="state-badge prop">Prop</span> disabled prop on Step — use for forward-gating; never gate backward navigation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2452,6 +2986,64 @@ sx={{ transition: theme.transitions.create(
   <span class="tag">&lt;Tab</span> <span class="attr">label</span>=<span class="str">"Documents"</span> <span class="attr">id</span>=<span class="str">"tab-1"</span> <span class="attr">aria-controls</span>=<span class="str">"tabpanel-1"</span> <span class="tag">/&gt;</span>
 <span class="tag">&lt;/Tabs&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting (inactive)</strong></td>
+                <td>Tab not selected</td>
+                <td>Gray label, no underline, normal weight</td>
+                <td><span class="state-badge css-only">CSS</span> Default MUI Tab</td>
+              </tr>
+              <tr>
+                <td><strong>Hover</strong></td>
+                <td>Mouse over inactive tab</td>
+                <td>Label darkens slightly, cursor: pointer</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — MUI handles</td>
+              </tr>
+              <tr>
+                <td><strong>Active / Selected</strong></td>
+                <td>Tab is current view</td>
+                <td>Blue label (#188af4), 2px blue underline indicator</td>
+                <td><span class="state-badge prop">Prop</span> value={currentTab} on Tabs — MUI handles indicator animation</td>
+              </tr>
+              <tr>
+                <td><strong>Focus</strong></td>
+                <td>Tab key to tab</td>
+                <td>3px focus ring on tab</td>
+                <td><span class="state-badge css-only">CSS</span> :focus-visible — MUI handles</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>Tab not available to user</td>
+                <td>Muted gray, no hover, cursor: default</td>
+                <td><span class="state-badge prop">Prop</span> disabled prop on Tab — prefer hiding over disabling when possible</td>
+              </tr>
+              <tr>
+                <td><strong>With badge</strong></td>
+                <td>Tab has unread count</td>
+                <td>Badge overlaid on tab label</td>
+                <td><span class="state-badge prop">Prop</span> label={&lt;Badge badgeContent={3} color="error"&gt;Messages&lt;/Badge&gt;}</td>
+              </tr>
+              <tr>
+                <td><strong>Loading (tab content)</strong></td>
+                <td>Content for selected tab loading</td>
+                <td>Tab panel shows skeleton, tab itself stays active</td>
+                <td><span class="state-badge prop">Prop</span> Render Skeleton inside TabPanel — tab indicator stays on active tab</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2479,6 +3071,64 @@ sx={{ transition: theme.transitions.create(
     Application saved successfully.
   <span class="tag">&lt;/Alert&gt;</span>
 <span class="tag">&lt;/Snackbar&gt;</span>
+        </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hidden</strong></td>
+                <td>Default / after dismiss</td>
+                <td>Not rendered, no DOM presence</td>
+                <td><span class="state-badge prop">Prop</span> open={false}</td>
+              </tr>
+              <tr>
+                <td><strong>Entering</strong></td>
+                <td>open becomes true</td>
+                <td>Slides up from bottom-right (200ms easeOut)</td>
+                <td><span class="state-badge css-only">CSS</span> MUI Slide transition — default for Snackbar</td>
+              </tr>
+              <tr>
+                <td><strong>Visible</strong></td>
+                <td>Toast is showing</td>
+                <td>Fixed bottom-right, above all content, role="status" or role="alert"</td>
+                <td><span class="state-badge aria">ARIA</span> role="status" for info/success; role="alert" for warning/error</td>
+              </tr>
+              <tr>
+                <td><strong>Auto-dismiss countdown</strong></td>
+                <td>autoHideDuration timer running</td>
+                <td>No visual indicator — toast stays visible until dismissed</td>
+                <td><span class="state-badge prop">Prop</span> autoHideDuration={5000} — 5s for info/success; do not auto-dismiss errors</td>
+              </tr>
+              <tr>
+                <td><strong>Hover (pause)</strong></td>
+                <td>Mouse over toast</td>
+                <td>Auto-dismiss timer pauses</td>
+                <td><span class="state-badge prop">Prop</span> Automatic with MUI Snackbar — timer resumes on mouse leave</td>
+              </tr>
+              <tr>
+                <td><strong>Dismissed</strong></td>
+                <td>User clicks x, or timer expires</td>
+                <td>Slides down (150ms easeIn), removed from DOM</td>
+                <td><span class="state-badge prop">Prop</span> onClose fires — set open={false} in handler</td>
+              </tr>
+              <tr>
+                <td><strong>Stacked (multiple)</strong></td>
+                <td>Multiple toasts queued</td>
+                <td>Only one visible at a time — queue next after dismiss</td>
+                <td><span class="state-badge prop">Prop</span> Implement a toast queue in state; render one Snackbar, swap content on close</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -2560,6 +3210,64 @@ sx={{ transition: theme.transitions.create(
     <span class="tag">&lt;InfoIcon</span> <span class="tag">/&gt;</span>
   <span class="tag">&lt;/IconButton&gt;</span>
 <span class="tag">&lt;/Tooltip&gt;</span>
+        </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hidden</strong></td>
+                <td>Default</td>
+                <td>Not rendered</td>
+                <td><span class="state-badge css-only">CSS</span> Default — tooltip only appears on trigger</td>
+              </tr>
+              <tr>
+                <td><strong>Hover trigger</strong></td>
+                <td>Mouse over target element</td>
+                <td>Tooltip appears after 300ms delay (enterDelay)</td>
+                <td><span class="state-badge prop">Prop</span> Default trigger — enterDelay={300} recommended to avoid flicker</td>
+              </tr>
+              <tr>
+                <td><strong>Focus trigger</strong></td>
+                <td>Tab to target element</td>
+                <td>Tooltip appears immediately on focus</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — tooltip appears on :focus-visible</td>
+              </tr>
+              <tr>
+                <td><strong>Touch trigger</strong></td>
+                <td>Long press on mobile</td>
+                <td>Tooltip appears after long press, dismisses on tap-away</td>
+                <td><span class="state-badge prop">Prop</span> enterTouchDelay={700} — MUI default</td>
+              </tr>
+              <tr>
+                <td><strong>Visible</strong></td>
+                <td>Triggered</td>
+                <td>Dark gray pill (#333), white text, 12px, max-width 200px</td>
+                <td><span class="state-badge css-only">CSS</span> MUI default styling — customize with componentsProps.tooltip</td>
+              </tr>
+              <tr>
+                <td><strong>Dismissing</strong></td>
+                <td>Mouse leaves / focus lost</td>
+                <td>Fades out after leaveDelay (default 0ms)</td>
+                <td><span class="state-badge prop">Prop</span> leaveDelay={200} recommended for interactive tooltips</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled (no tooltip)</strong></td>
+                <td>title is empty string</td>
+                <td>Tooltip never appears</td>
+                <td><span class="state-badge prop">Prop</span> title="" — use to conditionally suppress tooltip</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -2705,6 +3413,76 @@ sx={{ transition: theme.transitions.create(
   )}
 <span class="tag">/&gt;</span>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>TextField with dropdown arrow icon, no popup</td>
+                <td><span class="state-badge css-only">CSS</span> MUI Autocomplete default</td>
+              </tr>
+              <tr>
+                <td><strong>Focused / typing</strong></td>
+                <td>User clicks or tabs into field</td>
+                <td>TextField focus ring, dropdown opens if options available</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — popup opens on focus if openOnFocus prop set</td>
+              </tr>
+              <tr>
+                <td><strong>Loading options</strong></td>
+                <td>Async fetch in progress</td>
+                <td>Spinner in end adornment, "Loading..." option in dropdown</td>
+                <td><span class="state-badge prop">Prop</span> loading={true} — renders CircularProgress and loadingText</td>
+              </tr>
+              <tr>
+                <td><strong>Options visible</strong></td>
+                <td>Dropdown open</td>
+                <td>Paper dropdown below field, options list with hover highlight</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic when open</td>
+              </tr>
+              <tr>
+                <td><strong>Option hover</strong></td>
+                <td>Mouse over option</td>
+                <td>Option background: #f0f4ff</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — MUI handles</td>
+              </tr>
+              <tr>
+                <td><strong>Option selected</strong></td>
+                <td>User clicks option</td>
+                <td>Checkmark on selected option (multiple), field populates</td>
+                <td><span class="state-badge prop">Prop</span> Multiple: renderOption with Checkbox; single: value updates</td>
+              </tr>
+              <tr>
+                <td><strong>No options</strong></td>
+                <td>Query returns empty</td>
+                <td>"No options" text in dropdown</td>
+                <td><span class="state-badge prop">Prop</span> noOptionsText="No programs found" — always customize this</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>disabled prop</td>
+                <td>Muted field, no interaction, dropdown never opens</td>
+                <td><span class="state-badge prop">Prop</span> disabled — same as TextField disabled</td>
+              </tr>
+              <tr>
+                <td><strong>Error</strong></td>
+                <td>Validation failure</td>
+                <td>Red border, red helper text</td>
+                <td><span class="state-badge prop">Prop</span> Pass error and helperText to renderInput TextField</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2789,6 +3567,76 @@ sx={{ transition: theme.transitions.create(
               <tr><td><strong>Date in the past (when future required)</strong></td><td>Use <code>minDate={dayjs()}</code>. Show error: "Date must be today or in the future."</td></tr>
               <tr><td><strong>Date range: end before start</strong></td><td>Use <code>minDate={startDate}</code> on the end picker. Disable end picker until start is set.</td></tr>
               <tr><td><strong>Cleared field</strong></td><td>Store <code>null</code>, not an empty string. Guard all date consumers with <code>if (date) …</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resting</strong></td>
+                <td>Default render</td>
+                <td>TextField with calendar icon, no popup</td>
+                <td><span class="state-badge css-only">CSS</span> MUI DatePicker default</td>
+              </tr>
+              <tr>
+                <td><strong>Focused</strong></td>
+                <td>User clicks field</td>
+                <td>TextField focus ring, calendar popup opens</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic</td>
+              </tr>
+              <tr>
+                <td><strong>Calendar open</strong></td>
+                <td>Calendar icon clicked or field focused</td>
+                <td>Calendar popup with month/year header, day grid</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic</td>
+              </tr>
+              <tr>
+                <td><strong>Date selected</strong></td>
+                <td>User clicks a day</td>
+                <td>Day highlighted in blue circle, field populates with formatted date</td>
+                <td><span class="state-badge prop">Prop</span> value updates via onChange</td>
+              </tr>
+              <tr>
+                <td><strong>Today indicator</strong></td>
+                <td>Current date in calendar</td>
+                <td>Today's date has blue outline circle (not filled)</td>
+                <td><span class="state-badge css-only">CSS</span> MUI handles automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled dates</strong></td>
+                <td>minDate / maxDate / shouldDisableDate</td>
+                <td>Dates outside range are gray, not clickable</td>
+                <td><span class="state-badge prop">Prop</span> minDate={dayjs()} to prevent past dates</td>
+              </tr>
+              <tr>
+                <td><strong>Invalid / partial entry</strong></td>
+                <td>User types invalid date</td>
+                <td>Red border, "Invalid date" helper text</td>
+                <td><span class="state-badge prop">Prop</span> MUI validates automatically — pair with onError handler</td>
+              </tr>
+              <tr>
+                <td><strong>Disabled</strong></td>
+                <td>disabled prop</td>
+                <td>Muted field, calendar never opens</td>
+                <td><span class="state-badge prop">Prop</span> disabled</td>
+              </tr>
+              <tr>
+                <td><strong>Read-only</strong></td>
+                <td>readOnly prop</td>
+                <td>Field shows value, calendar never opens, no focus ring</td>
+                <td><span class="state-badge prop">Prop</span> readOnly — use for role-based view-only date fields</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -2901,6 +3749,70 @@ sx={{ transition: theme.transitions.create(
             </tbody>
           </table>
         </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Closed</strong></td>
+                <td>Default / after dismiss</td>
+                <td>Not visible, focus on trigger element</td>
+                <td><span class="state-badge prop">Prop</span> open={false} — focus returns to trigger automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Opening</strong></td>
+                <td>open becomes true</td>
+                <td>Slides in from right (225ms easeOut)</td>
+                <td><span class="state-badge css-only">CSS</span> MUI Slide transition — direction based on anchor prop</td>
+              </tr>
+              <tr>
+                <td><strong>Open / resting</strong></td>
+                <td>Drawer visible</td>
+                <td>Panel overlays content (Temporary) or pushes it (Persistent)</td>
+                <td><span class="state-badge prop">Prop</span> variant="temporary" for overlays; variant="persistent" for side panels</td>
+              </tr>
+              <tr>
+                <td><strong>Scrim (Temporary)</strong></td>
+                <td>Drawer open, Temporary variant</td>
+                <td>Semi-transparent overlay behind drawer, click to close</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — click scrim fires onClose</td>
+              </tr>
+              <tr>
+                <td><strong>Focus trapped</strong></td>
+                <td>Drawer open</td>
+                <td>Tab cycles through drawer content only</td>
+                <td><span class="state-badge aria">ARIA</span> aria-modal="true" — MUI handles focus trap automatically</td>
+              </tr>
+              <tr>
+                <td><strong>Scrollable content</strong></td>
+                <td>Content exceeds drawer height</td>
+                <td>Content area scrolls, header and footer fixed</td>
+                <td><span class="state-badge css-only">CSS</span> overflow-y: auto on content div; header/footer position: sticky</td>
+              </tr>
+              <tr>
+                <td><strong>Loading content</strong></td>
+                <td>Async data loading in drawer</td>
+                <td>Skeleton in content area, header still visible</td>
+                <td><span class="state-badge prop">Prop</span> Render Skeleton inside drawer content while loading</td>
+              </tr>
+              <tr>
+                <td><strong>Closing</strong></td>
+                <td>Esc / scrim click / close button</td>
+                <td>Slides out (195ms easeIn)</td>
+                <td><span class="state-badge css-only">CSS</span> onClose fires — always implement</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -2986,6 +3898,76 @@ sx={{ transition: theme.transitions.create(
     <span class="tag">&lt;ListItemText&gt;</span>Archive Case<span class="tag">&lt;/ListItemText&gt;</span>
   <span class="tag">&lt;/MenuItem&gt;</span>
 <span class="tag">&lt;/Menu&gt;</span>
+        </div>
+
+        <div class="state-matrix-wrap">
+          <h3 class="subsection-title">State Matrix</h3>
+          <table class="state-matrix">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Trigger</th>
+                <th>Visual Change</th>
+                <th>How to Implement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Closed</strong></td>
+                <td>Default</td>
+                <td>Not rendered</td>
+                <td><span class="state-badge prop">Prop</span> anchorEl={null}</td>
+              </tr>
+              <tr>
+                <td><strong>Opening</strong></td>
+                <td>Trigger clicked</td>
+                <td>Fades + scales up from anchor point (150ms)</td>
+                <td><span class="state-badge css-only">CSS</span> MUI Grow transition — automatic</td>
+              </tr>
+              <tr>
+                <td><strong>Open / resting</strong></td>
+                <td>Menu visible</td>
+                <td>Paper dropdown, elevation 8, min-width 120px</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic</td>
+              </tr>
+              <tr>
+                <td><strong>Item hover</strong></td>
+                <td>Mouse over MenuItem</td>
+                <td>Background: #f5f7fa, cursor: pointer</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — MUI handles</td>
+              </tr>
+              <tr>
+                <td><strong>Item focus</strong></td>
+                <td>Arrow key navigation</td>
+                <td>Background: #f5f7fa, focus ring visible</td>
+                <td><span class="state-badge css-only">CSS</span> Automatic — keyboard navigation built into MUI Menu</td>
+              </tr>
+              <tr>
+                <td><strong>Item selected</strong></td>
+                <td>User clicks item</td>
+                <td>Brief ripple, menu closes, action fires</td>
+                <td><span class="state-badge prop">Prop</span> onClick on MenuItem — always close menu in handler: handleClose()</td>
+              </tr>
+              <tr>
+                <td><strong>Item disabled</strong></td>
+                <td>Action not available</td>
+                <td>Muted gray, no hover, cursor: default</td>
+                <td><span class="state-badge prop">Prop</span> disabled prop on MenuItem</td>
+              </tr>
+              <tr>
+                <td><strong>Destructive item</strong></td>
+                <td>Delete / archive action</td>
+                <td>Red text (#D32F2F), separator above</td>
+                <td><span class="state-badge css-only">CSS</span> sx={{ color: "error.main" }} + Divider above</td>
+              </tr>
+              <tr>
+                <td><strong>Closing</strong></td>
+                <td>Esc / click outside / item selected</td>
+                <td>Fades out (100ms)</td>
+                <td><span class="state-badge css-only">CSS</span> onClose fires — set anchorEl to null</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -3506,6 +4488,16 @@ sx={{ transition: theme.transitions.create(
             <div><span style="font-weight:600;">Action buttons</span> — <code>Button</code> size=small variant=outlined</div>
             <div><span style="font-weight:600;">Top nav</span> — <code>AppBar</code> + <code>Toolbar</code> + <code>IconButton</code></div>
           </div>
+        </div>
+
+        <div style="background:#f0f9f4;border:1px solid #a8d5b5;border-radius:8px;padding:16px 20px;margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:700;color:#1b5e20;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">When NOT to use this layout</div>
+          <ul style="margin:0;padding-left:18px;font-size:13px;color:#1b5e20;line-height:1.7;">
+            <li>Do not use the stat card row for more than 6 metrics — cognitive overload. Use a table instead.</li>
+            <li>Do not put primary actions (Approve, Deny) in the stat cards — they belong in the DataGrid row actions.</li>
+            <li>Do not show the full case list on the dashboard — the DataGrid here is a priority queue (max 10–15 rows), not the full Cases List.</li>
+            <li>Do not use this layout for the Participant Portal — participants see their own applications only, not a queue.</li>
+          </ul>
         </div>
 <div class="combo-frame" id="dashboard-combo-frame" style="border:1px solid #E2E6EA; border-radius:12px; overflow:hidden; background:#F5F7FA;">
           <!-- Top nav -->
@@ -5276,6 +6268,23 @@ sx={{ transition: theme.transitions.create(
   &lt;<span class="tag">CssBaseline</span> /&gt;
   &lt;<span class="tag">App</span> /&gt;
 &lt;/<span class="tag">ThemeProvider</span>&gt;
+        </div>
+
+        <div style="background:#0F172A;border-radius:8px;padding:20px 24px;margin:24px 0;color:#F1F5F9;">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">How to implement dark mode in production</div>
+          <div style="font-size:13px;line-height:1.9;color:#cbd5e1;">
+            <strong style="color:#F1F5F9;">Step 1 — Add mode to your theme:</strong><br>
+            <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">const theme = createTheme({ palette: { mode: isDark ? 'dark' : 'light', ...neighborlyPalette } })</code>
+            <br><br>
+            <strong style="color:#F1F5F9;">Step 2 — Store preference:</strong><br>
+            Persist in <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">localStorage.setItem('nbl-color-mode', mode)</code> and read on app init. Respect <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">prefers-color-scheme</code> as the default before the user sets a preference.
+            <br><br>
+            <strong style="color:#F1F5F9;">Step 3 — Never hardcode colors in dark mode:</strong><br>
+            Use <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">theme.palette.background.paper</code>, <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">theme.palette.text.primary</code>, and the CSS variables from the token table above. MUI components adapt automatically when <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">mode</code> is set on the theme.
+            <br><br>
+            <strong style="color:#F1F5F9;">Step 4 — Test with axe-core in both modes:</strong><br>
+            Contrast ratios can pass in light mode and fail in dark mode. Run <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:12px;color:#7dd3fc;">axe.run()</code> in both modes as part of your CI pipeline.
+          </div>
         </div>
       </section>
 
