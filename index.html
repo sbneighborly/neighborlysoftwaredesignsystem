@@ -665,6 +665,7 @@
         <a href="#page-cases">Cases List</a>
         <a href="#page-case-viewer">Case Viewer</a>
         <a href="#page-messages">Messages</a>
+        <a href="#page-participant-portal">Participant Portal</a>
 
         <span class="nav-group-label">Developer Reference</span>
         <a href="#theme">MUI Theme Config</a>
@@ -2980,8 +2981,108 @@
         </div>
       </section>
 
+      <!-- ============================================================
+           COMBINATION PAGE: PARTICIPANT PORTAL
+      ============================================================ -->
+      <section class="ds-section" id="page-participant-portal" aria-labelledby="page-participant-portal-heading">
+        <div class="ds-section-header">
+          <span class="section-num">27</span>
+          <h2 id="page-participant-portal-heading">Participant Portal</h2>
+        </div>
+        <p class="ds-section-desc">The Participant experience — what a neighbor sees when they log in. Warm, low-density, action-oriented. Components: <code>Card</code>, <code>Stepper</code> (horizontal), <code>Chip</code>, <code>Alert</code>, <code>Button</code>, <code>LinearProgress</code>. Navigation is minimal — no sidebar. Top nav only.</p>
+        <div class="combo-frame" style="border:1px solid #E5E9EF; border-radius:10px; overflow:hidden; background:#F5F7FA;">
+          <!-- Top nav -->
+          <div style="background:#fff; border-bottom:1px solid #E5E9EF; padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:28px; height:28px; background:#188af4; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                <span class="material-icons" style="color:#fff; font-size:16px;">home</span>
+              </div>
+              <span style="font-size:15px; font-weight:700; color:#181B1F;">Neighborly</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:20px;">
+              <a style="font-size:13px; color:#188af4; text-decoration:none; font-weight:600;">My Applications</a>
+              <a style="font-size:13px; color:#5A6472; text-decoration:none;">Messages <span style="background:#188af4; color:#fff; border-radius:8px; font-size:10px; font-weight:700; padding:1px 5px; margin-left:3px;">1</span></a>
+              <a style="font-size:13px; color:#5A6472; text-decoration:none;">Documents</a>
+              <div style="width:32px; height:32px; background:#E8F0FE; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                <span class="material-icons" style="color:#188af4; font-size:18px;">person</span>
+              </div>
+            </div>
+          </div>
+          <!-- Main content -->
+          <div style="padding:28px 32px;">
+            <!-- Welcome banner -->
+            <div style="margin-bottom:24px;">
+              <h1 style="font-size:22px; font-weight:700; color:#181B1F; margin:0 0 4px;">Welcome back, Maria</h1>
+              <p style="font-size:14px; color:#5A6472; margin:0;">Here's the latest on your applications.</p>
+            </div>
+            <!-- Alert: action needed -->
+            <div style="background:#FFF3E0; border:1px solid #FFCC80; border-radius:8px; padding:14px 18px; margin-bottom:20px; display:flex; align-items:flex-start; gap:12px;">
+              <span class="material-icons" style="color:#ED6C02; font-size:20px; flex-shrink:0; margin-top:1px;">warning_amber</span>
+              <div>
+                <p style="font-size:13px; font-weight:700; color:#E65100; margin:0 0 2px;">Action needed on your Emergency Rental Assistance application</p>
+                <p style="font-size:13px; color:#5A6472; margin:0;">We need a copy of your lease agreement to continue processing your application. <a style="color:#188af4; font-weight:600;">Upload now →</a></p>
+              </div>
+            </div>
+            <!-- Application cards -->
+            <h2 style="font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#5A6472; margin:0 0 14px;">My Applications</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+              <!-- Card 1: Active application -->
+              <div style="background:#fff; border:1px solid #E5E9EF; border-radius:10px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.06);">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
+                  <div>
+                    <p style="font-size:13px; font-weight:700; color:#181B1F; margin:0 0 2px;">Emergency Rental Assistance</p>
+                    <p style="font-size:12px; color:#8A96A3; margin:0;">App #NBL-2026-04892 · Submitted Mar 15</p>
+                  </div>
+                  <span class="mui-chip chip-filled-warning chip-sm">Pending Docs</span>
+                </div>
+                <!-- Progress stepper -->
+                <div style="margin-bottom:14px;">
+                  <div style="display:flex; align-items:center; gap:0; margin-bottom:6px;">
+                    <div style="width:20px; height:20px; background:#3aab5c; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><span class="material-icons" style="color:#fff; font-size:12px;">check</span></div>
+                    <div style="flex:1; height:2px; background:#3aab5c;"></div>
+                    <div style="width:20px; height:20px; background:#3aab5c; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><span class="material-icons" style="color:#fff; font-size:12px;">check</span></div>
+                    <div style="flex:1; height:2px; background:#ED6C02;"></div>
+                    <div style="width:20px; height:20px; background:#ED6C02; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><span class="material-icons" style="color:#fff; font-size:12px;">upload_file</span></div>
+                    <div style="flex:1; height:2px; background:#E5E9EF;"></div>
+                    <div style="width:20px; height:20px; background:#E5E9EF; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><span class="material-icons" style="color:#8A96A3; font-size:12px;">check</span></div>
+                    <div style="flex:1; height:2px; background:#E5E9EF;"></div>
+                    <div style="width:20px; height:20px; background:#E5E9EF; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><span class="material-icons" style="color:#8A96A3; font-size:12px;">payments</span></div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; color:#8A96A3; padding:0 2px;">
+                    <span>Submitted</span><span>Received</span><span style="color:#ED6C02; font-weight:600;">Docs</span><span>Review</span><span>Funded</span>
+                  </div>
+                </div>
+                <button class="mui-btn btn-contained-primary" style="width:100%; font-size:13px; padding:8px;">Upload Documents</button>
+              </div>
+              <!-- Card 2: Approved application -->
+              <div style="background:#fff; border:1px solid #E5E9EF; border-radius:10px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.06);">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
+                  <div>
+                    <p style="font-size:13px; font-weight:700; color:#181B1F; margin:0 0 2px;">Home Repair Assistance</p>
+                    <p style="font-size:12px; color:#8A96A3; margin:0;">App #NBL-2025-09341 · Submitted Oct 4</p>
+                  </div>
+                  <span class="mui-chip chip-filled-success chip-sm">Approved</span>
+                </div>
+                <div style="background:#F1FBF5; border-radius:6px; padding:12px 14px; margin-bottom:14px;">
+                  <p style="font-size:13px; font-weight:700; color:#3aab5c; margin:0 0 2px;">Congratulations!</p>
+                  <p style="font-size:12px; color:#5A6472; margin:0;">Your application was approved. Funds of <strong>$4,200</strong> are being processed and will be disbursed within 5–7 business days.</p>
+                </div>
+                <button class="mui-btn btn-outlined-primary" style="width:100%; font-size:13px; padding:8px;">View Details</button>
+              </div>
+            </div>
+            <!-- Find programs CTA -->
+            <div style="background:#EBF4FF; border:1px solid #BFDBFE; border-radius:10px; padding:20px 24px; display:flex; align-items:center; justify-content:space-between;">
+              <div>
+                <p style="font-size:14px; font-weight:700; color:#181B1F; margin:0 0 4px;">Looking for more programs?</p>
+                <p style="font-size:13px; color:#5A6472; margin:0;">Answer a few questions to see what your household may qualify for.</p>
+              </div>
+              <button class="mui-btn btn-contained-primary" style="white-space:nowrap; margin-left:20px;">Browse Programs</button>
+            </div>
+          </div>
+        </div>
+      </section>
             <!-- ============================================================
-           27. MUI THEME CONFIG
+           28. MUI THEME CONFIG
       ============================================================ -->
       <section class="ds-section" id="theme">
         <div class="ds-section-header">
@@ -3078,7 +3179,7 @@
           <span class="section-num" aria-hidden="true">29</span>
           <h2>Design Tokens</h2>
         </div>
-        <p class="ds-section-desc">Design tokens are available as CSS Custom Properties via <code>tokens.css</code> for non-React contexts (emails, PDFs, static pages). In React, always use the MUI theme — not raw CSS variables.</p>
+        <p class="ds-section-desc">Design tokens are available as CSS Custom Properties via <code>tokens.css</code> for non-React contexts (emails, PDFs, static pages). In React, always use the MUI theme — not raw CSS variables. The token file is maintained in the <a href="https://github.com/sbneighborly/neighborlysoftwarebrandguidelines" target="_blank" rel="noopener" style="color:#188af4;">neighborlysoftwarebrandguidelines</a> repository and published to GitHub Pages — the same repo that houses the brand guidelines, logo assets, and color specifications. Changes to token values require a PR in that repo; the updated <code>tokens.css</code> is automatically deployed and picked up by any page that imports it.</p>
 
         <div class="code-block">
 <span class="cm">/* Import in non-React contexts only */</span>
@@ -3222,11 +3323,14 @@
           <table class="token-table" style="width:100%;">
             <thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead>
             <tbody>
-              <tr><td><strong>2.0.0</strong></td><td>Apr 2026</td><td>Full rebuild — MUI component language, user types, grant pipeline, combination pages, brand voice. Removed Tailwind references.</td></tr>
-              <tr><td>1.3.0</td><td>Apr 2026</td><td>Added GitHub Actions CI (axe-core, HTML validation, token validation), Storybook stories.</td></tr>
-              <tr><td>1.2.0</td><td>Apr 2026</td><td>Loading states, skeleton screens, responsive tables, dark mode tokens, brand voice, governance, tokens.css.</td></tr>
-              <tr><td>1.1.0</td><td>Apr 2026</td><td>Modals, data tables, tooltips, empty states, toast notifications, combination pages.</td></tr>
-              <tr><td>1.0.0</td><td>Apr 2026</td><td>Initial design system — colors, typography, spacing, buttons, forms, badges, cards, alerts, tabs.</td></tr>
+              <tr><td><strong>2.3.0</strong></td><td>Apr 2026</td><td>New MUI components (Autocomplete, DatePicker, Drawer, Menu), 4 real-product combination pages (Admin Dashboard, Cases List, Case Viewer, Messages, Participant Portal), sx vs styled() guide. Brand green corrected to #3aab5c.</td></tr>
+              <tr><td>2.2.0</td><td>Feb 2026</td><td>Full accessibility sprint — WCAG 2.1 AA criterion table, VPAT framing, Windows High Contrast Mode, prefers-reduced-motion. Icons, Notifications, Responsive Tables, Readability, Brand Voice (Full) sections added.</td></tr>
+              <tr><td>2.1.0</td><td>Nov 2025</td><td>Dark mode token mapping, additional pattern sections (User Types, Grant Pipeline, Empty States, Loading States, Brand Voice). Governance workflow with CI gates.</td></tr>
+              <tr><td><strong>2.0.0</strong></td><td>Sep 2025</td><td>Full rebuild on MUI v5. New component language, MUI theme config, design tokens, user types framework, grant pipeline, combination pages. Removed Tailwind references. Breaking: all class names changed.</td></tr>
+              <tr><td>1.3.0</td><td>Mar 2025</td><td>GitHub Actions CI pipeline — axe-core automated a11y testing, HTML validation, token validation on every PR. Storybook stories for core components.</td></tr>
+              <tr><td>1.2.0</td><td>Jan 2025</td><td>Loading states, skeleton screens, responsive table patterns, dark mode token definitions, brand voice guidelines, governance section, tokens.css published.</td></tr>
+              <tr><td>1.1.0</td><td>Nov 2024</td><td>Dialog/modal patterns, DataGrid/table component, Tooltip, empty states, Snackbar/toast notifications. First combination page drafts.</td></tr>
+              <tr><td>1.0.0</td><td>Sep 2024</td><td>Initial design system — color palette, typography scale, spacing system, Button, TextField, Chip, Card, Alert, Tabs. Deployed to GitHub Pages.</td></tr>
             </tbody>
           </table>
         </div>
