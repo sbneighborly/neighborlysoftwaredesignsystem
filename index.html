@@ -4592,46 +4592,7 @@ sx={{ transition: theme.transitions.create(
           <span class="section-num" aria-hidden="true">36</span>
           <h2>Design Tokens</h2>
         </div>
-        <p class="ds-section-desc">Design tokens are available as CSS Custom Properties via <code>tokens.css</code> for non-React contexts (emails, PDFs, static pages). In React, always use the MUI theme — not raw CSS variables. The token file is maintained in the <a href="https://github.com/sbneighborly/neighborlysoftwarebrandguidelines" target="_blank" rel="noopener" style="color:#188af4;">neighborlysoftwarebrandguidelines</a> repository and published to GitHub Pages — the same repo that houses the brand guidelines, logo assets, and color specifications. Changes to token values require a PR in that repo; the updated <code>tokens.css</code> is automatically deployed and picked up by any page that imports it.</p>
-
-        <div class="code-block">
-<span class="cm">/* Import in non-React contexts only */</span>
-<span class="kw">@import</span> <span class="str">'https://sbneighborly.github.io/neighborlysoftwarebrandguidelines/tokens.css'</span>;
-
-<span class="cm">/* Usage */</span>
-<span class="prop">.my-element</span> {
-  color: <span class="kw">var</span>(<span class="str">--nbl-primary</span>);
-  background: <span class="kw">var</span>(<span class="str">--nbl-bg-default</span>);
-  border: 1px solid <span class="kw">var</span>(<span class="str">--nbl-divider</span>);
-}
-        </div>
-
-        <div class="demo-box">
-          <table class="token-table" style="width:100%;">
-            <thead><tr><th>Token</th><th>Value</th><th>MUI Equivalent</th></tr></thead>
-            <tbody>
-              <tr><td><span class="token-swatch" style="background:#188af4;"></span><span class="token-name">--nbl-primary</span></td><td class="token-value">#188af4</td><td class="token-value">palette.primary.main</td></tr>
-              <tr><td><span class="token-swatch" style="background:#00419D;"></span><span class="token-name">--nbl-secondary</span></td><td class="token-value">#00419D</td><td class="token-value">palette.secondary.main</td></tr>
-              <tr><td><span class="token-swatch" style="background:#3aab5c;"></span><span class="token-name">--nbl-success</span></td><td class="token-value">#3aab5c</td><td class="token-value">palette.success.main</td></tr>
-              <tr><td><span class="token-swatch" style="background:#D32F2F;"></span><span class="token-name">--nbl-error</span></td><td class="token-value">#D32F2F</td><td class="token-value">palette.error.main</td></tr>
-              <tr><td><span class="token-swatch" style="background:#ED6C02;"></span><span class="token-name">--nbl-warning</span></td><td class="token-value">#ED6C02</td><td class="token-value">palette.warning.main</td></tr>
-              <tr><td><span class="token-swatch" style="background:#181B1F;"></span><span class="token-name">--nbl-text-primary</span></td><td class="token-value">#181B1F</td><td class="token-value">palette.text.primary</td></tr>
-              <tr><td><span class="token-swatch" style="background:#5A6472;"></span><span class="token-name">--nbl-text-secondary</span></td><td class="token-value">#5A6472</td><td class="token-value">palette.text.secondary</td></tr>
-              <tr><td><span class="token-swatch" style="background:#F5F7FA; border:1px solid #E5E9EF;"></span><span class="token-name">--nbl-bg-default</span></td><td class="token-value">#F5F7FA</td><td class="token-value">palette.background.default</td></tr>
-              <tr><td><span class="token-swatch" style="background:#E5E9EF;"></span><span class="token-name">--nbl-divider</span></td><td class="token-value">#E5E9EF</td><td class="token-value">palette.divider</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1B5E20;">
-          <strong>&#x2713; Source of Truth Resolution (v2.4 → v2.5)</strong><br>
-          As of v2.4, the MUI theme values in this design system are the canonical source of truth. <code>tokens.css</code> in the brand guidelines repo has been updated to match. The three-way conflict between <code>tokens.css</code>, <code>index.html</code>, and Storybook stories (documented in the v2.4 changelog) has been resolved. Going forward: <strong>change the MUI theme first, then regenerate <code>tokens.css</code> from it</strong>. Never update <code>tokens.css</code> independently.
-        </div>
-        <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1B5E20;">
-          <strong>&#x2713; Source of Truth Resolution (v2.4 → v2.5)</strong><br>
-          As of v2.4, the MUI theme values in this design system are the canonical source of truth. <code>tokens.css</code> in the brand guidelines repo has been updated to match. The three-way conflict between <code>tokens.css</code>, <code>index.html</code>, and Storybook stories (documented in the v2.4 changelog) has been resolved. Going forward: <strong>change the MUI theme first, then regenerate <code>tokens.css</code> from it</strong>. Never update <code>tokens.css</code> independently.
-        </div>
-        <h3 class="subsection-title">Figma &#8596; Token Sync</h3>
-        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">The single biggest organizational risk is a designer updating a color in Figma that never makes it to <code>--nbl-primary</code>. The table below maps every Figma token name to its CSS variable and MUI palette key &mdash; this is the single source of truth for the sync pipeline.</p>
+        
         <div class="demo-box">
           <table class="token-table" style="width:100%;">
             <thead><tr><th>Figma Token Name</th><th>CSS Variable</th><th>MUI Theme Key</th><th>Current Value</th></tr></thead>
@@ -5002,7 +4963,6 @@ sx={{ transition: theme.transitions.create(
           <table class="token-table" style="width:100%;">
             <thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead>
             <tbody>
-              <tr><td><strong>2.4.0</strong></td><td>Apr 2026</td><td>Color/font source-of-truth resolution; form validation; nav search/filter; Figma token sync; motion enforcement; dark mode toggle; file upload, multi-page form, role-based access, print/export patterns; DataGrid interaction specs; content/copy patterns; QA/testing integration</td></tr>
               <tr><td><strong>2.4.0</strong></td><td>Apr 2026</td><td>Color/font source-of-truth resolution; form validation; nav search/filter; Figma token sync; motion enforcement; dark mode toggle; file upload, multi-page form, role-based access, print/export patterns; DataGrid interaction specs; content/copy patterns; QA/testing integration</td></tr>
               <tr><td><strong>2.3.0</strong></td><td>Apr 2026</td><td>New MUI components (Autocomplete, DatePicker, Drawer, Menu), 4 real-product combination pages (Admin Dashboard, Cases List, Case Viewer, Messages, Participant Portal), sx vs styled() guide. Brand green corrected to #3aab5c.</td></tr>
               <tr><td>2.2.0</td><td>Feb 2026</td><td>Full accessibility sprint — WCAG 2.1 AA criterion table, VPAT framing, Windows High Contrast Mode, prefers-reduced-motion. Icons, Notifications, Responsive Tables, Readability, Brand Voice (Full) sections added.</td></tr>
@@ -5931,7 +5891,108 @@ sx={{ transition: theme.transitions.create(
             </tbody>
           </table>
         </div>
+
+        <h3 class="subsection-title">Grant Denial Copy</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">Denial is the highest-stakes moment in the participant journey. A person who has been waiting weeks — sometimes months — for a housing or utility grant decision deserves a different register than a generic error message. The copy patterns below apply to all denial and rejection states in the Participant Portal.</p>
+
+        <div style="background:#FFF8E1;border:1px solid #FFD54F;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#5D4037;">
+          <strong>Legal note (HUD-funded programs):</strong> For programs funded under HUD guidelines, denial notices must include: (1) the specific reason(s) for denial, (2) the applicant's right to appeal, (3) the appeal deadline, and (4) contact information for the administering agency. These are not optional — they are regulatory requirements. Always include all four elements in any denial communication.
+        </div>
+
+        <h3 class="subsection-title" style="font-size:13px;">Tone Principles for Denial</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+          <div style="background:#E8F5E9;border-radius:8px;padding:14px;border-top:3px solid #3aab5c;">
+            <div style="font-weight:700;font-size:13px;color:#1B5E20;margin-bottom:8px;">Do</div>
+            <ul style="font-size:13px;color:#2E4A3E;margin:0;padding-left:18px;line-height:1.8;">
+              <li>Use direct, plain language — no passive voice</li>
+              <li>Name the specific reason for denial</li>
+              <li>Always include a next step (appeal, reapply, contact)</li>
+              <li>Acknowledge the effort the applicant made</li>
+              <li>Use "your application" not "the application"</li>
+            </ul>
+          </div>
+          <div style="background:#FFEBEE;border-radius:8px;padding:14px;border-top:3px solid #D32F2F;">
+            <div style="font-weight:700;font-size:13px;color:#B71C1C;margin-bottom:8px;">Don't</div>
+            <ul style="font-size:13px;color:#4A1C1C;margin:0;padding-left:18px;line-height:1.8;">
+              <li>Use bureaucratic language ("your request has been adjudicated")</li>
+              <li>Use passive voice ("it was determined that…")</li>
+              <li>Leave the participant without a next step</li>
+              <li>Use error-state language ("Submission failed")</li>
+              <li>Use "unfortunately" — it reads as performative</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="do-dont-grid" style="grid-template-columns:1fr;gap:16px;margin-bottom:20px;">
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 1 — Application Denied (Income Ineligibility)</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:#D32F2F;letter-spacing:.08em;margin-bottom:8px;">✗ DON'T — Bureaucratic, no next step</div>
+                  <div style="background:#FFF5F5;border:1px solid #FFCDD2;border-radius:6px;padding:12px;font-size:13px;color:#4A1C1C;line-height:1.6;">
+                    <strong>Application Status: Denied</strong><br><br>
+                    Unfortunately, your application has been denied. It was determined that the household income provided does not meet program eligibility requirements. Please contact your local office if you have questions.
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:#2e7d32;letter-spacing:.08em;margin-bottom:8px;">✓ DO — Direct, humane, actionable</div>
+                  <div style="background:#F1F8F4;border:1px solid #C8E6C9;border-radius:6px;padding:12px;font-size:13px;color:#1B3A2A;line-height:1.6;">
+                    <strong>Your application was not approved</strong><br><br>
+                    We reviewed your Emergency Rental Assistance application and were unable to approve it. Your reported household income of $72,400 exceeds the program limit of 80% AMI ($68,160 for a family of 4 in this area).<br><br>
+                    <strong>What you can do:</strong><br>
+                    • <a href="#" style="color:#188af4;">Appeal this decision</a> — you have 30 days from today (May 13, 2026)<br>
+                    • <a href="#" style="color:#188af4;">Browse other programs</a> you may qualify for<br>
+                    • Call us at (555) 867-5309, Mon–Fri 9am–5pm
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 2 — Application Denied (Missing Documentation)</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <div style="background:#F1F8F4;border:1px solid #C8E6C9;border-radius:6px;padding:12px;font-size:13px;color:#1B3A2A;line-height:1.6;">
+                <strong>Your application was closed — documents not received</strong><br><br>
+                We requested proof of income and a current lease on March 15, 2026. We didn't receive them by the April 15 deadline, so your application has been closed.<br><br>
+                <strong>This is not a permanent denial.</strong> You can reapply at any time if you have the required documents ready.<br><br>
+                <strong>Required documents:</strong> Last 2 pay stubs or benefit award letter · Current signed lease or mortgage statement<br><br>
+                <a href="#" style="color:#188af4;">Start a new application →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 3 — Appeal Denied (Final)</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <div style="background:#F1F8F4;border:1px solid #C8E6C9;border-radius:6px;padding:12px;font-size:13px;color:#1B3A2A;line-height:1.6;">
+                <strong>Your appeal has been reviewed</strong><br><br>
+                We carefully reviewed your appeal for Emergency Rental Assistance application #ERA-2024-0041. After review, we were unable to change the original decision. The income documentation provided confirms household income above the program limit.<br><br>
+                This is a final decision. If you believe there is an error in how your income was calculated, you may contact the HUD Office of Fair Housing at 1-800-669-9777.<br><br>
+                We know this is not the news you were hoping for. <a href="#" style="color:#188af4;">Browse other programs →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead><tr><th>Denial type</th><th>Heading pattern</th><th>Required elements</th><th>MUI component</th></tr></thead>
+            <tbody>
+              <tr><td>Income ineligibility</td><td>"Your application was not approved"</td><td>Specific limit + applicant's value + appeal right + deadline + contact</td><td><code>Alert severity="error"</code> + <code>Card</code></td></tr>
+              <tr><td>Missing documents (closed)</td><td>"Your application was closed — documents not received"</td><td>What was requested + deadline + reapply path + required docs list</td><td><code>Alert severity="warning"</code> + <code>Card</code></td></tr>
+              <tr><td>Duplicate application</td><td>"You already have an open application"</td><td>Link to existing application + contact for questions</td><td><code>Alert severity="info"</code></td></tr>
+              <tr><td>Program closed</td><td>"This program is no longer accepting applications"</td><td>Program end date + similar programs + notification signup</td><td><code>Alert severity="info"</code> + <code>Button</code></td></tr>
+              <tr><td>Appeal denied (final)</td><td>"Your appeal has been reviewed"</td><td>Reason + finality statement + HUD contact + alternative programs</td><td><code>Card</code> with <code>Alert severity="error"</code></td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
+
+   
 
       <!-- ══════════════════════════════════════════════════════════════
            § 51. QA & TESTING INTEGRATION
@@ -6049,7 +6110,7 @@ it(<span class="str">'has no accessibility violations'</span>, <span class="kw">
 
             <footer style="border-top:2px solid #E5E9EF; padding-top:32px; margin-top:56px; text-align:center; color:#9AA4AD; font-size:13px;">
         <img src="assets/logo.svg" alt="Neighborly Software" style="height:24px; opacity:0.5; display:block; margin:0 auto 12px;" />
-        <strong style="color:#5A6472;">Neighborly Software Design System</strong> — Version 2.4<br>
+        <strong style="color:#5A6472;">Neighborly Software Design System</strong> — Version 2.6<br>
         Built with MUI v5 · Helping Communities Help People
       </footer>
 
