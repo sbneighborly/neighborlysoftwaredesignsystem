@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neighborly Software — Design System v2.5</title>
+  <title>Neighborly Software — Design System v2.6</title>
   <meta name="description" content="Neighborly Software Design System — MUI-based component library and patterns for grant management applications." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -788,7 +788,7 @@
       <div class="sidebar-logo">
         <img src="assets/logo-icon-circle.svg" alt="Neighborly Software" style="height:30px; width:auto; flex-shrink:0;" />
         <span style="color:#fff; font-weight:700; font-size:14px; line-height:1.2;">Neighborly<br>Software</span>
-        <span class="sidebar-version">v2.4</span>
+        <span class="sidebar-version">v2.5</span>
       </div>
       <div class="nav-search-wrap">
         <input type="search" id="nav-search" class="nav-search-input" placeholder="Search sections…" aria-label="Search design system sections" autocomplete="off" />
@@ -892,7 +892,7 @@
         </div>
         <h1>Neighborly Software Design System</h1>
         <p>The MUI-based component library and pattern guide for building grant management applications. Shared across Participant, Contractor, and Admin experiences.</p>
-        <span class="hero-version">Version 2.5 — MUI v5</span>
+        <span class="hero-version">Version 2.6 — MUI v5</span>
       </div>
 
       <!-- ============================================================
@@ -1419,6 +1419,83 @@ npm install @fontsource/nunito-sans
 <span class="cm">// Or with useMediaQuery</span>
 <span class="kw">const</span> isTablet = useMediaQuery(theme.breakpoints.down(<span class="str">'md'</span>));
 <span class="tag">&lt;Box</span> <span class="attr">sx</span>=<span class="str">{{ p: isTablet ? 2 : 3 }}</span><span class="tag">&gt;</span>
+        </div>
+
+        <h3 class="subsection-title">Breakpoint System</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">MUI's five breakpoints are mapped to specific device contexts and user types in Neighborly. This table is the authoritative reference — use it to make consistent layout decisions across all three portals.</p>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;margin-bottom:20px;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead>
+              <tr>
+                <th>Breakpoint</th>
+                <th>Width</th>
+                <th>Device context</th>
+                <th>Primary user</th>
+                <th>Layout behavior</th>
+                <th>MUI usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>xs</code></td>
+                <td>0 – 599px</td>
+                <td>Phone (portrait)</td>
+                <td><span style="background:#EBF4FF;color:#1278d8;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Participant</span></td>
+                <td>Single column, bottom navigation, full-width inputs, stacked cards</td>
+                <td><code>sx={{ display: { xs: 'block', md: 'flex' } }}</code></td>
+              </tr>
+              <tr>
+                <td><code>sm</code></td>
+                <td>600 – 899px</td>
+                <td>Phone (landscape) / Tablet portrait</td>
+                <td><span style="background:#EBF4FF;color:#1278d8;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Participant</span> <span style="background:#E8F5E9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Caseworker</span></td>
+                <td>Single column, sidebar hidden (Drawer), condensed DataGrid, 2-col card grid</td>
+                <td><code>useMediaQuery(theme.breakpoints.down('md'))</code></td>
+              </tr>
+              <tr>
+                <td><code>md</code></td>
+                <td>900 – 1199px</td>
+                <td>Tablet landscape / 13" laptop</td>
+                <td><span style="background:#E8F5E9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Caseworker</span></td>
+                <td>Sidebar visible (condensed 200px), DataGrid with fewer columns, Drawer replaces split-pane</td>
+                <td><code>sx={{ width: { md: 200, lg: 240 } }}</code></td>
+              </tr>
+              <tr>
+                <td><code>lg</code></td>
+                <td>1200 – 1535px</td>
+                <td>Desktop (standard)</td>
+                <td><span style="background:#E8F5E9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Caseworker</span> <span style="background:#FFF3E0;color:#e65100;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Admin</span></td>
+                <td>Full sidebar (240px), all DataGrid columns visible, split-pane layouts enabled</td>
+                <td>Default — no override needed for most components</td>
+              </tr>
+              <tr>
+                <td><code>xl</code></td>
+                <td>1536px+</td>
+                <td>Wide desktop / external monitor</td>
+                <td><span style="background:#FFF3E0;color:#e65100;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Admin</span></td>
+                <td>Max-width container (1440px), centered layout, wider DataGrid columns, expanded stat cards</td>
+                <td><code>sx={{ maxWidth: { xl: 1440 }, mx: 'auto' }}</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">Touch Target Rules</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">All interactive elements must meet minimum touch target sizes on mobile and tablet. WCAG 2.5.5 (AAA) recommends 44×44px; WCAG 2.5.8 (AA, 2.2) requires 24×24px minimum. Neighborly targets the AAA threshold for all primary actions.</p>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead><tr><th>Element</th><th>Min size (xs/sm)</th><th>Min size (md+)</th><th>Implementation</th></tr></thead>
+            <tbody>
+              <tr><td>Button (contained/outlined)</td><td>44×44px</td><td>36×36px</td><td>MUI default — no override needed</td></tr>
+              <tr><td>IconButton</td><td>44×44px</td><td>40×40px</td><td><code>sx={{ p: { xs: 1.5, md: 1 } }}</code></td></tr>
+              <tr><td>Checkbox / Radio</td><td>44×44px</td><td>38×38px</td><td>MUI default — no override needed</td></tr>
+              <tr><td>DataGrid row action (⋯)</td><td>44×44px</td><td>32×32px</td><td><code>sx={{ minWidth: { xs: 44, md: 32 } }}</code></td></tr>
+              <tr><td>Nav link (sidebar)</td><td>44px height</td><td>36px height</td><td><code>min-height: 44px</code> at xs/sm</td></tr>
+              <tr><td>Tab</td><td>48px height</td><td>48px height</td><td>MUI default — no override needed</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
       <!-- ============================================================
@@ -4546,11 +4623,11 @@ sx={{ transition: theme.transitions.create(
           </table>
         </div>
         <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1B5E20;">
-          <strong>&#x2713; Source of Truth Resolution (v2.4)</strong><br>
+          <strong>&#x2713; Source of Truth Resolution (v2.4 → v2.5)</strong><br>
           As of v2.4, the MUI theme values in this design system are the canonical source of truth. <code>tokens.css</code> in the brand guidelines repo has been updated to match. The three-way conflict between <code>tokens.css</code>, <code>index.html</code>, and Storybook stories (documented in the v2.4 changelog) has been resolved. Going forward: <strong>change the MUI theme first, then regenerate <code>tokens.css</code> from it</strong>. Never update <code>tokens.css</code> independently.
         </div>
         <div style="background:#E8F5E9;border:1px solid #A5D6A7;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#1B5E20;">
-          <strong>&#x2713; Source of Truth Resolution (v2.4)</strong><br>
+          <strong>&#x2713; Source of Truth Resolution (v2.4 → v2.5)</strong><br>
           As of v2.4, the MUI theme values in this design system are the canonical source of truth. <code>tokens.css</code> in the brand guidelines repo has been updated to match. The three-way conflict between <code>tokens.css</code>, <code>index.html</code>, and Storybook stories (documented in the v2.4 changelog) has been resolved. Going forward: <strong>change the MUI theme first, then regenerate <code>tokens.css</code> from it</strong>. Never update <code>tokens.css</code> independently.
         </div>
         <h3 class="subsection-title">Figma &#8596; Token Sync</h3>
@@ -4695,6 +4772,170 @@ sx={{ transition: theme.transitions.create(
             </div>
           </div>
         </div>
+
+        <h3 class="subsection-title">Dynamic Announcements &amp; Live Regions</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">Static WCAG compliance is necessary but not sufficient. The most common accessibility failures in dynamic web apps occur in live regions — content that changes after the page loads. Every dynamic state change that matters to a user must be announced to screen readers. Use the patterns below for all dynamic content in Neighborly.</p>
+
+        <div style="background:#FFF8E1;border:1px solid #FFD54F;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#5D4037;">
+          <strong>VPAT reviewer note:</strong> WCAG 4.1.3 (Status Messages, AA) requires that status messages be programmatically determinable without receiving focus. All patterns below satisfy this criterion. This is the most commonly failed criterion in government procurement audits.
+        </div>
+
+        <div class="do-dont-grid" style="grid-template-columns:1fr;gap:16px;">
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 1 — Toast / Snackbar Announcement</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <p style="font-size:13px;margin-bottom:12px;">Toasts are transient. Use <code>role="status"</code> for non-critical messages (saved, submitted) and <code>role="alert"</code> for errors. Never use <code>role="alert"</code> for success messages — it interrupts screen reader flow unnecessarily.</p>
+              <div class="code-block" style="font-size:12px;">
+<span class="comment">// ✓ Success / info toast — role="status" (polite)</span>
+&lt;<span class="tag">Snackbar</span> <span class="attr">open</span>={<span class="val">open</span>} <span class="attr">autoHideDuration</span>={<span class="val">5000</span>}&gt;
+  &lt;<span class="tag">Alert</span> <span class="attr">severity</span>=<span class="str">"success"</span> <span class="attr">role</span>=<span class="str">"status"</span> <span class="attr">aria-live</span>=<span class="str">"polite"</span>&gt;
+    Application #2024-0041 submitted successfully.
+  &lt;/<span class="tag">Alert</span>&gt;
+&lt;/<span class="tag">Snackbar</span>&gt;
+
+<span class="comment">// ✓ Error toast — role="alert" (assertive)</span>
+&lt;<span class="tag">Snackbar</span> <span class="attr">open</span>={<span class="val">open</span>}&gt;
+  &lt;<span class="tag">Alert</span> <span class="attr">severity</span>=<span class="str">"error"</span> <span class="attr">role</span>=<span class="str">"alert"</span> <span class="attr">aria-live</span>=<span class="str">"assertive"</span>&gt;
+    Submission failed. Please try again.
+  &lt;/<span class="tag">Alert</span>&gt;
+&lt;/<span class="tag">Snackbar</span>&gt;</div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 2 — Form Validation Announcement</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <p style="font-size:13px;margin-bottom:12px;">Inline field errors are announced when the field loses focus. For multi-field form submission errors, use an error summary Alert with <code>role="alert"</code> at the top of the form, and move focus to it programmatically.</p>
+              <div class="code-block" style="font-size:12px;">
+<span class="comment">// ✓ Inline field error — MUI helperText handles this automatically</span>
+&lt;<span class="tag">TextField</span>
+  <span class="attr">error</span>={<span class="val">!!errors.ssn</span>}
+  <span class="attr">helperText</span>={<span class="val">errors.ssn?.message</span>}  <span class="comment">// announced on blur</span>
+  <span class="attr">inputProps</span>={{ <span class="attr">aria-describedby</span>: <span class="str">"ssn-error"</span> }}
+/&gt;
+
+<span class="comment">// ✓ Multi-field error summary — move focus to it on submit</span>
+{<span class="val">hasErrors</span> &amp;&amp; (
+  &lt;<span class="tag">Alert</span>
+    <span class="attr">severity</span>=<span class="str">"error"</span>
+    <span class="attr">role</span>=<span class="str">"alert"</span>
+    <span class="attr">tabIndex</span>={<span class="val">-1</span>}
+    <span class="attr">ref</span>={<span class="val">errorSummaryRef</span>}  <span class="comment">// call .focus() after submit</span>
+  &gt;
+    Please fix 3 errors before continuing.
+  &lt;/<span class="tag">Alert</span>&gt;
+)}</div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 3 — DataGrid Row Action Feedback</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <p style="font-size:13px;margin-bottom:12px;">When a row action (Approve, Archive, Request Docs) completes, the DataGrid row updates silently. Add a visually hidden live region outside the grid to announce the result to screen readers.</p>
+              <div class="code-block" style="font-size:12px;">
+<span class="comment">// ✓ Hidden live region — place once in the page layout</span>
+&lt;<span class="tag">Box</span>
+  <span class="attr">aria-live</span>=<span class="str">"polite"</span>
+  <span class="attr">aria-atomic</span>=<span class="str">"true"</span>
+  <span class="attr">sx</span>={{ <span class="attr">position</span>: <span class="str">'absolute'</span>, <span class="attr">left</span>: <span class="str">'-9999px'</span>, <span class="attr">width</span>: <span class="str">'1px'</span>, <span class="attr">height</span>: <span class="str">'1px'</span>, <span class="attr">overflow</span>: <span class="str">'hidden'</span> }}
+  <span class="attr">ref</span>={<span class="val">announcerRef</span>}
+/&gt;
+
+<span class="comment">// ✓ On action complete, set the announcer text</span>
+<span class="val">announcerRef</span>.current.textContent = <span class="str">`Case CS-2024-1847 approved successfully.`</span>;</div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 4 — Drawer Open/Close Focus Management</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <p style="font-size:13px;margin-bottom:12px;">When a Drawer opens, focus must move into it. When it closes, focus must return to the trigger element. MUI Drawer handles this automatically when <code>disableAutoFocus</code> is not set. Always provide a visible close button as the first focusable element.</p>
+              <div class="code-block" style="font-size:12px;">
+<span class="comment">// ✓ MUI Drawer — focus management is automatic</span>
+&lt;<span class="tag">Drawer</span>
+  <span class="attr">anchor</span>=<span class="str">"right"</span>
+  <span class="attr">open</span>={<span class="val">open</span>}
+  <span class="attr">onClose</span>={<span class="val">handleClose</span>}
+  <span class="comment">// DO NOT set disableAutoFocus or disableEnforceFocus</span>
+&gt;
+  &lt;<span class="tag">IconButton</span>
+    <span class="attr">onClick</span>={<span class="val">handleClose</span>}
+    <span class="attr">aria-label</span>=<span class="str">"Close case notes"</span>
+    <span class="attr">autoFocus</span>  <span class="comment">// first focusable element in drawer</span>
+  &gt;
+    &lt;<span class="tag">CloseIcon</span> /&gt;
+  &lt;/<span class="tag">IconButton</span>&gt;
+  ...
+&lt;/<span class="tag">Drawer</span>&gt;</div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 5 — Loading State Announcement</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <p style="font-size:13px;margin-bottom:12px;">Skeleton screens and spinners are invisible to screen readers. Use <code>aria-busy</code> on the loading container and a visually hidden status message to communicate loading state.</p>
+              <div class="code-block" style="font-size:12px;">
+<span class="comment">// ✓ Loading container with aria-busy</span>
+&lt;<span class="tag">Box</span>
+  <span class="attr">aria-busy</span>={<span class="val">isLoading</span>}
+  <span class="attr">aria-label</span>=<span class="str">"Cases list"</span>
+&gt;
+  {<span class="val">isLoading</span> ? (
+    &lt;&gt;
+      &lt;<span class="tag">Box</span> <span class="attr">sx</span>={{ <span class="attr">position</span>: <span class="str">'absolute'</span>, <span class="attr">left</span>: <span class="str">'-9999px'</span> }}&gt;
+        Loading cases, please wait.
+      &lt;/<span class="tag">Box</span>&gt;
+      &lt;<span class="tag">Skeleton</span> <span class="attr">variant</span>=<span class="str">"rectangular"</span> <span class="attr">height</span>={<span class="val">400</span>} /&gt;
+    &lt;/&gt;
+  ) : (
+    &lt;<span class="tag">DataGrid</span> ... /&gt;
+  )}
+&lt;/<span class="tag">Box</span>&gt;</div>
+            </div>
+          </div>
+
+          <div class="do-box" style="border-radius:8px;overflow:hidden;">
+            <div class="do-dont-header do-header">Pattern 6 — Autocomplete Keyboard &amp; Focus</div>
+            <div class="do-dont-body" style="padding:16px;">
+              <p style="font-size:13px;margin-bottom:12px;">MUI Autocomplete is built on ARIA 1.1 combobox pattern. It announces option count, selected value, and navigation automatically. The only override needed is a meaningful <code>aria-label</code> when there is no visible label.</p>
+              <div class="code-block" style="font-size:12px;">
+<span class="comment">// ✓ Autocomplete with full ARIA support</span>
+&lt;<span class="tag">Autocomplete</span>
+  <span class="attr">options</span>={<span class="val">programs</span>}
+  <span class="attr">getOptionLabel</span>={<span class="val">(o) =&gt; o.name</span>}
+  <span class="attr">renderInput</span>={<span class="val">(params) =&gt;</span>
+    &lt;<span class="tag">TextField</span>
+      {...<span class="val">params</span>}
+      <span class="attr">label</span>=<span class="str">"Grant Program"</span>  <span class="comment">// visible label — no aria-label needed</span>
+      <span class="attr">inputProps</span>={{
+        ...<span class="val">params.inputProps</span>,
+        <span class="attr">aria-autocomplete</span>: <span class="str">"list"</span>,
+        <span class="attr">aria-haspopup</span>: <span class="str">"listbox"</span>,
+      }}
+    /&gt;
+  }
+  <span class="comment">// Screen reader announces: "Grant Program, edit text, 12 options available"</span>
+/&gt;</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;margin-top:20px;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead><tr><th>Scenario</th><th>ARIA attribute</th><th>Value</th><th>WCAG criterion</th></tr></thead>
+            <tbody>
+              <tr><td>Success toast</td><td><code>role</code> + <code>aria-live</code></td><td><code>"status"</code> + <code>"polite"</code></td><td>4.1.3 Status Messages (AA)</td></tr>
+              <tr><td>Error toast</td><td><code>role</code> + <code>aria-live</code></td><td><code>"alert"</code> + <code>"assertive"</code></td><td>4.1.3 Status Messages (AA)</td></tr>
+              <tr><td>Form validation error</td><td><code>aria-describedby</code> + <code>aria-invalid</code></td><td>error ID + <code>"true"</code></td><td>1.3.1 Info &amp; Relationships (A)</td></tr>
+              <tr><td>DataGrid row update</td><td><code>aria-live</code> (off-screen region)</td><td><code>"polite"</code></td><td>4.1.3 Status Messages (AA)</td></tr>
+              <tr><td>Drawer open</td><td><code>aria-modal</code> + focus trap</td><td><code>"true"</code></td><td>2.1.2 No Keyboard Trap (A)</td></tr>
+              <tr><td>Loading state</td><td><code>aria-busy</code></td><td><code>"true"</code> while loading</td><td>4.1.3 Status Messages (AA)</td></tr>
+              <tr><td>Autocomplete dropdown</td><td><code>aria-haspopup</code> + <code>aria-expanded</code></td><td><code>"listbox"</code> + state</td><td>4.1.2 Name, Role, Value (A)</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- ============================================================
@@ -4773,6 +5014,65 @@ sx={{ transition: theme.transitions.create(
               <tr><td>1.0.0</td><td>Sep 2024</td><td>Initial design system — color palette, typography scale, spacing system, Button, TextField, Chip, Card, Alert, Tabs. Deployed to GitHub Pages.</td></tr>
             </tbody>
           </table>
+        </div>
+
+        <h3 class="subsection-title">Breaking Change Policy</h3>
+        <p style="font-size:14px;color:#5A6472;margin-bottom:16px;max-width:65ch;">The design system is used across three distinct products: Participant Portal, Contractor Portal, and Admin. A breaking change in any token, component API, or layout behavior can silently break production in all three. This policy defines what constitutes a breaking change, how it is communicated, and who signs off.</p>
+
+        <div style="background:#FFEBEE;border:1px solid #FFCDD2;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#B71C1C;">
+          <strong>What is a breaking change?</strong> Any change that requires consuming applications to update their code or configuration to avoid a broken UI, failed build, or accessibility regression.
+        </div>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;margin-bottom:20px;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead><tr><th>Change type</th><th>Breaking?</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td>Token rename</td><td><span style="background:#FFEBEE;color:#C62828;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Breaking</span></td><td><code>--nbl-primary</code> → <code>--nbl-brand-primary</code></td></tr>
+              <tr><td>Token value change (color)</td><td><span style="background:#FFEBEE;color:#C62828;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Breaking</span></td><td>Primary blue #188af4 → #1a90ff (may fail WCAG contrast)</td></tr>
+              <tr><td>Component prop removal</td><td><span style="background:#FFEBEE;color:#C62828;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Breaking</span></td><td>Removing a custom prop from a wrapped component</td></tr>
+              <tr><td>Layout behavior change</td><td><span style="background:#FFEBEE;color:#C62828;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Breaking</span></td><td>Sidebar width change, DataGrid row height change</td></tr>
+              <tr><td>Token value change (spacing)</td><td><span style="background:#FFF3E0;color:#E65100;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Potentially breaking</span></td><td>Base unit 8px → 10px (cascades everywhere)</td></tr>
+              <tr><td>New token added</td><td><span style="background:#E8F5E9;color:#1B5E20;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Non-breaking</span></td><td>Adding <code>--nbl-bg-hover</code></td></tr>
+              <tr><td>New component added</td><td><span style="background:#E8F5E9;color:#1B5E20;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Non-breaking</span></td><td>Adding a new wrapped component</td></tr>
+              <tr><td>Documentation update</td><td><span style="background:#E8F5E9;color:#1B5E20;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;">Non-breaking</span></td><td>Updating usage guidance, adding examples</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">Breaking Change Process</h3>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+          <div style="background:#F5F7FA;border-radius:8px;padding:14px;border-top:3px solid #188af4;">
+            <div style="font-weight:700;font-size:13px;color:#0a2a5e;margin-bottom:6px;">1. Deprecation notice</div>
+            <div style="font-size:12px;color:#5A6472;">Open a GitHub Issue tagged <code>breaking-change</code>. Add a <code>@deprecated</code> comment to the token/component. Announce in the team Slack channel.</div>
+          </div>
+          <div style="background:#F5F7FA;border-radius:8px;padding:14px;border-top:3px solid #188af4;">
+            <div style="font-weight:700;font-size:13px;color:#0a2a5e;margin-bottom:6px;">2. One-version notice period</div>
+            <div style="font-size:12px;color:#5A6472;">The deprecated item ships in one full version (e.g., v2.5 → v2.6 → removal in v3.0). Consuming apps have one version cycle to migrate.</div>
+          </div>
+          <div style="background:#F5F7FA;border-radius:8px;padding:14px;border-top:3px solid #188af4;">
+            <div style="font-weight:700;font-size:13px;color:#0a2a5e;margin-bottom:6px;">3. Migration guide</div>
+            <div style="font-size:12px;color:#5A6472;">The PR that removes the deprecated item must include a migration guide in the changelog: what changed, why, and the exact find-replace or code change needed.</div>
+          </div>
+          <div style="background:#F5F7FA;border-radius:8px;padding:14px;border-top:3px solid #188af4;">
+            <div style="font-weight:700;font-size:13px;color:#0a2a5e;margin-bottom:6px;">4. Sign-off required</div>
+            <div style="font-size:12px;color:#5A6472;">Breaking changes require approval from: the Design System owner, one representative from each consuming product team, and the Accessibility lead (for any change affecting WCAG compliance).</div>
+          </div>
+        </div>
+
+        <div class="demo-box" style="padding:0;overflow:hidden;">
+          <table class="token-table" style="width:100%;margin:0;">
+            <thead><tr><th>Version type</th><th>When to use</th><th>Examples</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Major</strong> (v2 → v3)</td><td>Breaking changes to tokens, component APIs, or layout system</td><td>Token rename, MUI major version upgrade, sidebar redesign</td></tr>
+              <tr><td><strong>Minor</strong> (v2.4 → v2.5)</td><td>New components, new sections, new tokens (non-breaking)</td><td>New pattern section, new wrapped component, new token added</td></tr>
+              <tr><td><strong>Patch</strong> (v2.5.0 → v2.5.1)</td><td>Bug fixes, documentation corrections, styling fixes</td><td>Wrong color value, broken demo, typo in code snippet</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:#E3F2FD;border:1px solid #BBDEFB;border-radius:8px;padding:14px 18px;margin-top:20px;font-size:13px;color:#1565C0;">
+          <strong>VPAT re-certification:</strong> Any breaking change that affects a WCAG criterion (color contrast, focus management, ARIA attributes, keyboard navigation) requires a VPAT re-certification before the new version ships to enterprise clients. The Accessibility lead owns this process. Allow 5 business days for re-certification.
         </div>
       </section>
 
